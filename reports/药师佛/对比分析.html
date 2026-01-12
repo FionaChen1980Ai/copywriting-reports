@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>对比分析 - 药师佛原视频 vs 新创文案</title>
+<style>
+    :root {
+        --bg: #0b0d10;
+        --card: #15181e;
+        --line: rgba(255,255,255,0.1);
+        --old: #ef4444;
+        --new: #10b981;
+        --txt: #e5e7eb;
+        --dim: #9ca3af;
+        --accent: #8b5cf6;
+        --yellow: #fbbf24;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:0; background:var(--bg); font-family:'Microsoft YaHei', 'PingFang SC', sans-serif; color:var(--txt); }
+
+    .sheet {
+        max-width: 1200px;
+        padding: 30px;
+        margin: 0 auto;
+    }
+
+    .head {
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+    .head h1 {
+        margin: 0 0 8px 0;
+        font-size: 24pt;
+        font-weight: 300;
+        background: linear-gradient(135deg, #ef4444, #10b981);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .head .meta { display: flex; gap: 20px; color: var(--dim); font-size: 10pt; flex-wrap: wrap; }
+    .head .tag { font-family: monospace; color: var(--yellow); font-size: 9pt; }
+
+    .section { margin-bottom: 30px; }
+    .section h2 {
+        font-size: 14pt;
+        font-weight: 500;
+        margin: 0 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--line);
+        color: var(--yellow);
+    }
+
+    /* 评分对比 */
+    .score-compare {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin: 15px 0;
+    }
+    .score-item {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+    }
+    .score-item .label {
+        font-size: 10pt;
+        color: var(--dim);
+        margin-bottom: 15px;
+    }
+    .score-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 8px;
+    }
+    .score-old {
+        font-size: 20pt;
+        font-weight: bold;
+        color: var(--old);
+        opacity: 0.7;
+    }
+    .score-arrow {
+        color: var(--dim);
+        font-size: 14pt;
+    }
+    .score-new {
+        font-size: 20pt;
+        font-weight: bold;
+        color: var(--new);
+    }
+    .score-change {
+        font-size: 9pt;
+        padding: 3px 8px;
+        border-radius: 10px;
+    }
+    .score-up { background: rgba(16, 185, 129, 0.2); color: var(--new); }
+    .score-same { background: rgba(255,255,255,0.1); color: var(--dim); }
+
+    /* 对比表格 */
+    .compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10pt;
+    }
+    .compare-table th {
+        background: rgba(251, 191, 36, 0.15);
+        padding: 12px;
+        text-align: left;
+        font-weight: 500;
+    }
+    .compare-table td {
+        padding: 15px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+    }
+    .compare-table tr:hover { background: rgba(255,255,255,0.02); }
+
+    .col-dim { width: 12%; font-weight: 500; color: var(--yellow); }
+    .col-old { width: 38%; }
+    .col-new { width: 38%; }
+    .col-verdict { width: 12%; text-align: center; }
+
+    .tag-old {
+        background: rgba(239, 68, 68, 0.2);
+        color: var(--old);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 8pt;
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+    .tag-new {
+        background: rgba(16, 185, 129, 0.2);
+        color: var(--new);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 8pt;
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+
+    .verdict-win {
+        background: var(--new);
+        color: #000;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 9pt;
+        font-weight: bold;
+    }
+    .verdict-tie {
+        background: var(--dim);
+        color: #000;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 9pt;
+    }
+    .verdict-old {
+        background: var(--old);
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 9pt;
+    }
+
+    .quote {
+        background: rgba(255,255,255,0.05);
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-top: 8px;
+        font-size: 9pt;
+        line-height: 1.5;
+        border-left: 2px solid;
+    }
+    .quote-old { border-color: var(--old); }
+    .quote-new { border-color: var(--new); }
+
+    /* SVG 双曲线对比 */
+    .viz {
+        background: var(--card);
+        border-radius: 12px;
+        height: 300px;
+        padding: 10px 0;
+        position: relative;
+        border: 1px solid var(--line);
+        overflow: hidden;
+        margin: 15px 0;
+    }
+
+    .legend {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        display: flex;
+        gap: 20px;
+        font-size: 9pt;
+        color: var(--dim);
+        z-index: 10;
+    }
+    .key { display: flex; align-items: center; gap: 6px; }
+    .bar { width: 20px; height: 3px; border-radius: 2px; }
+
+    /* 总结卡片 */
+    .summary-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .summary-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .summary-card h3 {
+        font-size: 12pt;
+        margin: 0 0 15px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .summary-card.new-win h3 { color: var(--new); }
+    .summary-card.old-win h3 { color: var(--old); }
+    .summary-card ul {
+        margin: 0;
+        padding-left: 20px;
+        font-size: 10pt;
+        line-height: 1.9;
+    }
+
+    .conclusion {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(139, 92, 246, 0.1));
+        border: 1px solid var(--new);
+        border-radius: 12px;
+        padding: 25px;
+        margin-top: 20px;
+    }
+    .conclusion h3 {
+        font-size: 14pt;
+        margin: 0 0 15px 0;
+        color: var(--new);
+    }
+    .conclusion p {
+        font-size: 11pt;
+        line-height: 1.8;
+        margin: 0 0 10px 0;
+    }
+
+    .foot { font-size: 8pt; color: var(--dim); text-align: right; margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--line); }
+
+    @media (max-width: 900px) {
+        .sheet { padding: 15px; }
+        .score-compare { grid-template-columns: repeat(2, 1fr); }
+        .summary-grid { grid-template-columns: 1fr; }
+        .compare-table { font-size: 9pt; }
+        .col-old, .col-new { width: 35%; }
+    }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+    <div class="head">
+        <h1>原视频 vs 新创文案 对比分析</h1>
+        <div class="meta">
+            <span>原视频：TikTok 79秒</span>
+            <span>新创文案：用户修订版 79秒</span>
+            <span>分析维度：6项</span>
+        </div>
+        <div class="tag">MODE: COMPARATIVE ANALYSIS | A/B SCRIPT EVALUATION</div>
+    </div>
+
+    <!-- 评分对比 -->
+    <div class="section">
+        <h2>综合评分对比</h2>
+        <div class="score-compare">
+            <div class="score-item">
+                <div class="label">钩子吸引力</div>
+                <div class="score-row">
+                    <span class="score-old">6.5</span>
+                    <span class="score-arrow">→</span>
+                    <span class="score-new">7.5</span>
+                </div>
+                <span class="score-change score-up">+1.0</span>
+            </div>
+            <div class="score-item">
+                <div class="label">内容完整度</div>
+                <div class="score-row">
+                    <span class="score-old">8.0</span>
+                    <span class="score-arrow">→</span>
+                    <span class="score-new">9.0</span>
+                </div>
+                <span class="score-change score-up">+1.0</span>
+            </div>
+            <div class="score-item">
+                <div class="label">情绪张力</div>
+                <div class="score-row">
+                    <span class="score-old">5.5</span>
+                    <span class="score-arrow">→</span>
+                    <span class="score-new">7.5</span>
+                </div>
+                <span class="score-change score-up">+2.0</span>
+            </div>
+            <div class="score-item">
+                <div class="label">文学质感</div>
+                <div class="score-row">
+                    <span class="score-old">7.0</span>
+                    <span class="score-arrow">→</span>
+                    <span class="score-new">8.0</span>
+                </div>
+                <span class="score-change score-up">+1.0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 情绪曲线对比 -->
+    <div class="section">
+        <h2>情绪曲线对比</h2>
+        <div class="viz">
+            <div class="legend">
+                <div class="key"><div class="bar" style="background:var(--old); opacity:0.6"></div>原视频（平缓上升）</div>
+                <div class="key"><div class="bar" style="background:var(--new)"></div>新创文案（双峰结构）</div>
+            </div>
+
+            <svg class="svg-box" viewBox="0 0 1000 300" preserveAspectRatio="none" style="width:100%; height:100%;">
+                <!-- 网格线 -->
+                <g stroke="rgba(255,255,255,0.05)" stroke-width="1">
+                    <line x1="150" y1="40" x2="150" y2="260"/>
+                    <line x1="350" y1="40" x2="350" y2="260"/>
+                    <line x1="600" y1="40" x2="600" y2="260"/>
+                    <line x1="850" y1="40" x2="850" y2="260"/>
+                </g>
+
+                <!-- 段落标签 -->
+                <text x="75" y="35" fill="var(--dim)" font-size="8" text-anchor="middle">开场钩子</text>
+                <text x="250" y="35" fill="var(--dim)" font-size="8" text-anchor="middle">人物介绍</text>
+                <text x="475" y="35" fill="var(--dim)" font-size="8" text-anchor="middle">核心内容</text>
+                <text x="725" y="35" fill="var(--dim)" font-size="8" text-anchor="middle">现代连接</text>
+                <text x="925" y="35" fill="var(--dim)" font-size="8" text-anchor="middle">CTA</text>
+
+                <!-- 原视频曲线 - 平缓上升 -->
+                <path d="M 40 230 L 100 220 L 150 210 L 200 195 L 250 185 L 300 175 L 350 160 L 400 150 L 450 145 L 500 140 L 550 135 L 600 130 L 650 125 L 700 120 L 750 115 L 800 110 L 850 105 L 900 100 L 950 95 L 1000 90"
+                      fill="none" stroke="var(--old)" stroke-width="3" stroke-opacity="0.5" stroke-linejoin="round"/>
+
+                <!-- 原视频标注 -->
+                <circle cx="350" cy="160" r="4" fill="var(--old)" opacity="0.6"/>
+                <text x="350" y="180" font-size="8" fill="var(--old)" text-anchor="middle" opacity="0.8">单调上升</text>
+
+                <!-- 新创文案曲线 - 双峰结构 -->
+                <path d="M 40 230 L 80 220 L 120 210 L 150 200 L 200 175 L 250 155 L 300 140 L 350 130 L 400 110 L 450 95 L 500 85 L 550 100 L 600 110 L 650 100 L 700 90 L 750 85 L 800 80 L 850 85 L 900 95 L 950 100 L 1000 105"
+                      fill="none" stroke="var(--new)" stroke-width="3" stroke-linejoin="round"
+                      filter="drop-shadow(0 0 4px rgba(16, 185, 129, 0.5))"/>
+
+                <!-- 新文案峰值标注 -->
+                <circle cx="500" cy="85" r="6" fill="var(--new)" stroke="#fff" stroke-width="2"/>
+                <text x="500" y="70" font-size="9" fill="var(--new)" text-anchor="middle" font-weight="bold">峰值A</text>
+
+                <circle cx="800" cy="80" r="6" fill="var(--new)" stroke="#fff" stroke-width="2"/>
+                <text x="800" y="65" font-size="9" fill="var(--new)" text-anchor="middle" font-weight="bold">峰值B</text>
+
+                <!-- 差异标注 -->
+                <rect x="530" y="90" width="50" height="20" fill="rgba(16, 185, 129, 0.2)" rx="3"/>
+                <text x="555" y="104" font-size="8" fill="var(--new)" text-anchor="middle">+节奏感</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 逐项对比 -->
+    <div class="section">
+        <h2>逐项对比分析</h2>
+        <table class="compare-table">
+            <tr>
+                <th class="col-dim">维度</th>
+                <th class="col-old"><span class="tag-old">原视频</span></th>
+                <th class="col-new"><span class="tag-new">新创文案</span></th>
+                <th class="col-verdict">优胜</th>
+            </tr>
+            <tr>
+                <td class="col-dim">开场意象</td>
+                <td>
+                    「在浩瀚的东方世界，有一片琉璃般纯净的净土」
+                    <div class="quote quote-old">地理空间描述，较为抽象</div>
+                </td>
+                <td>
+                    「在时空的无尽深处，映彻着一抹深邃纯净的琉璃蓝」
+                    <div class="quote quote-new">视觉色彩具象化，「琉璃蓝」更有画面感</div>
+                </td>
+                <td><span class="verdict-win">新版胜</span></td>
+            </tr>
+            <tr>
+                <td class="col-dim">身份称号</td>
+                <td>
+                    「一位慈悲的觉者」
+                    <div class="quote quote-old">通用称呼，辨识度低</div>
+                </td>
+                <td>
+                    「东方大医王的慈悲化现」
+                    <div class="quote quote-new">「大医王」专属称号，强化治愈属性</div>
+                </td>
+                <td><span class="verdict-win">新版胜</span></td>
+            </tr>
+            <tr>
+                <td class="col-dim">法器介绍</td>
+                <td>
+                    「手持药钵…结施法印」
+                    <div class="quote quote-old">仅提及药钵和法印，信息不完整</div>
+                </td>
+                <td>
+                    「左手托药钵…右手持诃子」
+                    <div class="quote quote-new">双手法器完整呈现，寓意详细解读</div>
+                </td>
+                <td><span class="verdict-win">新版胜</span></td>
+            </tr>
+            <tr>
+                <td class="col-dim">治愈层次</td>
+                <td>
+                    「疗愈世间一切的病苦与黑暗」
+                    <div class="quote quote-old">笼统表述，未区分身心</div>
+                </td>
+                <td>
+                    「抚平肉身的伤痛…化解内心深处的焦虑与不安」
+                    <div class="quote quote-new">明确身体+心灵双轨治愈</div>
+                </td>
+                <td><span class="verdict-win">新版胜</span></td>
+            </tr>
+            <tr>
+                <td class="col-dim">现代痛点</td>
+                <td>
+                    「高速运转的现代社会，种种压力与挑战」
+                    <div class="quote quote-old">泛泛而谈，缺乏具体共鸣</div>
+                </td>
+                <td>
+                    「长期积累的情绪内耗，正在悄悄损耗着我们的健康」
+                    <div class="quote quote-new">「情绪内耗」精准触达当代人痛点</div>
+                </td>
+                <td><span class="verdict-win">新版胜</span></td>
+            </tr>
+            <tr>
+                <td class="col-dim">意象金句</td>
+                <td>
+                    「愿力化作不灭的明灯，点亮前路」
+                    <div class="quote quote-old">常见意象，记忆点一般</div>
+                </td>
+                <td>
+                    「让枯木逢春，让心灯重燃」「修复受损的心灵，唤醒自愈的力量」
+                    <div class="quote quote-new">对仗工整，意象丰富，记忆点强</div>
+                </td>
+                <td><span class="verdict-win">新版胜</span></td>
+            </tr>
+            <tr>
+                <td class="col-dim">CTA引导</td>
+                <td>
+                    「当人们称念他的名号时，便得到了一份至诚的祈愿」
+                    <div class="quote quote-old">第三人称陈述，被动式</div>
+                </td>
+                <td>
+                    「请静心称念这声神圣的名号」
+                    <div class="quote quote-new">直接邀请，行动更明确</div>
+                </td>
+                <td><span class="verdict-tie">各有优劣</span></td>
+            </tr>
+            <tr>
+                <td class="col-dim">收尾祝福</td>
+                <td>
+                    「福慧增长，吉祥如意」
+                    <div class="quote quote-old">传统佛教祝语，庄严简洁</div>
+                </td>
+                <td>
+                    「告别焦虑，拥抱一个通透、健康的生命。平安无碍，喜乐安康」
+                    <div class="quote quote-new">融合现代诉求+传统祝语</div>
+                </td>
+                <td><span class="verdict-win">新版胜</span></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 优劣总结 -->
+    <div class="section">
+        <h2>优劣势总结</h2>
+        <div class="summary-grid">
+            <div class="summary-card new-win">
+                <h3><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> 新创文案优势</h3>
+                <ul>
+                    <li><strong>视觉意象升级</strong>：「琉璃蓝」比「琉璃净土」更具画面感</li>
+                    <li><strong>信息完整度高</strong>：法器双呈（药钵+诃子），寓意详解</li>
+                    <li><strong>治愈概念清晰</strong>：身体+心灵双轨，「情绪内耗」精准</li>
+                    <li><strong>文学质感强</strong>：对仗句式工整，金句记忆点多</li>
+                    <li><strong>现代连接深</strong>：「自愈力量」「由内而外的洗礼」</li>
+                    <li><strong>情绪曲线优化</strong>：双峰结构，节奏感更强</li>
+                </ul>
+            </div>
+            <div class="summary-card old-win">
+                <h3><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg> 新创文案待优化</h3>
+                <ul>
+                    <li><strong>开场仍偏铺垫</strong>：缺乏悬念/痛点直接切入</li>
+                    <li><strong>部分用词偏书面</strong>：「慈悲化现」「神识」门槛略高</li>
+                    <li><strong>CTA稍显直接</strong>：「请静心称念」可更轻邀请</li>
+                    <li><strong>收-放节奏可加强</strong>：情绪低谷段不够明显</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结论 -->
+    <div class="conclusion">
+        <h3>综合结论</h3>
+        <p><strong>新创文案在8项对比中7项胜出</strong>，整体提升显著。核心改进体现在：</p>
+        <p>1. <strong>视觉化升级</strong>：「琉璃蓝」「东方大医王」让抽象概念具象化<br>
+           2. <strong>信息密度提升</strong>：法器双呈、治愈双轨、寓意详解<br>
+           3. <strong>现代共鸣加强</strong>：「情绪内耗」「自愈力量」直击当代人痛点<br>
+           4. <strong>文学质感增强</strong>：对仗工整，金句频出</p>
+        <p style="margin-top:15px; color: var(--yellow);"><strong>建议下一步优化方向</strong>：可考虑在开场增加1-2句现代人痛点场景（如失眠、焦虑），再转入「时空深处」的意象，形成更强的「收-放」对比。</p>
+    </div>
+
+    <div class="foot">Generated by Claude Code // 对比分析 // 2026-01-10</div>
+</div>
+
+</body>
+</html>

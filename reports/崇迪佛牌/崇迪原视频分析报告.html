@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>崇迪佛牌视频分析报告</title>
+<style>
+    :root {
+        --bg: #0a0a0f;
+        --card: #12131a;
+        --card-hover: #1a1b24;
+        --gold: #d4a853;
+        --gold-light: #f4d03f;
+        --gold-dark: #b8860b;
+        --sacred: #8b5a2b;
+        --text: #e5e7eb;
+        --dim: #9ca3af;
+        --line: rgba(212, 168, 83, 0.2);
+        --glow: rgba(212, 168, 83, 0.3);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        background: var(--bg);
+        font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        color: var(--text);
+        min-height: 100vh;
+        line-height: 1.6;
+    }
+
+    /* 背景装饰 */
+    .bg-pattern {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.3;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    /* 头部 */
+    header {
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+    }
+
+    .lotus-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+        filter: drop-shadow(0 0 10px var(--glow));
+    }
+
+    h1 {
+        font-size: 2.2rem;
+        font-weight: 300;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .subtitle {
+        color: var(--dim);
+        font-size: 0.95rem;
+    }
+
+    /* 区块标题 */
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 25px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .section-title h2 {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: var(--gold);
+    }
+
+    .section-title .icon {
+        width: 24px;
+        height: 24px;
+        fill: var(--gold);
+    }
+
+    /* 卡片 */
+    .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 25px;
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        border-color: var(--gold);
+        box-shadow: 0 0 30px var(--glow);
+    }
+
+    /* 视频结构可视化 */
+    .structure-viz {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+
+    .structure-svg {
+        width: 100%;
+        height: 200px;
+    }
+
+    /* 时间轴 */
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 8px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, var(--gold), var(--gold-dark), transparent);
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 25px;
+        padding-left: 20px;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -26px;
+        top: 5px;
+        width: 12px;
+        height: 12px;
+        background: var(--gold);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--glow);
+    }
+
+    .timeline-item.highlight::before {
+        width: 16px;
+        height: 16px;
+        left: -28px;
+        top: 3px;
+        background: var(--gold-light);
+        box-shadow: 0 0 20px var(--gold);
+    }
+
+    .timeline-time {
+        font-family: monospace;
+        font-size: 0.85rem;
+        color: var(--gold);
+        margin-bottom: 5px;
+    }
+
+    .timeline-content {
+        font-size: 0.95rem;
+    }
+
+    .timeline-tag {
+        display: inline-block;
+        background: rgba(212, 168, 83, 0.2);
+        color: var(--gold);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        margin-top: 8px;
+    }
+
+    /* 受众画像 */
+    .audience-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .audience-card {
+        background: rgba(212, 168, 83, 0.05);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .audience-card .label {
+        font-size: 0.85rem;
+        color: var(--dim);
+        margin-bottom: 8px;
+    }
+
+    .audience-card .value {
+        font-size: 1.1rem;
+        color: var(--gold);
+        font-weight: 500;
+    }
+
+    /* 心理洞察 */
+    .insight-flow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 20px;
+        background: rgba(212, 168, 83, 0.05);
+        border-radius: 12px;
+        margin: 20px 0;
+    }
+
+    .insight-box {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px 18px;
+        text-align: center;
+        min-width: 120px;
+    }
+
+    .insight-box .top {
+        font-size: 0.8rem;
+        color: var(--dim);
+    }
+
+    .insight-box .main {
+        font-size: 0.95rem;
+        color: var(--text);
+        margin-top: 4px;
+    }
+
+    .insight-arrow {
+        color: var(--gold);
+        font-size: 1.2rem;
+    }
+
+    /* 信任要素 */
+    .trust-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+    }
+
+    .trust-item {
+        background: rgba(212, 168, 83, 0.08);
+        border-radius: 12px;
+        padding: 20px 15px;
+        text-align: center;
+        transition: all 0.3s;
+    }
+
+    .trust-item:hover {
+        background: rgba(212, 168, 83, 0.15);
+        transform: translateY(-3px);
+    }
+
+    .trust-icon {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+
+    .trust-label {
+        font-size: 0.85rem;
+        color: var(--gold);
+        margin-bottom: 5px;
+    }
+
+    .trust-desc {
+        font-size: 0.75rem;
+        color: var(--dim);
+    }
+
+    /* 数据环形图 */
+    .donut-chart {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        padding: 20px;
+    }
+
+    .donut-svg {
+        width: 150px;
+        height: 150px;
+    }
+
+    .donut-legend {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
+    /* 禁忌列表 */
+    .taboo-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .taboo-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 15px;
+        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        border-radius: 8px;
+        font-size: 0.9rem;
+    }
+
+    .taboo-item .icon {
+        color: #ef4444;
+        font-size: 1.1rem;
+    }
+
+    /* 结论卡片 */
+    .conclusion {
+        background: linear-gradient(135deg, rgba(212, 168, 83, 0.1), rgba(212, 168, 83, 0.05));
+        border: 1px solid var(--gold);
+        border-radius: 16px;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .conclusion-title {
+        font-size: 1.1rem;
+        color: var(--gold);
+        margin-bottom: 15px;
+    }
+
+    .conclusion-text {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: var(--text);
+    }
+
+    .conclusion-text em {
+        color: var(--gold-light);
+        font-style: normal;
+    }
+
+    /* 页脚 */
+    footer {
+        text-align: center;
+        padding: 30px;
+        color: var(--dim);
+        font-size: 0.8rem;
+        border-top: 1px solid var(--line);
+        margin-top: 40px;
+    }
+
+    /* 响应式 */
+    @media (max-width: 900px) {
+        .trust-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container { padding: 20px 15px; }
+        h1 { font-size: 1.6rem; }
+        .audience-grid { grid-template-columns: 1fr; }
+        .trust-grid { grid-template-columns: repeat(2, 1fr); }
+        .taboo-list { grid-template-columns: 1fr; }
+        .donut-chart { flex-direction: column; }
+        .insight-flow { flex-direction: column; }
+        .insight-arrow { transform: rotate(90deg); }
+    }
+
+    @media (max-width: 480px) {
+        h1 { font-size: 1.4rem; }
+        .card { padding: 18px; }
+        .trust-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+        .trust-item { padding: 15px 10px; }
+        .timeline { padding-left: 25px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- 背景 SVG -->
+<svg class="bg-pattern" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <defs>
+        <pattern id="sacred-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="10" cy="10" r="0.5" fill="rgba(212, 168, 83, 0.15)"/>
+        </pattern>
+        <radialGradient id="center-glow" cx="50%" cy="30%" r="50%">
+            <stop offset="0%" style="stop-color:rgba(212, 168, 83, 0.1)"/>
+            <stop offset="100%" style="stop-color:rgba(0,0,0,0)"/>
+        </radialGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#sacred-grid)"/>
+    <rect width="100%" height="100%" fill="url(#center-glow)"/>
+</svg>
+
+<div class="container">
+
+    <!-- 头部 -->
+    <header>
+        <svg class="lotus-icon" viewBox="0 0 100 100">
+            <defs>
+                <linearGradient id="lotus-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#f4d03f"/>
+                    <stop offset="100%" style="stop-color:#d4a853"/>
+                </linearGradient>
+            </defs>
+            <!-- 莲花图案 -->
+            <ellipse cx="50" cy="70" rx="25" ry="8" fill="url(#lotus-grad)" opacity="0.3"/>
+            <path d="M50 65 Q35 50 40 30 Q50 40 50 65" fill="url(#lotus-grad)" opacity="0.8"/>
+            <path d="M50 65 Q65 50 60 30 Q50 40 50 65" fill="url(#lotus-grad)" opacity="0.8"/>
+            <path d="M50 65 Q25 55 20 35 Q45 45 50 65" fill="url(#lotus-grad)" opacity="0.6"/>
+            <path d="M50 65 Q75 55 80 35 Q55 45 50 65" fill="url(#lotus-grad)" opacity="0.6"/>
+            <path d="M50 65 Q50 35 50 15 Q50 35 50 65" fill="url(#lotus-grad)"/>
+            <circle cx="50" cy="70" r="5" fill="url(#lotus-grad)"/>
+        </svg>
+        <h1>崇迪佛牌视频分析报告</h1>
+        <p class="subtitle">视频结构 · 受众洞察 · 传播策略</p>
+    </header>
+
+    <!-- 视频概览 -->
+    <div class="card">
+        <div class="section-title">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v12h16V6H4zm6 3l5 3-5 3V9z"/></svg>
+            <h2>视频概览</h2>
+        </div>
+        <div class="audience-grid">
+            <div class="audience-card">
+                <div class="label">视频时长</div>
+                <div class="value">2分10秒</div>
+            </div>
+            <div class="audience-card">
+                <div class="label">内容类型</div>
+                <div class="value">品牌起源故事</div>
+            </div>
+            <div class="audience-card">
+                <div class="label">叙事风格</div>
+                <div class="value">庄重 · 神秘</div>
+            </div>
+            <div class="audience-card">
+                <div class="label">核心主题</div>
+                <div class="value">万佛之王 · 崇迪</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 视频结构可视化 -->
+    <div class="structure-viz">
+        <div class="section-title">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM7 7h2v10H7V7zm4 4h2v6h-2v-6zm4-2h2v8h-2V9z"/></svg>
+            <h2>叙事结构曲线</h2>
+        </div>
+        <svg class="structure-svg" viewBox="0 0 800 180" preserveAspectRatio="none">
+            <!-- 背景网格 -->
+            <defs>
+                <linearGradient id="curve-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#8b5a2b"/>
+                    <stop offset="50%" style="stop-color:#d4a853"/>
+                    <stop offset="100%" style="stop-color:#f4d03f"/>
+                </linearGradient>
+            </defs>
+
+            <!-- 区域分隔 -->
+            <g font-size="11" fill="rgba(212,168,83,0.5)" text-anchor="middle">
+                <text x="80" y="20">开场立传</text>
+                <text x="240" y="20">神迹降临</text>
+                <text x="400" y="20">誓愿发心</text>
+                <text x="560" y="20">铸造加持</text>
+                <text x="720" y="20">皇室加封</text>
+            </g>
+
+            <g stroke="rgba(212,168,83,0.1)" stroke-width="1" stroke-dasharray="4,4">
+                <line x1="160" y1="25" x2="160" y2="160"/>
+                <line x1="320" y1="25" x2="320" y2="160"/>
+                <line x1="480" y1="25" x2="480" y2="160"/>
+                <line x1="640" y1="25" x2="640" y2="160"/>
+            </g>
+
+            <!-- 情感曲线 -->
+            <path d="M 20 140
+                     C 60 130, 100 120, 160 110
+                     C 200 100, 240 50, 280 40
+                     C 320 30, 360 45, 400 55
+                     C 440 65, 480 80, 520 75
+                     C 560 70, 600 60, 640 50
+                     C 680 40, 720 35, 780 30"
+                  fill="none"
+                  stroke="url(#curve-grad)"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  filter="drop-shadow(0 0 8px rgba(212,168,83,0.5))"/>
+
+            <!-- 关键节点 -->
+            <circle cx="280" cy="40" r="8" fill="#d4a853" stroke="#fff" stroke-width="2"/>
+            <text x="280" y="65" font-size="10" fill="#d4a853" text-anchor="middle">神迹高潮</text>
+
+            <circle cx="400" cy="55" r="6" fill="#f4d03f"/>
+            <text x="400" y="80" font-size="10" fill="#f4d03f" text-anchor="middle">誓愿</text>
+
+            <circle cx="780" cy="30" r="8" fill="#d4a853" stroke="#fff" stroke-width="2"/>
+            <text x="755" y="55" font-size="10" fill="#d4a853" text-anchor="middle">赐名收尾</text>
+
+            <!-- 时间轴 -->
+            <line x1="20" y1="160" x2="780" y2="160" stroke="rgba(212,168,83,0.3)" stroke-width="1"/>
+            <g font-size="9" fill="rgba(212,168,83,0.6)" text-anchor="middle">
+                <text x="20" y="175">0:00</text>
+                <text x="160" y="175">0:32</text>
+                <text x="320" y="175">1:06</text>
+                <text x="480" y="175">1:27</text>
+                <text x="640" y="175">1:56</text>
+                <text x="780" y="175">2:10</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 结构时间轴 -->
+    <div class="card">
+        <div class="section-title">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
+            <h2>结构拆解</h2>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-time">00:00 - 00:32</div>
+                <div class="timeline-content">
+                    <strong>开场立传</strong><br>
+                    阿赞多大师生平：七岁出家、五朝帝师、清净如莲
+                </div>
+                <span class="timeline-tag">建立权威</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">00:32 - 01:06</div>
+                <div class="timeline-content">
+                    <strong>神迹降临</strong><br>
+                    师父托梦 → 海边等待 → 金光佛像从海中升起
+                </div>
+                <span class="timeline-tag">情感高潮</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">01:06 - 01:27</div>
+                <div class="timeline-content">
+                    <strong>誓愿发心</strong><br>
+                    大师跪拜、泪流、许愿护佑众生
+                </div>
+                <span class="timeline-tag">赋予使命</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">01:27 - 01:56</div>
+                <div class="timeline-content">
+                    <strong>铸造过程</strong><br>
+                    圣料收集、亲手捏制、高僧加持仪式
+                </div>
+                <span class="timeline-tag">工艺仪式</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">01:56 - 02:10</div>
+                <div class="timeline-content">
+                    <strong>皇室加封</strong><br>
+                    太皇赐名"崇迪"，意为万佛之王
+                </div>
+                <span class="timeline-tag">权威背书</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 受众画像 -->
+    <div class="card">
+        <div class="section-title">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <h2>目标受众画像</h2>
+        </div>
+
+        <div class="donut-chart">
+            <svg class="donut-svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(212,168,83,0.1)" stroke-width="15"/>
+                <!-- 男性 65% -->
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#d4a853" stroke-width="15"
+                        stroke-dasharray="163 251" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
+                <!-- 女性 35% -->
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#f4d03f" stroke-width="15"
+                        stroke-dasharray="88 251" stroke-dashoffset="-163" transform="rotate(-90 50 50)"/>
+                <text x="50" y="48" text-anchor="middle" fill="#d4a853" font-size="14" font-weight="bold">65%</text>
+                <text x="50" y="60" text-anchor="middle" fill="rgba(212,168,83,0.6)" font-size="8">男性为主</text>
+            </svg>
+
+            <div class="donut-legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#d4a853"></div>
+                    <span>男性 65%（生意人、收藏者）</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#f4d03f"></div>
+                    <span>女性 35%（信仰需求）</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="audience-grid" style="margin-top: 20px;">
+            <div class="audience-card">
+                <div class="label">年龄层</div>
+                <div class="value">30-55岁</div>
+            </div>
+            <div class="audience-card">
+                <div class="label">地域</div>
+                <div class="value">东南亚华人圈</div>
+            </div>
+            <div class="audience-card">
+                <div class="label">身份</div>
+                <div class="value">生意人 · 个体老板</div>
+            </div>
+            <div class="audience-card">
+                <div class="label">消费力</div>
+                <div class="value">中高（信仰消费）</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 心理洞察 -->
+    <div class="card">
+        <div class="section-title">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <h2>心理决策链路</h2>
+        </div>
+
+        <div class="insight-flow">
+            <div class="insight-box">
+                <div class="top">起点</div>
+                <div class="main">我信</div>
+            </div>
+            <div class="insight-arrow">→</div>
+            <div class="insight-box">
+                <div class="top">顾虑</div>
+                <div class="main">但我怕被骗</div>
+            </div>
+            <div class="insight-arrow">→</div>
+            <div class="insight-box">
+                <div class="top">需求</div>
+                <div class="main">我要"证据"</div>
+            </div>
+            <div class="insight-arrow">→</div>
+            <div class="insight-box" style="border-color: var(--gold);">
+                <div class="top">视频提供</div>
+                <div class="main" style="color: var(--gold);">权威背书</div>
+            </div>
+            <div class="insight-arrow">→</div>
+            <div class="insight-box">
+                <div class="top">结果</div>
+                <div class="main">放心结缘</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 25px;">
+            <h4 style="color: var(--gold); margin-bottom: 15px; font-size: 1rem;">表面需求 vs 底层需求</h4>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr style="border-bottom: 1px solid var(--line);">
+                    <td style="padding: 12px; color: var(--dim);">想了解崇迪的来历</td>
+                    <td style="padding: 12px; color: var(--gold);">→</td>
+                    <td style="padding: 12px;">确认这东西<strong>值得信</strong>、<strong>有来头</strong></td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line);">
+                    <td style="padding: 12px; color: var(--dim);">看看是不是正品</td>
+                    <td style="padding: 12px; color: var(--gold);">→</td>
+                    <td style="padding: 12px;">怕买到假货、怕没效果</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; color: var(--dim);">了解佛牌文化</td>
+                    <td style="padding: 12px; color: var(--gold);">→</td>
+                    <td style="padding: 12px;">为消费找到<strong>合理化理由</strong></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- 信任建立要素 -->
+    <div class="card">
+        <div class="section-title">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+            <h2>信任建立五要素</h2>
+        </div>
+        <div class="trust-grid">
+            <div class="trust-item">
+                <div class="trust-icon">👑</div>
+                <div class="trust-label">师承正统</div>
+                <div class="trust-desc">阿赞多 · 法脉传承</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">🏛️</div>
+                <div class="trust-label">皇室背书</div>
+                <div class="trust-desc">五朝帝师 · 太皇赐名</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">✨</div>
+                <div class="trust-label">神迹加持</div>
+                <div class="trust-desc">托梦 · 金光 · 海中升起</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">🔔</div>
+                <div class="trust-label">仪式感</div>
+                <div class="trust-desc">圣料 · 高僧 · 钟鼓齐鸣</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">🙏</div>
+                <div class="trust-label">利他发心</div>
+                <div class="trust-desc">愿众生吉祥安泰</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 内容禁忌 -->
+    <div class="card">
+        <div class="section-title">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8 0-1.85.63-3.55 1.69-4.9L16.9 18.31C15.55 19.37 13.85 20 12 20zm6.31-3.1L7.1 5.69C8.45 4.63 10.15 4 12 4c4.42 0 8 3.58 8 8 0 1.85-.63 3.55-1.69 4.9z"/></svg>
+            <h2>受众禁忌</h2>
+        </div>
+        <div class="taboo-list">
+            <div class="taboo-item">
+                <span class="icon">✕</span>
+                <span>说"买佛牌"（要说"请""结缘"）</span>
+            </div>
+            <div class="taboo-item">
+                <span class="icon">✕</span>
+                <span>强调"功效保证"</span>
+            </div>
+            <div class="taboo-item">
+                <span class="icon">✕</span>
+                <span>低价促销、打折感</span>
+            </div>
+            <div class="taboo-item">
+                <span class="icon">✕</span>
+                <span>网红带货风格</span>
+            </div>
+            <div class="taboo-item">
+                <span class="icon">✕</span>
+                <span>质疑或调侃信仰</span>
+            </div>
+            <div class="taboo-item">
+                <span class="icon">✕</span>
+                <span>过于商业化的语言</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 核心结论 -->
+    <div class="conclusion">
+        <div class="conclusion-title">✦ 核心传播逻辑 ✦</div>
+        <div class="conclusion-text">
+            不是<em>卖货</em>，是<em>讲道</em><br>
+            不是<em>推销</em>，是<em>度化</em><br>
+            让受众觉得：这不是商业行为，是<em>佛缘</em>
+        </div>
+    </div>
+
+    <footer>
+        Generated by Claude Code · 崇迪佛牌视频分析
+    </footer>
+
+</div>
+
+</body>
+</html>

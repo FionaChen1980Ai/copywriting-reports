@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>崇迪佛牌：文案进化与博弈对比报告</title>
+<style>
+:root{--bg:#050505;--surf:rgba(255,255,255,0.03);--border:rgba(255,255,255,0.1);--gold:#d4a853;--gold-l:#f4d03f;--l1:#3b82f6;--l2:#10b981;--red:#f43f5e;--txt:#f9fafb;--dim:#9ca3af;--cyan:#06b6d4}
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:var(--bg);font-family:'PingFang SC',sans-serif;color:var(--txt);display:flex;justify-content:center}
+.report{width:297mm;background:radial-gradient(circle at 50% 0,#1e1b10 0,#020617 80%);padding:30px;border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;gap:20px}
+.header{text-align:center;border-bottom:2px solid var(--gold);padding-bottom:15px;margin-bottom:10px}
+.header h1{margin:0;font-size:24pt;background:linear-gradient(to right,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{color:var(--dim);font-size:10pt;letter-spacing:2px}
+
+/* 核心对比区 */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.comp-card{background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:20px;position:relative}
+.comp-card h2{font-size:14pt;margin-top:0;display:flex;align-items:center;gap:10px}
+.tag-orig{color:var(--dim);border:1px solid var(--dim);padding:2px 8px;font-size:8pt;border-radius:4px}
+.tag-new{color:var(--gold);border:1px solid var(--gold);padding:2px 8px;font-size:8pt;border-radius:4px}
+
+/* 情绪曲线图 */
+.chart-box{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:10px;padding:20px;height:250px}
+.chart-title{font-size:10pt;color:var(--gold);margin-bottom:15px;display:flex;justify-content:space-between}
+.svg-container{width:100%;height:180px;position:relative}
+.legend{display:flex;gap:20px;font-size:8pt}
+.legend-item{display:flex;align-items:center;gap:5px}
+
+/* 优缺点矩阵 */
+.matrix{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.m-item{padding:15px;border-radius:6px;font-size:9pt;line-height:1.4}
+.m-title{font-weight:bold;margin-bottom:8px;font-size:10pt}
+.pro{background:rgba(16,185,129,0.05);border:1px solid var(--l2);color:var(--l2)}
+.con{background:rgba(244,63,94,0.05);border:1px solid var(--red);color:var(--red)}
+
+/* 异同总结 */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.sum-box{background:var(--surf);padding:15px;border-radius:8px;border-left:4px solid}
+</style>
+</head>
+<body>
+<div class="report">
+    <div class="header">
+        <h1>崇迪佛牌：文案进化与博弈对比报告</h1>
+        <p>FROM NARRATIVE TO FREQUENCY // 从叙事到同频</p>
+    </div>
+
+    <div class="summary">
+        <div class="sum-box" style="border-color:var(--l1)">
+            <div class="m-title" style="color:var(--l1)">● 相同点 (Similarities)</div>
+            <div style="font-size:9pt;color:var(--dim)">
+                • <b>核心题材：</b>均围绕“阿赞多”大师与“崇迪佛牌”的历史地位展开。<br>
+                • <b>权威背书：</b>都强调了“泰皇亲赐”、“帝王之师”及“万佛之王”的身份标识。<br>
+                • <b>视觉调性：</b>都要求使用金光质感、古寺建筑及佛牌特写，营造神圣感。
+            </div>
+        </div>
+        <div class="sum-box" style="border-color:var(--pur)">
+            <div class="m-title" style="color:var(--pur)">● 不同点 (Differences)</div>
+            <div style="font-size:9pt;color:var(--dim)">
+                • <b>叙事结构：</b>原始版采用线性时间轴（出生->出家->神迹）；改写版采用“收放”节奏矩阵。<br>
+                • <b>切入视角：</b>原始版是“科普者”视角，侧重事实；改写版是“博弈者”视角，侧重“同频”的心理连接。<br>
+                • <b>结尾导向：</b>原始版侧重“拨动心弦”的感性结尾；改写版将其升华为“认知锁死”，强调缘分的选择性。
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-box">
+        <div class="chart-title">
+            <span>情绪波动曲线：线性叙事 vs 节奏收放</span>
+            <div class="legend">
+                <div class="legend-item"><div style="width:12px;height:2px;background:var(--dim)"></div>原始视频 (Linear)</div>
+                <div class="legend-item"><div style="width:12px;height:2px;background:var(--gold)"></div>改写剧本 (Aurora V40)</div>
+            </div>
+        </div>
+        <div class="svg-container">
+            <svg viewBox="0 0 1000 180" preserveAspectRatio="none" style="width:100%;height:100%">
+                <line x1="0" y1="150" x2="1000" y2="150" stroke="var(--border)" />
+                <line x1="0" y1="10" x2="1000" y2="10" stroke="var(--border)" stroke-dasharray="5,5" />
+                
+                <path d="M0,140 C100,130 200,120 300,110 S400,90 500,80 S700,60 850,50 S950,40 1000,45" 
+                      fill="none" stroke="var(--dim)" stroke-width="2" stroke-dasharray="4,2" />
+                
+                <path d="M0,120 L150,40 L300,120 L450,40 L600,120 L750,10 L900,100 L1000,110" 
+                      fill="none" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" />
+                
+                <circle cx="150" cy="40" r="4" fill="var(--gold-l)" />
+                <text x="150" y="30" fill="var(--gold-l)" font-size="10" text-anchor="middle">钩子：万佛之王</text>
+                
+                <circle cx="750" cy="10" r="5" fill="var(--red)" />
+                <text x="750" y="35" fill="var(--red)" font-size="12" font-weight="bold" text-anchor="middle">巅峰神迹</text>
+                
+                <text x="950" y="140" fill="var(--cyan)" font-size="10" text-anchor="middle">同频闭环</text>
+            </svg>
+        </div>
+        <p style="font-size:7pt;color:var(--dim);margin-top:10px">注：改写剧本通过“收（沉淀）”与“放（爆发）”的剧烈切换，强制抓取注意力并制造情感波峰。</p>
+    </div>
+
+    <div class="matrix">
+        <div class="m-item pro">
+            <div class="m-title">原始版 - 优点</div>
+            • <b>信任基石：</b>事实详尽，适合建立基础信任感。<br>
+            • <b>受众广泛：</b>传统纪录片风格，对高龄受众极其友好。
+        </div>
+        <div class="m-item con">
+            <div class="m-title">原始版 - 缺点</div>
+            • <b>节奏平板：</b>缺乏短视频爆发点，容易产生审美疲劳。<br>
+            • <b>转化偏软：</b>结尾更像散文，缺乏紧迫感和身份认同。
+        </div>
+        <div class="m-item pro" style="border-color:var(--gold);color:var(--gold)">
+            <div class="m-title">改写版 - 优点</div>
+            • <b>极致钩子：</b>开篇即定义身份，精准筛选高净值人群。<br>
+            • <b>降维打击：</b>不仅讲佛牌，更讲“修行”与“同频”，建立专家人设。
+        </div>
+        <div class="m-item con" style="border-color:var(--pur);color:var(--pur)">
+            <div class="m-title">改写版 - 挑战</div>
+            • <b>制作要求：</b>极度依赖剪辑节奏与音效设计。<br>
+            • <b>门槛略高：</b>对于非追求“精神境界”的泛粉可能产生隔阂。
+        </div>
+    </div>
+
+    <div class="comp-card" style="border-color:var(--gold)">
+        <div class="m-title" style="color:var(--gold-l)">💡 总结：从“卖产品”到“筛人群”</div>
+        <p style="font-size:9pt;line-height:1.6">
+            <b>改写后的核心进化：</b>原始文案是在向观众<b>推介</b>一个跨越五朝的神圣佛牌；而改写后的文案是在<b>代表</b>一种高维的生命状态，寻找那些能够“同频”的灵魂。
+            <br><br>
+            这种改写将商业行为巧妙地转化为了一场<b>精神契合的结缘</b>，极大降低了受众对“广告”的防备心，同时提升了品牌的高级感与不可替代性。
+        </p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风神之子哈努曼 - 文案分析报告</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a0505 0%, #2d1a10 50%, #1a0a05 100%);
+            color: #f5e6d3;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            background: linear-gradient(135deg, #ff6b35, #ffaa00, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #c9a882;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .version-badge {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .version-badge span {
+            display: inline-block;
+            padding: 6px 16px;
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.2), rgba(255, 107, 53, 0.2));
+            border: 1px solid rgba(255, 170, 0, 0.5);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #ffaa00;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(45, 26, 16, 0.9), rgba(26, 10, 5, 0.95));
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 170, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: #ff6b35;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, #ff6b35, #ffaa00);
+            border-radius: 2px;
+        }
+
+        .svg-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .svg-container svg {
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* 时间轴 */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #ff6b35, #ffaa00, #ff6b35);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 14px;
+            background: rgba(255, 107, 53, 0.08);
+            border-radius: 12px;
+            border-left: 3px solid #ff6b35;
+        }
+
+        .timeline-item.highlight {
+            background: rgba(255, 170, 0, 0.15);
+            border-left-color: #ffaa00;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 18px;
+            width: 12px;
+            height: 12px;
+            background: #ff6b35;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+
+        .timeline-item.highlight::before {
+            background: #ffaa00;
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.7);
+        }
+
+        .timeline-time {
+            font-size: 0.85rem;
+            color: #ffaa00;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .timeline-title {
+            font-size: 1.05rem;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .timeline-content {
+            color: #c9a882;
+            font-size: 0.9rem;
+        }
+
+        .timeline-rhythm {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 2px 10px;
+            background: rgba(255, 170, 0, 0.2);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: #ffaa00;
+        }
+
+        /* 标签 */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 107, 53, 0.2);
+            border: 1px solid rgba(255, 107, 53, 0.4);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #ffaa00;
+            margin: 4px;
+        }
+
+        .tag.highlight {
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.3), rgba(255, 107, 53, 0.3));
+            border-color: #ffaa00;
+            color: #fff;
+        }
+
+        /* 特色格子 */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .feature-item {
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-label {
+            color: #c9a882;
+            font-size: 0.85rem;
+        }
+
+        .feature-value {
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* 引用 */
+        .quote {
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.15), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid #ffaa00;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: #f5e6d3;
+        }
+
+        .quote.golden {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.15));
+            border-left-color: gold;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        /* 表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .comparison-table th {
+            color: #ffaa00;
+            font-weight: 600;
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        /* 金句卡片 */
+        .golden-card {
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.1), rgba(255, 170, 0, 0.05));
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .golden-card .line {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .golden-card .analysis {
+            color: #c9a882;
+            font-size: 0.95rem;
+        }
+
+        /* 对比块 */
+        .vs-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 16px;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .vs-box {
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .vs-box.new {
+            background: rgba(255, 170, 0, 0.15);
+            border: 1px solid rgba(255, 170, 0, 0.4);
+        }
+
+        .vs-divider {
+            font-size: 1.5rem;
+            color: #ff6b35;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .timeline {
+                padding-left: 24px;
+            }
+
+            .vs-container {
+                grid-template-columns: 1fr;
+            }
+
+            .vs-divider {
+                transform: rotate(90deg);
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>风神之子哈努曼</h1>
+        <p class="subtitle">改写文案结构分析报告</p>
+        <div class="version-badge">
+            <span>V2 用户修改版 · 故事型叙事</span>
+        </div>
+
+        <!-- 视频概览 -->
+        <div class="card">
+            <h2 class="card-title">文案概览</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🎬</div>
+                    <div class="feature-label">视频时长</div>
+                    <div class="feature-value">75秒</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📖</div>
+                    <div class="feature-label">叙事类型</div>
+                    <div class="feature-value">故事型</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💛</div>
+                    <div class="feature-label">情感核心</div>
+                    <div class="feature-value">父子情</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔥</div>
+                    <div class="feature-label">结尾风格</div>
+                    <div class="feature-value">燃感收尾</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 情绪曲线 -->
+        <div class="card">
+            <h2 class="card-title">情绪曲线</h2>
+            <div class="svg-container">
+                <svg viewBox="0 0 800 320" width="100%" style="max-width: 800px;">
+                    <defs>
+                        <linearGradient id="curveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#ff6b35"/>
+                            <stop offset="40%" style="stop-color:#ffaa00"/>
+                            <stop offset="70%" style="stop-color:#ffd700"/>
+                            <stop offset="100%" style="stop-color:#ff6b35"/>
+                        </linearGradient>
+                        <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ffaa00;stop-opacity:0.4"/>
+                            <stop offset="100%" style="stop-color:#ffaa00;stop-opacity:0"/>
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- 背景网格 -->
+                    <g stroke="rgba(255,170,0,0.1)" stroke-width="1">
+                        <line x1="50" y1="50" x2="750" y2="50"/>
+                        <line x1="50" y1="100" x2="750" y2="100"/>
+                        <line x1="50" y1="150" x2="750" y2="150"/>
+                        <line x1="50" y1="200" x2="750" y2="200"/>
+                        <line x1="50" y1="250" x2="750" y2="250"/>
+                    </g>
+
+                    <!-- 阶段分隔 -->
+                    <g stroke="rgba(255,170,0,0.2)" stroke-width="1" stroke-dasharray="5,5">
+                        <line x1="200" y1="50" x2="200" y2="250"/>
+                        <line x1="320" y1="50" x2="320" y2="250"/>
+                        <line x1="450" y1="50" x2="450" y2="250"/>
+                        <line x1="560" y1="50" x2="560" y2="250"/>
+                        <line x1="650" y1="50" x2="650" y2="250"/>
+                    </g>
+
+                    <!-- 阶段标签 -->
+                    <g font-size="10" fill="#c9a882" text-anchor="middle">
+                        <text x="125" y="40">英雄铺垫</text>
+                        <text x="260" y="40">少年转折</text>
+                        <text x="385" y="40">追日高潮</text>
+                        <text x="505" y="40">父爱爆发</text>
+                        <text x="605" y="40">沉淀</text>
+                        <text x="700" y="40">燃尾</text>
+                    </g>
+
+                    <!-- 区域填充 -->
+                    <path d="M50,200 Q100,180 150,150 Q200,120 250,180 Q300,200 350,160 Q400,80 450,60 Q500,100 530,180 Q560,100 590,50 Q620,80 650,130 Q680,160 720,100 Q740,80 750,100 L750,250 L50,250 Z"
+                          fill="url(#areaGradient)"/>
+
+                    <!-- 主曲线 -->
+                    <path d="M50,200 Q100,180 150,150 Q200,120 250,180 Q300,200 350,160 Q400,80 450,60 Q500,100 530,180 Q560,100 590,50 Q620,80 650,130 Q680,160 720,100 Q740,80 750,100"
+                          stroke="url(#curveGradient)" stroke-width="4" fill="none" filter="url(#glow)"/>
+
+                    <!-- 关键节点 -->
+                    <g>
+                        <circle cx="50" cy="200" r="6" fill="#ff6b35"/>
+                        <circle cx="150" cy="150" r="6" fill="#ff6b35"/>
+                        <circle cx="250" cy="180" r="7" fill="#ffaa00"/>
+                        <circle cx="350" cy="160" r="6" fill="#ffaa00"/>
+                        <circle cx="450" cy="60" r="9" fill="#ffd700" filter="url(#glow)"/>
+                        <circle cx="530" cy="180" r="6" fill="#ff6b35"/>
+                        <circle cx="590" cy="50" r="10" fill="#ffd700" filter="url(#glow)"/>
+                        <circle cx="650" cy="130" r="7" fill="#ffaa00"/>
+                        <circle cx="750" cy="100" r="8" fill="#ff6b35"/>
+                    </g>
+
+                    <!-- 节点标签 -->
+                    <g font-size="11" fill="#f5e6d3">
+                        <text x="50" y="220" text-anchor="middle">开场</text>
+                        <text x="150" y="175" text-anchor="middle">事迹</text>
+                        <text x="250" y="205" text-anchor="middle">少年</text>
+                        <text x="350" y="185" text-anchor="middle">望日</text>
+                        <text x="450" y="85" text-anchor="middle" font-weight="bold" fill="#ffd700">追日</text>
+                        <text x="530" y="205" text-anchor="middle">雷击</text>
+                        <text x="590" y="75" text-anchor="middle" font-weight="bold" fill="#ffd700">父爱金句</text>
+                        <text x="650" y="155" text-anchor="middle">心气</text>
+                        <text x="750" y="125" text-anchor="middle">鲜衣怒马</text>
+                    </g>
+
+                    <!-- 时间轴 -->
+                    <line x1="50" y1="270" x2="750" y2="270" stroke="#ff6b35" stroke-width="2"/>
+                    <g font-size="10" fill="#ffaa00">
+                        <text x="50" y="290" text-anchor="middle">0:00</text>
+                        <text x="200" y="290" text-anchor="middle">0:20</text>
+                        <text x="320" y="290" text-anchor="middle">0:32</text>
+                        <text x="450" y="290" text-anchor="middle">0:46</text>
+                        <text x="560" y="290" text-anchor="middle">0:58</text>
+                        <text x="650" y="290" text-anchor="middle">1:08</text>
+                        <text x="750" y="290" text-anchor="middle">1:17</text>
+                    </g>
+
+                    <!-- 收放标记 -->
+                    <g font-size="9" fill="#c9a882">
+                        <text x="100" y="305" text-anchor="middle">放</text>
+                        <text x="175" y="305" text-anchor="middle">放</text>
+                        <text x="260" y="305" text-anchor="middle">收</text>
+                        <text x="340" y="305" text-anchor="middle">收</text>
+                        <text x="400" y="305" text-anchor="middle">放</text>
+                        <text x="480" y="305" text-anchor="middle">放</text>
+                        <text x="540" y="305" text-anchor="middle">收</text>
+                        <text x="590" y="305" text-anchor="middle">放→收</text>
+                        <text x="680" y="305" text-anchor="middle">收</text>
+                        <text x="740" y="305" text-anchor="middle">放</text>
+                    </g>
+                </svg>
+            </div>
+            <p style="text-align: center; color: #c9a882; font-size: 0.9rem; margin-top: 10px;">
+                双峰结构：「追日飞天」视觉高潮 + 「我的孩子若不自由」情感高潮
+            </p>
+        </div>
+
+        <!-- 叙事结构 -->
+        <div class="card">
+            <h2 class="card-title">叙事结构分析</h2>
+            <div class="svg-container">
+                <svg viewBox="0 0 700 280" width="100%" style="max-width: 700px;">
+                    <!-- 起承转合框架 -->
+                    <g font-size="14" font-weight="bold">
+                        <rect x="30" y="30" width="140" height="60" rx="8" fill="rgba(255,107,53,0.2)" stroke="#ff6b35"/>
+                        <text x="100" y="55" text-anchor="middle" fill="#ff6b35">起</text>
+                        <text x="100" y="75" text-anchor="middle" fill="#c9a882" font-size="11" font-weight="normal">头衔钩子 + 定调</text>
+
+                        <rect x="190" y="30" width="140" height="60" rx="8" fill="rgba(255,170,0,0.2)" stroke="#ffaa00"/>
+                        <text x="260" y="55" text-anchor="middle" fill="#ffaa00">承</text>
+                        <text x="260" y="75" text-anchor="middle" fill="#c9a882" font-size="11" font-weight="normal">英雄事迹 → 少年转折</text>
+
+                        <rect x="350" y="30" width="140" height="60" rx="8" fill="rgba(255,215,0,0.2)" stroke="#ffd700"/>
+                        <text x="420" y="55" text-anchor="middle" fill="#ffd700">转</text>
+                        <text x="420" y="75" text-anchor="middle" fill="#c9a882" font-size="11" font-weight="normal">追日 → 父爱爆发</text>
+
+                        <rect x="510" y="30" width="140" height="60" rx="8" fill="rgba(255,107,53,0.2)" stroke="#ff6b35"/>
+                        <text x="580" y="55" text-anchor="middle" fill="#ff6b35">合</text>
+                        <text x="580" y="75" text-anchor="middle" fill="#c9a882" font-size="11" font-weight="normal">心气 + 鲜衣怒马</text>
+                    </g>
+
+                    <!-- 连接箭头 -->
+                    <g stroke="#ffaa00" stroke-width="2" fill="none">
+                        <path d="M170,60 L190,60" marker-end="url(#arrow)"/>
+                        <path d="M330,60 L350,60" marker-end="url(#arrow)"/>
+                        <path d="M490,60 L510,60" marker-end="url(#arrow)"/>
+                    </g>
+
+                    <!-- 情感线 -->
+                    <text x="30" y="130" fill="#c9a882" font-size="12">情感线</text>
+                    <g transform="translate(100, 120)">
+                        <rect x="0" y="0" width="80" height="30" rx="4" fill="rgba(255,107,53,0.3)"/>
+                        <text x="40" y="20" text-anchor="middle" fill="#fff" font-size="11">悬念</text>
+
+                        <rect x="100" y="0" width="80" height="30" rx="4" fill="rgba(255,170,0,0.3)"/>
+                        <text x="140" y="20" text-anchor="middle" fill="#fff" font-size="11">温暖</text>
+
+                        <rect x="200" y="0" width="80" height="30" rx="4" fill="rgba(255,215,0,0.4)"/>
+                        <text x="240" y="20" text-anchor="middle" fill="#fff" font-size="11">震撼</text>
+
+                        <rect x="300" y="0" width="80" height="30" rx="4" fill="rgba(255,107,53,0.3)"/>
+                        <text x="340" y="20" text-anchor="middle" fill="#fff" font-size="11">感动</text>
+
+                        <rect x="400" y="0" width="80" height="30" rx="4" fill="rgba(255,107,53,0.4)"/>
+                        <text x="440" y="20" text-anchor="middle" fill="#fff" font-size="11">热血</text>
+                    </g>
+
+                    <!-- 视角线 -->
+                    <text x="30" y="190" fill="#c9a882" font-size="12">视角线</text>
+                    <g transform="translate(100, 180)">
+                        <rect x="0" y="0" width="120" height="30" rx="4" fill="rgba(255,107,53,0.2)" stroke="#ff6b35" stroke-dasharray="3,3"/>
+                        <text x="60" y="20" text-anchor="middle" fill="#c9a882" font-size="11">旁观者讲述</text>
+
+                        <rect x="140" y="0" width="180" height="30" rx="4" fill="rgba(255,170,0,0.2)" stroke="#ffaa00"/>
+                        <text x="230" y="20" text-anchor="middle" fill="#c9a882" font-size="11">少年哈努曼视角</text>
+
+                        <rect x="340" y="0" width="100" height="30" rx="4" fill="rgba(255,215,0,0.3)" stroke="#ffd700"/>
+                        <text x="390" y="20" text-anchor="middle" fill="#c9a882" font-size="11">风神视角</text>
+
+                        <rect x="460" y="0" width="80" height="30" rx="4" fill="rgba(255,107,53,0.2)" stroke="#ff6b35" stroke-dasharray="3,3"/>
+                        <text x="500" y="20" text-anchor="middle" fill="#c9a882" font-size="11">升华</text>
+                    </g>
+
+                    <!-- 关键转折点标记 -->
+                    <g>
+                        <circle cx="230" cy="230" r="20" fill="rgba(255,170,0,0.3)" stroke="#ffaa00"/>
+                        <text x="230" y="235" text-anchor="middle" fill="#fff" font-size="10">转折1</text>
+                        <text x="230" y="260" text-anchor="middle" fill="#c9a882" font-size="9">"闯祸少年"</text>
+                    </g>
+                    <g>
+                        <circle cx="420" cy="230" r="20" fill="rgba(255,215,0,0.4)" stroke="#ffd700"/>
+                        <text x="420" y="235" text-anchor="middle" fill="#fff" font-size="10">转折2</text>
+                        <text x="420" y="260" text-anchor="middle" fill="#c9a882" font-size="9">"父亲看见"</text>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 核心金句 -->
+        <div class="card">
+            <h2 class="card-title">核心金句</h2>
+
+            <div class="golden-card">
+                <div class="line">「我的孩子若不自由，<br>这世界便不再需要呼吸！」</div>
+                <div class="analysis">
+                    风神掌管「风」与「呼吸」—— 这不是求情，是以神格威胁众神<br>
+                    父爱的最高形式：为孩子赌上整个世界
+                </div>
+            </div>
+
+            <div class="golden-card" style="border-color: rgba(255, 170, 0, 0.4);">
+                <div class="line" style="font-size: 1.1rem;">「那不是奖赏，而是父亲的爱与包容，<br>为他挣来的一份底气。」</div>
+                <div class="analysis">
+                    不死之身的本质：不是天赐，是父爱争来的
+                </div>
+            </div>
+
+            <div class="golden-card" style="border-color: rgba(255, 107, 53, 0.4);">
+                <div class="line" style="font-size: 1.1rem;">「也是他永不凋谢的少年心气。」</div>
+                <div class="analysis">
+                    不死的不只是肉身，更是敢于追逐太阳的心
+                </div>
+            </div>
+        </div>
+
+        <!-- 时间轴脚本 -->
+        <div class="card">
+            <h2 class="card-title">时间轴脚本</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-time">00:00 - 00:06</div>
+                    <div class="timeline-title">头衔堆叠钩子</div>
+                    <div class="timeline-content">风神之子，猴面人身，力敌众神的不死战神。他是谁？</div>
+                    <span class="timeline-rhythm">【放】悬念开场</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">00:06 - 00:20</div>
+                    <div class="timeline-title">英雄事迹速写</div>
+                    <div class="timeline-content">腾云驾雾取灵草，只身入魔窟救希多 —— 快速建立英雄形象</div>
+                    <span class="timeline-rhythm">【放】信息密集</span>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">00:20 - 00:25</div>
+                    <div class="timeline-title">第一次转折</div>
+                    <div class="timeline-content">「但在这些战功之前，他也只是一个闯祸不断的少年」</div>
+                    <span class="timeline-rhythm">【收】语气变柔</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">00:25 - 00:32</div>
+                    <div class="timeline-title">童年望日</div>
+                    <div class="timeline-content">年幼的哈努曼看见金光，以为是果子 —— 童真视角</div>
+                    <span class="timeline-rhythm">【收】画面暖色</span>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">00:32 - 00:46</div>
+                    <div class="timeline-title">视觉高潮：追日</div>
+                    <div class="timeline-content">纵身一跃想把太阳吃掉，太阳躲藏，因陀罗雷击</div>
+                    <span class="timeline-rhythm">【放】BGM扬起</span>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">00:46 - 00:50</div>
+                    <div class="timeline-title">第二次转折</div>
+                    <div class="timeline-content">「但他的父亲——风神，看见了这一切」</div>
+                    <span class="timeline-rhythm">【收】蓄力停顿</span>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">00:50 - 01:02</div>
+                    <div class="timeline-title">情感高潮：父爱</div>
+                    <div class="timeline-content">「我的孩子若不自由，这世界便不再需要呼吸！」</div>
+                    <span class="timeline-rhythm">【放→收】核心金句</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">01:02 - 01:12</div>
+                    <div class="timeline-title">意义升华</div>
+                    <div class="timeline-content">不是奖赏，是底气；永不凋谢的少年心气</div>
+                    <span class="timeline-rhythm">【收】诗意沉淀</span>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">01:12 - 01:17</div>
+                    <div class="timeline-title">燃感收尾</div>
+                    <div class="timeline-content">「从此，哈努曼鲜衣怒马，除恶扬善、战无不胜」</div>
+                    <span class="timeline-rhythm">【放】英雄出发</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 风格技巧 -->
+        <div class="card">
+            <h2 class="card-title">写作技巧提炼</h2>
+            <table class="comparison-table">
+                <tr>
+                    <th>技巧</th>
+                    <th>文案示范</th>
+                    <th>效果</th>
+                </tr>
+                <tr>
+                    <td>先降格再升格</td>
+                    <td>"闯祸不断的少年"</td>
+                    <td>英雄也有莽撞时，拉近距离</td>
+                </tr>
+                <tr>
+                    <td>动词见性格</td>
+                    <td>"吃掉"而非"摘下来"</td>
+                    <td>更孩子气，更可爱</td>
+                </tr>
+                <tr>
+                    <td>轻描淡写</td>
+                    <td>"算是给他一点教训"</td>
+                    <td>四两拨千斤的幽默</td>
+                </tr>
+                <tr>
+                    <td>神格与情感统一</td>
+                    <td>风神以「呼吸」威胁</td>
+                    <td>神话逻辑自洽</td>
+                </tr>
+                <tr>
+                    <td>落点在精神</td>
+                    <td>"永不凋谢的少年心气"</td>
+                    <td>不死的是心，不只是身</td>
+                </tr>
+                <tr>
+                    <td>燃感结尾</td>
+                    <td>"鲜衣怒马"</td>
+                    <td>英雄出发式，比哲思更有力</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 版本对比 -->
+        <div class="card">
+            <h2 class="card-title">版本演进对比</h2>
+
+            <div class="vs-container">
+                <div class="vs-box">
+                    <div style="color: #ff6b35; font-weight: bold; margin-bottom: 8px;">原视频（百科型）</div>
+                    <div style="color: #c9a882; font-size: 0.9rem;">线性铺陈所有事迹<br>知识驱动，无情感线</div>
+                </div>
+                <div class="vs-divider">→</div>
+                <div class="vs-box">
+                    <div style="color: #ffaa00; font-weight: bold; margin-bottom: 8px;">V1 改写（故事型）</div>
+                    <div style="color: #c9a882; font-size: 0.9rem;">聚焦追日传说<br>哲思式结尾</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 16px 0;">
+                <span style="font-size: 2rem; color: #ffaa00;">↓</span>
+            </div>
+
+            <div class="vs-box new" style="max-width: 400px; margin: 0 auto;">
+                <div style="color: #ffd700; font-weight: bold; margin-bottom: 8px;">V2 用户修改版</div>
+                <div style="color: #f5e6d3; font-size: 0.95rem;">
+                    ✓ 父爱具象化（风神以呼吸威胁）<br>
+                    ✓ 轻描淡写的幽默感<br>
+                    ✓ 落点在「心气」而非「不死」<br>
+                    ✓ 鲜衣怒马式燃感收尾
+                </div>
+            </div>
+
+            <table class="comparison-table" style="margin-top: 24px;">
+                <tr>
+                    <th>维度</th>
+                    <th>V1</th>
+                    <th>V2（用户版）</th>
+                </tr>
+                <tr>
+                    <td>父亲表达</td>
+                    <td>"不是求情，是质问"</td>
+                    <td>"我的孩子若不自由，这世界便不再需要呼吸"</td>
+                </tr>
+                <tr>
+                    <td>结尾落点</td>
+                    <td>"追逐太阳的孩子"（隐喻）</td>
+                    <td>"鲜衣怒马，战无不胜"（燃感）</td>
+                </tr>
+                <tr>
+                    <td>不死的本质</td>
+                    <td>"再也不会坠落"</td>
+                    <td>"永不凋谢的少年心气"</td>
+                </tr>
+                <tr>
+                    <td>语言风格</td>
+                    <td>诗意克制</td>
+                    <td>诗意 + 轻幽默 + 燃</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 受众分析 -->
+        <div class="card">
+            <h2 class="card-title">目标受众</h2>
+            <div class="svg-container">
+                <svg viewBox="0 0 500 280" width="100%" style="max-width: 500px;">
+                    <!-- 饼图 -->
+                    <g transform="translate(140, 140)">
+                        <!-- 泰佛爱好者 30% -->
+                        <path d="M0,0 L0,-100 A100,100 0 0,1 59,81 Z" fill="#ff6b35"/>
+                        <!-- 父母/家庭 25% -->
+                        <path d="M0,0 L59,81 A100,100 0 0,1 -81,59 Z" fill="#ffd700"/>
+                        <!-- 年轻人 25% -->
+                        <path d="M0,0 L-81,59 A100,100 0 0,1 -59,-81 Z" fill="#ffaa00"/>
+                        <!-- 神话爱好者 20% -->
+                        <path d="M0,0 L-59,-81 A100,100 0 0,1 0,-100 Z" fill="#c9a882"/>
+                    </g>
+
+                    <!-- 图例 -->
+                    <g transform="translate(290, 70)">
+                        <rect x="0" y="0" width="16" height="16" fill="#ff6b35" rx="3"/>
+                        <text x="24" y="13" fill="#f5e6d3" font-size="12">佛牌收藏者 30%</text>
+
+                        <rect x="0" y="30" width="16" height="16" fill="#ffd700" rx="3"/>
+                        <text x="24" y="43" fill="#f5e6d3" font-size="12">父母/重视亲情 25%</text>
+
+                        <rect x="0" y="60" width="16" height="16" fill="#ffaa00" rx="3"/>
+                        <text x="24" y="73" fill="#f5e6d3" font-size="12">追梦年轻人 25%</text>
+
+                        <rect x="0" y="90" width="16" height="16" fill="#c9a882" rx="3"/>
+                        <text x="24" y="103" fill="#f5e6d3" font-size="12">神话爱好者 20%</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="quote">
+                V2版本新增受众：<strong>重视亲子关系的父母</strong> + <strong>有追梦经历的年轻人</strong><br>
+                「少年心气」「鲜衣怒马」激发年轻群体共鸣
+            </div>
+        </div>
+
+        <!-- 关键词 -->
+        <div class="card">
+            <h2 class="card-title">关键词标签</h2>
+            <div style="text-align: center; padding: 10px 0;">
+                <span class="tag highlight">哈努曼</span>
+                <span class="tag highlight">风神之子</span>
+                <span class="tag highlight">父爱</span>
+                <span class="tag">印度战神</span>
+                <span class="tag">罗摩衍那</span>
+                <span class="tag highlight">少年心气</span>
+                <span class="tag">追日传说</span>
+                <span class="tag highlight">不死之身</span>
+                <span class="tag">鲜衣怒马</span>
+                <span class="tag">泰国佛牌</span>
+            </div>
+        </div>
+
+        <p style="text-align: center; color: #666; font-size: 0.85rem; margin-top: 30px;">
+            分析报告生成于 2026-01-08 · V2 用户修改版
+        </p>
+    </div>
+</body>
+</html>

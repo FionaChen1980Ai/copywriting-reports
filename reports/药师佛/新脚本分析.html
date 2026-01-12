@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>剧作分析 - 药师佛新创文案</title>
+<style>
+    :root {
+        --bg: #0b0d10;
+        --card: #15181e;
+        --line: rgba(255,255,255,0.1);
+        --l1: #1e3a8a;
+        --l2: #10b981;
+        --l3: #fbbf24;
+        --red: #ef4444;
+        --txt: #e5e7eb;
+        --dim: #9ca3af;
+        --accent: #8b5cf6;
+        --blue: #3b82f6;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:0; background:var(--bg); font-family:'Microsoft YaHei', 'PingFang SC', sans-serif; color:var(--txt); }
+
+    .sheet {
+        max-width: 1200px;
+        padding: 30px;
+        margin: 0 auto;
+    }
+
+    .head {
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+    .head h1 {
+        margin: 0 0 8px 0;
+        font-size: 24pt;
+        font-weight: 300;
+        background: linear-gradient(135deg, #10b981, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .head .meta { display: flex; gap: 20px; color: var(--dim); font-size: 10pt; }
+    .head .tag { font-family: monospace; color: var(--l2); font-size: 9pt; }
+
+    .section { margin-bottom: 30px; }
+    .section h2 {
+        font-size: 14pt;
+        font-weight: 500;
+        margin: 0 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--line);
+        color: var(--l2);
+    }
+
+    /* 评分卡 */
+    .score-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin: 15px 0;
+    }
+    .score-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+    }
+    .score-card .num {
+        font-size: 32pt;
+        font-weight: bold;
+        background: linear-gradient(135deg, #10b981, #34d399);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .score-card .label {
+        font-size: 10pt;
+        color: var(--dim);
+        margin-top: 5px;
+    }
+
+    /* 结构表格 */
+    .struct-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10pt;
+    }
+    .struct-table th {
+        background: rgba(16, 185, 129, 0.15);
+        padding: 12px;
+        text-align: left;
+        font-weight: 500;
+    }
+    .struct-table td {
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+    }
+    .struct-table tr:hover { background: rgba(255,255,255,0.02); }
+    .time-tag {
+        background: var(--l2);
+        color: #000;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 9pt;
+        white-space: nowrap;
+    }
+    .tech-tag {
+        background: var(--accent);
+        color: #fff;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 8pt;
+        margin-right: 5px;
+    }
+
+    /* SVG 可视化区 */
+    .viz {
+        background: var(--card);
+        border-radius: 12px;
+        height: 280px;
+        padding: 10px 0;
+        position: relative;
+        border: 1px solid var(--line);
+        overflow: hidden;
+        margin: 15px 0;
+    }
+
+    .legend {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        display: flex;
+        gap: 15px;
+        font-size: 8pt;
+        color: var(--dim);
+        z-index: 10;
+    }
+    .key { display: flex; align-items: center; gap: 4px; }
+    .bar { width: 12px; height: 3px; border-radius: 2px; }
+
+    /* 矩阵区 */
+    .mat {
+        display: grid;
+        grid-template-columns: 50px repeat(3, 1fr);
+        grid-template-rows: 30px repeat(4, 1fr);
+        gap: 4px;
+        margin-top: 15px;
+    }
+
+    .th {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9pt;
+        font-weight: bold;
+        color: var(--dim);
+        background: rgba(255,255,255,0.03);
+        border-radius: 4px;
+    }
+    .th-t { font-family: monospace; color: #60a5fa; }
+
+    .td {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+    }
+    .td::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+    }
+    .row-qi .td::before { background: #34d399; }
+    .row-cheng .td::before { background: #60a5fa; }
+    .row-zhuan .td::before { background: #fbbf24; }
+    .row-he .td::before { background: #a78bfa; }
+
+    .td-b { font-size: 9pt; line-height: 1.5; }
+    .td-f { font-size: 8pt; color: var(--dim); margin-top: 8px; display: flex; align-items: center; gap: 3px; }
+
+    .hl-green { border: 1px solid var(--l2) !important; background: rgba(16, 185, 129, 0.08) !important; }
+    .bdg { background: var(--l2); color: #000; padding: 1px 4px; border-radius: 2px; font-size: 7pt; font-weight: bold; }
+
+    /* 亮点列表 */
+    .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .list-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .list-card h3 {
+        font-size: 12pt;
+        margin: 0 0 15px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .list-card ul {
+        margin: 0;
+        padding-left: 20px;
+        font-size: 10pt;
+        line-height: 1.9;
+    }
+    .list-card.good h3 { color: var(--l2); }
+    .list-card.improve h3 { color: var(--l3); }
+
+    .quote-box {
+        background: rgba(16, 185, 129, 0.1);
+        border-left: 3px solid var(--l2);
+        padding: 12px 15px;
+        margin: 10px 0;
+        font-size: 10pt;
+        line-height: 1.6;
+    }
+
+    .foot { font-size: 8pt; color: var(--dim); text-align: right; margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--line); }
+
+    @media (max-width: 900px) {
+        .sheet { padding: 15px; }
+        .score-grid { grid-template-columns: repeat(2, 1fr); }
+        .two-col { grid-template-columns: 1fr; }
+        .mat { grid-template-columns: 40px repeat(3, 1fr); font-size: 8pt; }
+    }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+    <div class="head">
+        <h1>药师佛 - 新创文案剧作分析</h1>
+        <div class="meta">
+            <span>版本：用户修订版</span>
+            <span>时长：约79秒</span>
+            <span>类型：佛教文化科普</span>
+        </div>
+        <div class="tag">MODE: 3-LAYER SEPARATION | NEW SCRIPT ANALYSIS</div>
+    </div>
+
+    <!-- 评分概览 -->
+    <div class="section">
+        <h2>整体评分</h2>
+        <div class="score-grid">
+            <div class="score-card">
+                <div class="num">7.5</div>
+                <div class="label">钩子吸引力</div>
+            </div>
+            <div class="score-card">
+                <div class="num">9.0</div>
+                <div class="label">内容完整度</div>
+            </div>
+            <div class="score-card">
+                <div class="num">7.5</div>
+                <div class="label">情绪张力</div>
+            </div>
+            <div class="score-card">
+                <div class="num">8.0</div>
+                <div class="label">文学质感</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结构拆解 -->
+    <div class="section">
+        <h2>整体结构拆解</h2>
+        <table class="struct-table">
+            <tr>
+                <th style="width:15%">部分</th>
+                <th style="width:12%">时间</th>
+                <th style="width:10%">占比</th>
+                <th style="width:33%">内容概述</th>
+                <th style="width:30%">技巧分析</th>
+            </tr>
+            <tr>
+                <td><strong>开场钩子</strong></td>
+                <td><span class="time-tag">00:00-00:12</span></td>
+                <td>15%</td>
+                <td>时空深处 → 琉璃蓝 → 东方大医王 → 治愈与修护</td>
+                <td>
+                    <span class="tech-tag">视觉意象</span>
+                    <span class="tech-tag">称号升级</span>
+                    「琉璃蓝」具象化，「大医王」强化身份
+                </td>
+            </tr>
+            <tr>
+                <td><strong>人物介绍</strong></td>
+                <td><span class="time-tag">00:12-00:28</span></td>
+                <td>20%</td>
+                <td>药师佛 + 左手药钵（双重修复）+ 右手诃子（根除病因）</td>
+                <td>
+                    <span class="tech-tag">法器双呈</span>
+                    <span class="tech-tag">对仗句式</span>
+                    完整呈现两手法器及寓意
+                </td>
+            </tr>
+            <tr>
+                <td><strong>核心内容</strong></td>
+                <td><span class="time-tag">00:28-00:47</span></td>
+                <td>24%</td>
+                <td>十二誓愿 → 身体+内心双重治愈 → 琉璃光中得安宁</td>
+                <td>
+                    <span class="tech-tag">双轨治愈</span>
+                    明确身心两层面，「肉身沉重」「灵性枯竭」对仗
+                </td>
+            </tr>
+            <tr>
+                <td><strong>现代连接</strong></td>
+                <td><span class="time-tag">00:47-01:09</span></td>
+                <td>28%</td>
+                <td>快节奏时代 → 情绪内耗 → 由内而外的洗礼 → 唤醒自愈</td>
+                <td>
+                    <span class="tech-tag">时代痛点</span>
+                    <span class="tech-tag">深度连接</span>
+                    「情绪内耗」精准触达当代人
+                </td>
+            </tr>
+            <tr>
+                <td><strong>CTA收尾</strong></td>
+                <td><span class="time-tag">01:09-01:19</span></td>
+                <td>13%</td>
+                <td>疲惫孤独时 → 静心称念 → 告别焦虑 → 平安喜乐</td>
+                <td>
+                    <span class="tech-tag">场景触发</span>
+                    <span class="tech-tag">明确引导</span>
+                    「请静心称念」比原版更直接
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 三层可视化 -->
+    <div class="section">
+        <h2>三层情绪曲线</h2>
+        <div class="viz">
+            <div class="legend">
+                <div class="key"><div class="bar" style="background:var(--l1); height:6px; opacity:0.5"></div>L1：宏观主线</div>
+                <div class="key"><div class="bar" style="border-top:2px dashed var(--l2)"></div>L2：中观序列</div>
+                <div class="key"><div class="bar" style="background:var(--l3)"></div>L3：微观心跳</div>
+                <div class="key"><div class="bar" style="background:var(--red); width:6px; height:6px; border-radius:50%"></div>关键点</div>
+            </div>
+
+            <svg class="svg-box" viewBox="0 0 1000 280" preserveAspectRatio="none" style="width:100%; height:100%;">
+                <!-- 网格线 -->
+                <g stroke="rgba(255,255,255,0.05)" stroke-width="1">
+                    <line x1="150" y1="30" x2="150" y2="250"/>
+                    <line x1="350" y1="30" x2="350" y2="250"/>
+                    <line x1="590" y1="30" x2="590" y2="250"/>
+                    <line x1="860" y1="30" x2="860" y2="250"/>
+                </g>
+
+                <!-- 时间标签 -->
+                <text x="40" y="270" fill="var(--dim)" font-size="9">00:00</text>
+                <text x="150" y="270" fill="var(--dim)" font-size="9">00:12</text>
+                <text x="350" y="270" fill="var(--dim)" font-size="9">00:28</text>
+                <text x="590" y="270" fill="var(--dim)" font-size="9">00:47</text>
+                <text x="860" y="270" fill="var(--dim)" font-size="9">01:09</text>
+                <text x="970" y="270" fill="var(--dim)" font-size="9">01:19</text>
+
+                <!-- L1: 宏观主线背景 -->
+                <path d="M40,230 C200,210 400,150 590,100 Q720,120 860,80 Q930,90 1000,100 L1000,260 L40,260 Z"
+                      fill="var(--l1)" opacity="0.15" />
+                <text x="60" y="245" fill="var(--l1)" font-size="9" font-weight="bold">L1: 尘世疮痍</text>
+                <text x="950" y="115" fill="var(--l1)" font-size="9" font-weight="bold" text-anchor="end">L1: 平安喜乐</text>
+
+                <!-- L2: 中观序列 -->
+                <path d="M40,230 Q100,220 150,200 Q250,170 350,130 Q470,90 590,100"
+                      fill="none" stroke="var(--l2)" stroke-width="2" stroke-dasharray="6,4" />
+                <text x="470" y="75" font-size="9" fill="var(--l2)" text-anchor="middle">峰值A：身心双愈</text>
+
+                <path d="M590,100 Q720,130 800,90 Q860,80 1000,100"
+                      fill="none" stroke="var(--l2)" stroke-width="2" stroke-dasharray="6,4" />
+                <text x="860" y="65" font-size="9" fill="var(--l2)" text-anchor="middle">峰值B：唤醒自愈</text>
+
+                <!-- L3: 微观心跳折线 -->
+                <path d="M 40 230 L 80 220 L 120 210 L 150 200 L 200 180 L 250 165 L 300 150 L 350 130 L 400 120 L 450 105 L 500 95 L 550 100 L 590 100 L 640 110 L 700 100 L 750 95 L 800 90 L 860 80 L 920 90 L 960 95 L 1000 100"
+                      fill="none" stroke="var(--l3)" stroke-width="2.5" stroke-linejoin="round"
+                      filter="drop-shadow(0 0 4px rgba(251, 191, 36, 0.5))" />
+
+                <!-- 关键点标记 -->
+                <circle cx="150" cy="200" r="5" fill="var(--l3)" stroke="#fff" stroke-width="1.5"/>
+                <text x="150" y="185" font-size="8" fill="var(--l3)" text-anchor="middle">身份揭示</text>
+
+                <circle cx="280" cy="160" r="5" fill="var(--red)" stroke="#fff" stroke-width="1.5"/>
+                <text x="280" y="145" font-size="8" fill="var(--red)" text-anchor="middle">法器双呈</text>
+
+                <circle cx="500" cy="95" r="6" fill="var(--red)" stroke="#fff" stroke-width="2"/>
+                <text x="500" y="80" font-size="9" fill="var(--red)" text-anchor="middle" font-weight="bold">身心双愈</text>
+
+                <circle cx="720" cy="100" r="5" fill="var(--l3)" stroke="#fff" stroke-width="1.5"/>
+                <text x="720" y="85" font-size="8" fill="var(--l3)" text-anchor="middle">情绪内耗</text>
+
+                <circle cx="860" cy="80" r="6" fill="var(--red)" stroke="#fff" stroke-width="2"/>
+                <text x="860" y="105" font-size="9" fill="var(--red)" text-anchor="middle" font-weight="bold">唤醒自愈</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 起承转合矩阵 -->
+    <div class="section">
+        <h2>起承转合 × LOOP 矩阵</h2>
+        <div class="mat">
+            <!-- 表头行 -->
+            <div class="th">阶段</div>
+            <div class="th th-t">LOOP 1<br><span style="font-size:7pt;color:var(--dim)">世界观建立</span></div>
+            <div class="th th-t">LOOP 2<br><span style="font-size:7pt;color:var(--dim)">愿力展现</span></div>
+            <div class="th th-t">LOOP 3<br><span style="font-size:7pt;color:var(--dim)">现代升华</span></div>
+
+            <!-- 起行 -->
+            <div class="th" style="color:#34d399">起</div>
+            <div class="td row-qi hl-green"><div class="td-b">时空无尽深处，映彻琉璃蓝</div><div class="td-f">▶ <span class="bdg">视觉</span> 意象开场</div></div>
+            <div class="td row-qi"><div class="td-b">药师佛曾立下十二誓愿</div><div class="td-f">▶ 愿力引入</div></div>
+            <div class="td row-qi"><div class="td-b">身处快节奏时代</div><div class="td-f">▶ 时代切换</div></div>
+
+            <!-- 承行 -->
+            <div class="th" style="color:#60a5fa">承</div>
+            <div class="td row-cheng"><div class="td-b">东方大医王的慈悲化现</div><div class="td-f">▶ 称号升级</div></div>
+            <div class="td row-cheng hl-green"><div class="td-b">不仅抚平肉身，更化解内心焦虑</div><div class="td-f">★ <span class="bdg">双轨</span> 身心并重</div></div>
+            <div class="td row-cheng"><div class="td-b">情绪内耗悄悄损耗健康</div><div class="td-f">▶ <span class="bdg">痛点</span> 精准触达</div></div>
+
+            <!-- 转行 -->
+            <div class="th" style="color:#fbbf24">转</div>
+            <div class="td row-zhuan"><div class="td-b">左手药钵、右手诃子</div><div class="td-f">⚡ <span class="bdg">法器</span> 双呈详解</div></div>
+            <div class="td row-zhuan"><div class="td-b">肉身沉重/灵性枯竭，琉璃光中得安宁</div><div class="td-f">⚡ 对仗升华</div></div>
+            <div class="td row-zhuan hl-green"><div class="td-b">由内而外的洗礼，唤醒自愈力量</div><div class="td-f">⚡ <span class="bdg">深度</span> 核心点题</div></div>
+
+            <!-- 合行 -->
+            <div class="th" style="color:#a78bfa">合</div>
+            <div class="td row-he"><div class="td-b">枯木逢春，心灯重燃</div><div class="td-f">★ 意象收束</div></div>
+            <div class="td row-he"><div class="td-b">最彻底的安宁与慰藉</div><div class="td-f">★ 情感落点</div></div>
+            <div class="td row-he"><div class="td-b">静心称念，平安无碍，喜乐安康</div><div class="td-f">★ 祈愿收尾</div></div>
+        </div>
+    </div>
+
+    <!-- 文案亮点 -->
+    <div class="section">
+        <h2>文案亮点分析</h2>
+        <div class="two-col">
+            <div class="list-card good">
+                <h3><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg> 核心亮点</h3>
+                <ul>
+                    <li><strong>视觉意象升级</strong>：「琉璃蓝」比「琉璃净土」更具画面感</li>
+                    <li><strong>称号强化</strong>：「东方大医王」比单纯「觉者」更有力量</li>
+                    <li><strong>法器双呈</strong>：完整介绍药钵+诃子，信息量更丰富</li>
+                    <li><strong>对仗工整</strong>：「枯木逢春，心灯重燃」「肉身沉重，灵性枯竭」</li>
+                    <li><strong>痛点精准</strong>：「情绪内耗」直击当代人心理问题</li>
+                    <li><strong>双轨治愈</strong>：身体+心灵两层面治愈，概念更完整</li>
+                </ul>
+                <div class="quote-box">
+                    「他的存在，是对生命最温柔的托举」<br>
+                    「修复受损的心灵，唤醒自愈的力量」
+                </div>
+            </div>
+            <div class="list-card improve">
+                <h3><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg> 可优化方向</h3>
+                <ul>
+                    <li><strong>开场钩子</strong>：仍以场景铺垫为主，缺乏悬念或痛点切入</li>
+                    <li><strong>节奏变化</strong>：情绪曲线相对平稳，「收-放」对比可加强</li>
+                    <li><strong>口语化程度</strong>：部分句式偏书面，如「慈悲化现」「神识」</li>
+                    <li><strong>CTA门槛</strong>：「请静心称念」较直接，可考虑更轻的邀请</li>
+                </ul>
+                <div class="quote-box" style="border-color: var(--l3); background: rgba(251, 191, 36, 0.1);">
+                    建议：可在开场增加1-2句现代人痛点，再转入「时空深处」的意象
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="foot">Generated by Claude Code // 新创文案分析 // 2026-01-10</div>
+</div>
+
+</body>
+</html>

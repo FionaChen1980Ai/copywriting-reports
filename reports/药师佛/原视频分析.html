@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>剧作分析 - 药师佛原视频</title>
+<style>
+    :root {
+        --bg: #0b0d10;
+        --card: #15181e;
+        --line: rgba(255,255,255,0.1);
+        --l1: #1e3a8a;
+        --l2: #10b981;
+        --l3: #fbbf24;
+        --red: #ef4444;
+        --txt: #e5e7eb;
+        --dim: #9ca3af;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:0; background:var(--bg); font-family:'Microsoft YaHei', 'PingFang SC', sans-serif; color:var(--txt); }
+
+    .sheet {
+        width: 297mm;
+        min-height: 210mm;
+        padding: 10mm;
+        margin: 0 auto;
+    }
+
+    .head {
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    .head h1 { margin: 0 0 5px 0; font-size: 22pt; font-weight: 300; }
+    .head .meta { display: flex; gap: 20px; color: var(--dim); font-size: 10pt; }
+    .head .tag { font-family: monospace; color: var(--l3); font-size: 9pt; }
+
+    .section { margin-bottom: 25px; }
+    .section h2 {
+        font-size: 14pt;
+        font-weight: 500;
+        margin: 0 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--line);
+        color: var(--l3);
+    }
+
+    /* 结构表格 */
+    .struct-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10pt;
+    }
+    .struct-table th {
+        background: rgba(99,102,241,0.15);
+        padding: 10px;
+        text-align: left;
+        font-weight: 500;
+    }
+    .struct-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+    }
+    .struct-table tr:hover { background: rgba(255,255,255,0.02); }
+    .time-tag {
+        background: var(--l1);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 9pt;
+        white-space: nowrap;
+    }
+    .tech-tag {
+        background: var(--red);
+        color: #fff;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 8pt;
+        margin-right: 5px;
+    }
+
+    /* SVG 可视化区 */
+    .viz {
+        background: var(--card);
+        border-radius: 12px;
+        height: 280px;
+        padding: 10px 0;
+        position: relative;
+        border: 1px solid var(--line);
+        overflow: hidden;
+        margin: 15px 0;
+    }
+
+    .legend {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        display: flex;
+        gap: 15px;
+        font-size: 8pt;
+        color: var(--dim);
+        z-index: 10;
+    }
+    .key { display: flex; align-items: center; gap: 4px; }
+    .bar { width: 12px; height: 3px; border-radius: 2px; }
+
+    /* 矩阵区 */
+    .mat {
+        display: grid;
+        grid-template-columns: 50px repeat(3, 1fr);
+        grid-template-rows: 30px repeat(4, 1fr);
+        gap: 4px;
+        margin-top: 15px;
+    }
+
+    .th {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9pt;
+        font-weight: bold;
+        color: var(--dim);
+        background: rgba(255,255,255,0.03);
+        border-radius: 4px;
+    }
+    .th-t { font-family: monospace; color: #60a5fa; }
+
+    .td {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 8px 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+    }
+    .td::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+    }
+    .row-qi .td::before { background: #34d399; }
+    .row-cheng .td::before { background: #60a5fa; }
+    .row-zhuan .td::before { background: #fbbf24; }
+    .row-he .td::before { background: #a78bfa; }
+
+    .td-b { font-size: 9pt; line-height: 1.4; }
+    .td-f { font-size: 8pt; color: var(--dim); margin-top: 6px; display: flex; align-items: center; gap: 3px; }
+
+    .hl-red { border: 1px solid var(--red) !important; background: rgba(239, 68, 68, 0.08) !important; }
+    .bdg { background: var(--red); color: #fff; padding: 1px 4px; border-radius: 2px; font-size: 7pt; font-weight: bold; }
+
+    /* 评分卡 */
+    .score-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin: 15px 0;
+    }
+    .score-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+    }
+    .score-card .num {
+        font-size: 28pt;
+        font-weight: bold;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .score-card .label {
+        font-size: 9pt;
+        color: var(--dim);
+        margin-top: 5px;
+    }
+
+    /* 亮点/问题 */
+    .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .list-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 15px;
+    }
+    .list-card h3 {
+        font-size: 11pt;
+        margin: 0 0 12px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .list-card ul {
+        margin: 0;
+        padding-left: 20px;
+        font-size: 10pt;
+        line-height: 1.8;
+    }
+    .list-card.good h3 { color: var(--l2); }
+    .list-card.bad h3 { color: var(--red); }
+
+    .foot { font-size: 8pt; color: var(--dim); text-align: right; margin-top: 20px; }
+
+    @media (max-width: 1200px) {
+        .sheet { width: 100%; padding: 15px; }
+        .mat { grid-template-columns: 40px repeat(3, 1fr); font-size: 8pt; }
+        .score-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+        .viz { height: 200px; }
+        .two-col { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+    <div class="head">
+        <h1>药师佛 - 原视频剧作分析</h1>
+        <div class="meta">
+            <span>来源：TikTok</span>
+            <span>时长：79秒</span>
+            <span>类型：佛教文化科普</span>
+        </div>
+        <div class="tag">MODE: 3-LAYER SEPARATION | ORIGINAL VIDEO ANALYSIS</div>
+    </div>
+
+    <!-- 评分概览 -->
+    <div class="section">
+        <h2>整体评分</h2>
+        <div class="score-grid">
+            <div class="score-card">
+                <div class="num">6.5</div>
+                <div class="label">钩子吸引力</div>
+            </div>
+            <div class="score-card">
+                <div class="num">8.0</div>
+                <div class="label">内容完整度</div>
+            </div>
+            <div class="score-card">
+                <div class="num">5.5</div>
+                <div class="label">情绪张力</div>
+            </div>
+            <div class="score-card">
+                <div class="num">6.0</div>
+                <div class="label">平台适配度</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结构拆解 -->
+    <div class="section">
+        <h2>整体结构拆解</h2>
+        <table class="struct-table">
+            <tr>
+                <th style="width:15%">部分</th>
+                <th style="width:12%">时间</th>
+                <th style="width:10%">占比</th>
+                <th style="width:35%">内容概述</th>
+                <th style="width:28%">技巧分析</th>
+            </tr>
+            <tr>
+                <td><strong>开场钩子</strong></td>
+                <td><span class="time-tag">00:00-00:12</span></td>
+                <td>15%</td>
+                <td>东方世界 → 琉璃净土 → 慈悲觉者 → 疗愈黑暗</td>
+                <td>
+                    <span class="tech-tag">场景铺垫</span>
+                    画面感强但缺乏悬念/痛点切入
+                </td>
+            </tr>
+            <tr>
+                <td><strong>人物介绍</strong></td>
+                <td><span class="time-tag">00:12-00:28</span></td>
+                <td>20%</td>
+                <td>药师琉璃光如来 + 法器（药钵、法印）+ 光明化身</td>
+                <td>
+                    <span class="tech-tag">信息密度</span>
+                    标准纪录片叙事，庄严但平淡
+                </td>
+            </tr>
+            <tr>
+                <td><strong>核心内容</strong></td>
+                <td><span class="time-tag">00:28-00:52</span></td>
+                <td>30%</td>
+                <td>十二宏愿 → 愿力明灯 → 身心守护</td>
+                <td>
+                    <span class="tech-tag">情感升华</span>
+                    有感染力但节奏单一
+                </td>
+            </tr>
+            <tr>
+                <td><strong>现代连接</strong></td>
+                <td><span class="time-tag">00:52-01:09</span></td>
+                <td>22%</td>
+                <td>现代压力 → 期盼健康 → 慈悲之光 → 驱散迷茫</td>
+                <td>
+                    <span class="tech-tag">共情桥接</span>
+                    尝试关联现代生活，但过于笼统
+                </td>
+            </tr>
+            <tr>
+                <td><strong>收尾CTA</strong></td>
+                <td><span class="time-tag">01:09-01:19</span></td>
+                <td>13%</td>
+                <td>称念名号 → 祈愿众生 → 福慧增长</td>
+                <td>
+                    <span class="tech-tag">祝福式收尾</span>
+                    温和但缺乏行动引导
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 三层可视化 -->
+    <div class="section">
+        <h2>三层情绪曲线</h2>
+        <div class="viz">
+            <div class="legend">
+                <div class="key"><div class="bar" style="background:var(--l1); height:6px; opacity:0.5"></div>L1：宏观主线</div>
+                <div class="key"><div class="bar" style="border-top:2px dashed var(--l2)"></div>L2：中观双峰</div>
+                <div class="key"><div class="bar" style="background:var(--l3)"></div>L3：微观心跳</div>
+                <div class="key"><div class="bar" style="background:var(--red); width:6px; height:6px; border-radius:50%"></div>关键点</div>
+            </div>
+
+            <svg class="svg-box" viewBox="0 0 1000 280" preserveAspectRatio="none" style="width:100%; height:100%;">
+                <!-- 网格线 -->
+                <g stroke="rgba(255,255,255,0.05)" stroke-width="1">
+                    <line x1="200" y1="30" x2="200" y2="250"/>
+                    <line x1="400" y1="30" x2="400" y2="250"/>
+                    <line x1="650" y1="30" x2="650" y2="250"/>
+                    <line x1="870" y1="30" x2="870" y2="250"/>
+                </g>
+
+                <!-- 时间标签 -->
+                <text x="40" y="270" fill="var(--dim)" font-size="9">00:00</text>
+                <text x="200" y="270" fill="var(--dim)" font-size="9">00:12</text>
+                <text x="400" y="270" fill="var(--dim)" font-size="9">00:28</text>
+                <text x="650" y="270" fill="var(--dim)" font-size="9">00:52</text>
+                <text x="870" y="270" fill="var(--dim)" font-size="9">01:09</text>
+                <text x="970" y="270" fill="var(--dim)" font-size="9">01:19</text>
+
+                <!-- L1: 宏观主线背景 - 平稳上升 -->
+                <path d="M40,220 C200,210 400,180 650,140 Q800,100 1000,80 L1000,250 L40,250 Z"
+                      fill="var(--l1)" opacity="0.15" />
+                <text x="60" y="235" fill="var(--l1)" font-size="9" font-weight="bold">L1: 凡尘困惑</text>
+                <text x="920" y="95" fill="var(--l1)" font-size="9" font-weight="bold" text-anchor="end">L1: 祈愿祝福</text>
+
+                <!-- L2: 中观序列 - 单峰结构（问题：缺乏第二高峰） -->
+                <path d="M40,220 Q200,200 400,130 Q550,100 650,120 Q800,150 1000,90"
+                      fill="none" stroke="var(--l2)" stroke-width="2" stroke-dasharray="6,4" />
+                <text x="420" y="115" font-size="9" fill="var(--l2)" text-anchor="middle">峰值：十二宏愿</text>
+                <text x="750" y="165" font-size="8" fill="var(--dim)" text-anchor="middle">（缺少第二高峰）</text>
+
+                <!-- L3: 微观心跳折线 - 相对平坦 -->
+                <path d="M 40 220 L 100 210 L 150 215 L 200 195 L 280 180 L 350 170 L 400 130 L 450 140 L 500 135 L 550 125 L 600 130 L 650 145 L 700 140 L 750 135 L 800 125 L 850 115 L 900 100 L 950 95 L 1000 90"
+                      fill="none" stroke="var(--l3)" stroke-width="2.5" stroke-linejoin="round"
+                      filter="drop-shadow(0 0 4px rgba(251, 191, 36, 0.5))" />
+
+                <!-- 关键点标记 -->
+                <circle cx="200" cy="195" r="5" fill="var(--l3)" stroke="#fff" stroke-width="1.5"/>
+                <text x="200" y="180" font-size="8" fill="var(--l3)" text-anchor="middle">揭示身份</text>
+
+                <circle cx="400" cy="130" r="6" fill="var(--red)" stroke="#fff" stroke-width="2"/>
+                <text x="400" y="95" font-size="9" fill="var(--red)" text-anchor="middle" font-weight="bold">十二宏愿</text>
+
+                <circle cx="650" cy="145" r="5" fill="var(--l3)" stroke="#fff" stroke-width="1.5"/>
+                <text x="650" y="165" font-size="8" fill="var(--l3)" text-anchor="middle">现代连接</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 起承转合矩阵 -->
+    <div class="section">
+        <h2>起承转合 × LOOP 矩阵</h2>
+        <div class="mat">
+            <!-- 表头行 -->
+            <div class="th">阶段</div>
+            <div class="th th-t">LOOP 1<br><span style="font-size:7pt;color:var(--dim)">建立世界观</span></div>
+            <div class="th th-t">LOOP 2<br><span style="font-size:7pt;color:var(--dim)">展现愿力</span></div>
+            <div class="th th-t">LOOP 3<br><span style="font-size:7pt;color:var(--dim)">现代升华</span></div>
+
+            <!-- 起行 -->
+            <div class="th" style="color:#34d399">起</div>
+            <div class="td row-qi"><div class="td-b">东方世界有一片琉璃净土</div><div class="td-f">▶ 场景建立</div></div>
+            <div class="td row-qi"><div class="td-b">他曾为世间立下十二宏愿</div><div class="td-f">▶ 核心引入</div></div>
+            <div class="td row-qi"><div class="td-b">当我们身处高速运转的现代社会</div><div class="td-f">▶ 时代切换</div></div>
+
+            <!-- 承行 -->
+            <div class="th" style="color:#60a5fa">承</div>
+            <div class="td row-cheng"><div class="td-b">安住着一位慈悲的觉者，疗愈病苦</div><div class="td-f">▶ 角色引入</div></div>
+            <div class="td row-cheng hl-red"><div class="td-b">愿为身心受苦的生命带去健康喜悦</div><div class="td-f">★ 愿力展开</div></div>
+            <div class="td row-cheng"><div class="td-b">面对压力与挑战，期盼健康</div><div class="td-f">▶ 痛点共鸣</div></div>
+
+            <!-- 转行 -->
+            <div class="th" style="color:#fbbf24">转</div>
+            <div class="td row-zhuan"><div class="td-b">他就是药师琉璃光如来</div><div class="td-f">⚡ 身份揭示</div></div>
+            <div class="td row-zhuan"><div class="td-b">愿力化作不灭明灯，点亮前路</div><div class="td-f">⚡ 意象升华</div></div>
+            <div class="td row-zhuan"><div class="td-b">慈悲之光如同暖流，驱散迷茫</div><div class="td-f">⚡ 情感释放</div></div>
+
+            <!-- 合行 -->
+            <div class="th" style="color:#a78bfa">合</div>
+            <div class="td row-he"><div class="td-b">手持药钵、结施法印、普照十方</div><div class="td-f">★ 形象完成</div></div>
+            <div class="td row-he"><div class="td-b">在宏大愿力中找到温暖守护</div><div class="td-f">★ 愿力收束</div></div>
+            <div class="td row-he"><div class="td-b">称念名号，福慧增长，吉祥如意</div><div class="td-f">★ 祈愿收尾</div></div>
+        </div>
+    </div>
+
+    <!-- 亮点与问题 -->
+    <div class="section">
+        <h2>文案分析</h2>
+        <div class="two-col">
+            <div class="list-card good">
+                <h3><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg> 亮点</h3>
+                <ul>
+                    <li><strong>画面感强</strong>：「琉璃般纯净的净土」「光明与希望的化身」</li>
+                    <li><strong>结构完整</strong>：从介绍到愿力到现代连接，逻辑清晰</li>
+                    <li><strong>庄严感</strong>：用词典雅，符合佛教内容调性</li>
+                    <li><strong>核心信息全</strong>：药钵、法印、十二宏愿等要素齐备</li>
+                </ul>
+            </div>
+            <div class="list-card bad">
+                <h3><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> 问题</h3>
+                <ul>
+                    <li><strong>开场无钩子</strong>：直接铺垫场景，缺乏悬念或痛点切入</li>
+                    <li><strong>情绪曲线平</strong>：全程单调上升，缺少「收-放」节奏</li>
+                    <li><strong>现代连接弱</strong>：「高速运转的社会」过于笼统</li>
+                    <li><strong>说教感</strong>：纪录片旁白风格，距离感强</li>
+                    <li><strong>CTA弱</strong>：祝福式结尾，无明确行动引导</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 语言风格 -->
+    <div class="section">
+        <h2>语言风格分析</h2>
+        <table class="struct-table">
+            <tr>
+                <th>维度</th>
+                <th>当前状态</th>
+                <th>问题</th>
+            </tr>
+            <tr>
+                <td>叙事姿态</td>
+                <td>第三人称纪录片式</td>
+                <td>距离感强，缺乏「我懂你」的共情</td>
+            </tr>
+            <tr>
+                <td>用词风格</td>
+                <td>书面语、佛教术语</td>
+                <td>偏正式，年轻用户接受度低</td>
+            </tr>
+            <tr>
+                <td>句式节奏</td>
+                <td>长句为主，均匀节奏</td>
+                <td>缺乏短句爆发点和节奏变化</td>
+            </tr>
+            <tr>
+                <td>情感表达</td>
+                <td>温和、庄严</td>
+                <td>缺少情绪起伏，难以触发分享</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="foot">Generated by Claude Code // 原视频分析 // 2026-01-10</div>
+</div>
+
+</body>
+</html>

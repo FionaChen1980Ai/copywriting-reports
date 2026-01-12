@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文案分析 - 风神之子哈努曼</title>
+<style>
+    :root {
+        --bg: #0b0d10;
+        --card: #15181e;
+        --line: rgba(255,255,255,0.1);
+        --gold: #fbbf24;
+        --green: #10b981;
+        --blue: #3b82f6;
+        --purple: #8b5cf6;
+        --red: #ef4444;
+        --txt: #e5e7eb;
+        --dim: #9ca3af;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:0; background:var(--bg); font-family:'Microsoft YaHei', 'PingFang SC', sans-serif; color:var(--txt); }
+
+    .sheet {
+        max-width: 1100px;
+        padding: 30px;
+        margin: 0 auto;
+    }
+
+    .head {
+        text-align: center;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+    .head h1 {
+        margin: 0 0 10px 0;
+        font-size: 28pt;
+        font-weight: 300;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b, #ef4444);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .head .subtitle {
+        font-size: 11pt;
+        color: var(--dim);
+    }
+    .head .tag {
+        display: inline-block;
+        margin-top: 10px;
+        font-family: monospace;
+        color: var(--gold);
+        font-size: 9pt;
+        background: rgba(251, 191, 36, 0.1);
+        padding: 5px 15px;
+        border-radius: 20px;
+    }
+
+    .section { margin-bottom: 35px; }
+    .section h2 {
+        font-size: 14pt;
+        font-weight: 500;
+        margin: 0 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--line);
+        color: var(--gold);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .section h2 svg { width: 20px; height: 20px; }
+
+    /* 原文展示 */
+    .original {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 25px 30px;
+        line-height: 2.2;
+        font-size: 11pt;
+    }
+    .original .hook { color: var(--gold); font-weight: 500; }
+    .original .question { color: var(--red); font-style: italic; }
+    .original .parallel { color: var(--green); }
+    .original .turn { color: var(--purple); }
+    .original .climax { color: var(--red); font-weight: bold; }
+    .original .gold-line {
+        background: linear-gradient(90deg, rgba(251, 191, 36, 0.2), transparent);
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
+    .original .ending { color: var(--blue); }
+
+    /* 评分 */
+    .score-row {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 20px 0;
+    }
+    .score-item {
+        text-align: center;
+    }
+    .score-num {
+        font-size: 36pt;
+        font-weight: bold;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .score-label {
+        font-size: 9pt;
+        color: var(--dim);
+        margin-top: 5px;
+    }
+
+    /* 结构图 */
+    .structure-flow {
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+        margin: 20px 0;
+        overflow-x: auto;
+    }
+    .flow-item {
+        flex: 1;
+        min-width: 140px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        padding: 15px;
+        position: relative;
+    }
+    .flow-item:first-child { border-radius: 12px 0 0 12px; }
+    .flow-item:last-child { border-radius: 0 12px 12px 0; }
+    .flow-item::after {
+        content: '→';
+        position: absolute;
+        right: -12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--dim);
+        font-size: 14pt;
+        z-index: 1;
+    }
+    .flow-item:last-child::after { display: none; }
+    .flow-num {
+        font-size: 8pt;
+        color: var(--dim);
+        margin-bottom: 5px;
+    }
+    .flow-title {
+        font-size: 10pt;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    .flow-item:nth-child(1) .flow-title { color: var(--gold); }
+    .flow-item:nth-child(2) .flow-title { color: var(--green); }
+    .flow-item:nth-child(3) .flow-title { color: var(--purple); }
+    .flow-item:nth-child(4) .flow-title { color: var(--red); }
+    .flow-item:nth-child(5) .flow-title { color: var(--blue); }
+    .flow-desc {
+        font-size: 9pt;
+        color: var(--dim);
+        line-height: 1.5;
+    }
+
+    /* 技巧卡片 */
+    .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    .tech-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .tech-card h3 {
+        font-size: 12pt;
+        margin: 0 0 12px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .tech-card h3 .num {
+        background: var(--gold);
+        color: #000;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10pt;
+        font-weight: bold;
+    }
+    .tech-card p {
+        font-size: 10pt;
+        color: var(--dim);
+        margin: 0 0 12px 0;
+        line-height: 1.6;
+    }
+    .tech-example {
+        background: rgba(251, 191, 36, 0.1);
+        border-left: 3px solid var(--gold);
+        padding: 10px 15px;
+        font-size: 10pt;
+        line-height: 1.6;
+    }
+
+    /* 金句高亮 */
+    .golden-quote {
+        background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.1));
+        border: 1px solid var(--gold);
+        border-radius: 12px;
+        padding: 25px 30px;
+        text-align: center;
+        margin: 20px 0;
+    }
+    .golden-quote .quote {
+        font-size: 16pt;
+        font-weight: 300;
+        line-height: 1.6;
+        color: var(--gold);
+    }
+    .golden-quote .note {
+        font-size: 9pt;
+        color: var(--dim);
+        margin-top: 15px;
+    }
+
+    /* 对比表 */
+    .compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10pt;
+    }
+    .compare-table th {
+        background: rgba(251, 191, 36, 0.15);
+        padding: 12px;
+        text-align: left;
+        font-weight: 500;
+    }
+    .compare-table td {
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+    }
+
+    /* 学习要点 */
+    .takeaway {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+        border: 1px solid var(--green);
+        border-radius: 12px;
+        padding: 25px;
+    }
+    .takeaway h3 {
+        font-size: 13pt;
+        margin: 0 0 15px 0;
+        color: var(--green);
+    }
+    .takeaway ul {
+        margin: 0;
+        padding-left: 20px;
+        line-height: 2;
+    }
+    .takeaway li { font-size: 10pt; }
+
+    .foot { font-size: 8pt; color: var(--dim); text-align: right; margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--line); }
+
+    @media (max-width: 800px) {
+        .sheet { padding: 15px; }
+        .tech-grid { grid-template-columns: 1fr; }
+        .score-row { flex-wrap: wrap; }
+        .structure-flow { flex-direction: column; }
+        .flow-item { border-radius: 8px !important; }
+        .flow-item::after { display: none; }
+    }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+    <div class="head">
+        <h1>风神之子哈努曼</h1>
+        <div class="subtitle">文案结构与语言特点深度分析</div>
+        <div class="tag">EXEMPLARY COPYWRITING ANALYSIS</div>
+    </div>
+
+    <!-- 评分 -->
+    <div class="section">
+        <div class="score-row">
+            <div class="score-item">
+                <div class="score-num">9.5</div>
+                <div class="score-label">钩子吸引力</div>
+            </div>
+            <div class="score-item">
+                <div class="score-num">9.0</div>
+                <div class="score-label">叙事节奏</div>
+            </div>
+            <div class="score-item">
+                <div class="score-num">9.5</div>
+                <div class="score-label">情感张力</div>
+            </div>
+            <div class="score-item">
+                <div class="score-num">9.0</div>
+                <div class="score-label">语言质感</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 原文标注 -->
+    <div class="section">
+        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg> 原文结构标注</h2>
+        <div class="original">
+            <span class="hook">风神之子，猴面人身，力敌众神的不死战神。</span><br>
+            <span class="question">他是谁？</span><br>
+            他叫哈努曼。<br><br>
+
+            印度史诗《罗摩衍那》里，最忠诚的勇士，最无畏的战神。<br><br>
+
+            <span class="parallel">他曾腾云驾雾，远赴仙山取灵草；</span><br>
+            <span class="parallel">他曾只身入魔窟，救出王子罗摩的妻子希多。</span><br><br>
+
+            <span class="turn">但在这些战功之前，他也只是一个闯祸不断的少年——</span><br><br>
+
+            那一天，年幼的哈努曼看见天上挂着一轮金光。<br>
+            他以为那是一颗金色的果子。<br>
+            于是他纵身一跃，飞向天际，想把太阳吃掉。<br>
+            太阳吓得四处躲藏，哈努曼却紧追不舍。<br>
+            无奈天帝因陀罗挥起雷电，将他击落人间，算是给他一点教训。<br><br>
+
+            但他的父亲——风神，看见了这一切。<br>
+            他没有责怪儿子的莽撞，而是愤怒地冲进众神殿，他要告诉诸神：<br><br>
+
+            <span class="gold-line climax">「我的孩子若不自由，这世界便不再需要呼吸！」</span><br><br>
+
+            众神最终低头，并赐予哈努曼不死之身。<br>
+            那不是奖赏，而是父亲的爱与包容，为他挣来的一份底气。<br>
+            也是他<span class="ending">永不凋谢的少年心气</span>。<br><br>
+
+            从此，哈努曼<span class="ending">鲜衣怒马</span>，在三界之中除恶扬善、战无不胜。
+        </div>
+        <div style="margin-top:15px; font-size:9pt; color:var(--dim);">
+            图例：<span class="hook" style="padding:2px 6px;">排比钩子</span>
+            <span class="question" style="padding:2px 6px;">设问悬念</span>
+            <span class="parallel" style="padding:2px 6px;">平行句式</span>
+            <span class="turn" style="padding:2px 6px;">转折</span>
+            <span class="climax" style="padding:2px 6px;">情感高潮</span>
+            <span class="ending" style="padding:2px 6px;">升华收尾</span>
+        </div>
+    </div>
+
+    <!-- 结构流程 -->
+    <div class="section">
+        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 6-6"/></svg> 行文结构流程</h2>
+        <div class="structure-flow">
+            <div class="flow-item">
+                <div class="flow-num">STEP 1</div>
+                <div class="flow-title">三连钩子+设问</div>
+                <div class="flow-desc">排比定调，设问制造悬念，3秒内抓住注意力</div>
+            </div>
+            <div class="flow-item">
+                <div class="flow-num">STEP 2</div>
+                <div class="flow-title">身份背书+功绩速写</div>
+                <div class="flow-desc">史诗出处建立权威，平行句式快速展示战功</div>
+            </div>
+            <div class="flow-item">
+                <div class="flow-num">STEP 3</div>
+                <div class="flow-title">「但」字转折</div>
+                <div class="flow-desc">从战神拉回少年，制造反差，引出核心故事</div>
+            </div>
+            <div class="flow-item">
+                <div class="flow-num">STEP 4</div>
+                <div class="flow-title">追日故事+父爱高潮</div>
+                <div class="flow-desc">画面感叙事，金句引爆情感，「父亲为子争自由」</div>
+            </div>
+            <div class="flow-item">
+                <div class="flow-num">STEP 5</div>
+                <div class="flow-title">点题升华</div>
+                <div class="flow-desc">不死之身=父爱底气，「鲜衣怒马」收束全篇</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 核心金句 -->
+    <div class="section">
+        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> 核心金句</h2>
+        <div class="golden-quote">
+            <div class="quote">「我的孩子若不自由，这世界便不再需要呼吸！」</div>
+            <div class="note">
+                风神作为父亲的宣言 —— 将父爱与世界存亡挂钩，气势磅礴又饱含深情<br>
+                这句话是全文情感爆发点，也是哈努曼「不死之身」的真正来源
+            </div>
+        </div>
+    </div>
+
+    <!-- 语言技巧 -->
+    <div class="section">
+        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> 八大语言技巧</h2>
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h3><span class="num">1</span> 三连排比开场</h3>
+                <p>用三个短语快速建立人物形象，节奏感强，信息密度高</p>
+                <div class="tech-example">「风神之子，猴面人身，力敌众神的不死战神。」</div>
+            </div>
+            <div class="tech-card">
+                <h3><span class="num">2</span> 设问制造悬念</h3>
+                <p>在排比之后抛出问题，让观众主动想知道答案</p>
+                <div class="tech-example">「他是谁？」<br>「他叫哈努曼。」</div>
+            </div>
+            <div class="tech-card">
+                <h3><span class="num">3</span> 平行句式</h3>
+                <p>用相同句式快速展示多个功绩，对仗工整有韵律</p>
+                <div class="tech-example">「他曾腾云驾雾，远赴仙山取灵草；<br>他曾只身入魔窟，救出王子罗摩的妻子希多。」</div>
+            </div>
+            <div class="tech-card">
+                <h3><span class="num">4</span> 「但」字转折</h3>
+                <p>从辉煌战功拉回少年时期，制造反差，引发好奇</p>
+                <div class="tech-example">「但在这些战功之前，他也只是一个闯祸不断的少年——」</div>
+            </div>
+            <div class="tech-card">
+                <h3><span class="num">5</span> 画面感叙事</h3>
+                <p>用具体动作和场景还原故事，让观众「看见」而非「听说」</p>
+                <div class="tech-example">「他以为那是一颗金色的果子。于是他纵身一跃，飞向天际，想把太阳吃掉。」</div>
+            </div>
+            <div class="tech-card">
+                <h3><span class="num">6</span> 对话引爆高潮</h3>
+                <p>用角色直接说话代替旁白描述，情感冲击力倍增</p>
+                <div class="tech-example">「我的孩子若不自由，这世界便不再需要呼吸！」</div>
+            </div>
+            <div class="tech-card">
+                <h3><span class="num">7</span> 点题升华</h3>
+                <p>将故事结局上升到普世情感，赋予深层含义</p>
+                <div class="tech-example">「那不是奖赏，而是父亲的爱与包容，为他挣来的一份底气。<br>也是他永不凋谢的少年心气。」</div>
+            </div>
+            <div class="tech-card">
+                <h3><span class="num">8</span> 古风意象收尾</h3>
+                <p>用富有画面感的四字词语，余韵悠长</p>
+                <div class="tech-example">「从此，哈努曼鲜衣怒马，在三界之中除恶扬善、战无不胜。」</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 与style-guide对照 -->
+    <div class="section">
+        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg> 与 style-guide 风格对照</h2>
+        <table class="compare-table">
+            <tr>
+                <th style="width:25%">风格原则</th>
+                <th style="width:40%">本文执行</th>
+                <th style="width:35%">示例</th>
+            </tr>
+            <tr>
+                <td><strong>韵律与节奏</strong><br>三段式排比，有音乐感</td>
+                <td>开场三连排比，平行句式功绩速写，节奏感极强</td>
+                <td>「风神之子，猴面人身，力敌众神的不死战神」</td>
+            </tr>
+            <tr>
+                <td><strong>短句断句</strong><br>口语化，有呼吸感</td>
+                <td>全文以短句为主，段落间有留白</td>
+                <td>「他是谁？」「他叫哈努曼。」</td>
+            </tr>
+            <tr>
+                <td><strong>叙事姿态</strong><br>讲故事的旁观者</td>
+                <td>用故事而非说教传递价值观，不「教」观众</td>
+                <td>通过追日故事展现少年心性，不直接说「要保持童心」</td>
+            </tr>
+            <tr>
+                <td><strong>克制表达</strong><br>点到为止，不说破</td>
+                <td>情感高潮用角色对话，不过度渲染旁白</td>
+                <td>父亲的爱通过一句话体现，而非长篇抒情</td>
+            </tr>
+            <tr>
+                <td><strong>升华要轻</strong><br>有深度但不鸡汤</td>
+                <td>点题简洁有力，不说教</td>
+                <td>「那不是奖赏，而是父亲的爱与包容」</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 学习要点 -->
+    <div class="section">
+        <div class="takeaway">
+            <h3>可复用的写作技巧总结</h3>
+            <ul>
+                <li><strong>开场公式</strong>：三连排比定调 + 设问悬念 + 一句话揭示 → 3秒抓住注意力</li>
+                <li><strong>转折技巧</strong>：「但在这些XXX之前，他也只是...」→ 从高点拉回起点，制造反差</li>
+                <li><strong>叙事方法</strong>：用具体动作和场景「还原」故事，而非「概述」故事</li>
+                <li><strong>情感引爆</strong>：让角色自己说话，一句金句胜过十句旁白</li>
+                <li><strong>升华公式</strong>：「那不是A，而是B」→ 重新定义故事结局的意义</li>
+                <li><strong>收尾意象</strong>：用四字古风词汇（鲜衣怒马）制造余韵</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="foot">Generated by Claude Code // 文案分析 // 2026-01-12</div>
+</div>
+
+</body>
+</html>

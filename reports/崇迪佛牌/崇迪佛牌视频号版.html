@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>剧作分析 V40 - 崇迪佛牌：帝王之师与时空回响</title>
+<style>
+/* 核心样式库 - 延续 Fiona V36 高规格 */
+:root{--bg:#050505;--surf:rgba(255,255,255,0.03);--border:rgba(255,255,255,0.1);--l1:#fbbf24;/* 金色 */--l2:#10b981;--l3:#3b82f6;--red:#f43f5e;--pur:#a855f7;--cyan:#06b6d4;--txt:#f9fafb;--dim:#9ca3af}
+*{box-sizing:border-box}
+body{margin:0;padding:0;background:var(--bg);font-family:'PingFang SC',sans-serif;color:var(--txt);display:flex;justify-content:center}
+.sheet{width:297mm;height:210mm;padding:10mm;display:flex;flex-direction:column;gap:8px;background:radial-gradient(circle at 50% 0,#2d2105 0,#020617 80%);position:relative}
+.head{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.head h1{margin:0;font-size:18pt;font-weight:300;letter-spacing:1px;color:var(--l1)}
+.meta{font-family:monospace;color:var(--l1);font-size:9pt;opacity:0.8}
+
+/* HOOK 舱 */
+.hook{display:grid;grid-template-columns:80px 1fr;gap:8px;height:50px}
+.hk-tag{background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);border-radius:4px;color:var(--l1);display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:9pt}
+.hk-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.hk-box{background:var(--surf);border:1px solid var(--border);border-radius:4px;padding:0 8px;display:flex;flex-direction:column;justify-content:center;border-left:2px solid var(--l1)}
+.hk-t{font-size:7pt;color:var(--l1);font-weight:bold} .hk-d{font-size:8pt}
+
+/* SVG RHYTHM CHART */
+.chart{height:150px;background:linear-gradient(180deg,rgba(251,191,36,0.05),transparent);border:1px solid var(--border);border-radius:6px;position:relative;padding:5px}
+.svg{width:100%;height:100%;display:block;overflow:visible}
+.txt-axis{font-size:8px;fill:var(--dim);font-family:monospace}
+.txt-label{font-size:9px;font-weight:bold;fill:#fff;text-anchor:middle}
+.dot{r:4px;stroke:#fff;stroke-width:1.5}
+
+/* MATRIX 矩阵 */
+.mat{flex:1;display:grid;grid-template-columns:25px repeat(4,1fr);grid-template-rows:25px repeat(4,1fr);gap:4px}
+.th{background:rgba(255,255,255,0.02);border-radius:3px;display:flex;flex-direction:column;justify-content:center;align-items:center;border-bottom:2px solid var(--l1)}
+.th-t{font-size:8pt;font-weight:bold;color:var(--l1)} .th-s{font-size:6pt;color:var(--dim)}
+.row{writing-mode:vertical-rl;text-orientation:upright;display:flex;align-items:center;justify-content:center;font-size:7pt;color:var(--dim);letter-spacing:2px}
+.td{background:rgba(30,30,40,0.4);border:1px solid var(--border);border-radius:4px;padding:5px 8px;display:flex;flex-direction:column;justify-content:space-between}
+.td-b{font-size:8pt;line-height:1.25} .td-f{font-size:6.5pt;color:var(--dim);margin-top:2px;padding-top:2px;border-top:1px dashed var(--border);display:flex;justify-content:space-between}
+.hl-g{background:linear-gradient(145deg,rgba(251,191,36,0.1),transparent);border-color:rgba(251,191,36,0.4)}
+.bdg{background:var(--l1);color:#000;padding:0 3px;border-radius:2px;font-weight:bold}
+
+/* ENDING 舱 */
+.end{display:grid;grid-template-columns:80px 1fr;gap:8px;height:50px}
+.ed-tag{background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.3);border-radius:4px;color:var(--cyan);display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:9pt}
+.ed-box{background:linear-gradient(90deg,rgba(6,182,212,0.05),transparent);border:1px solid var(--border);border-radius:4px;display:flex;flex-direction:column;justify-content:center;padding:0 10px;border-left:2px solid var(--cyan)}
+.ed-t{font-size:7pt;color:var(--cyan);font-weight:bold} .ed-d{font-size:8pt;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="sheet">
+    <div class="head"><h1>崇迪佛牌：五朝传说与圣者回响 (V40 Aurora)</h1><div class="meta">THEME: LEGACY // TRANSCENDING TIME</div></div>
+    
+    <div class="hook">
+        <div class="hk-tag">HOOK<br>钩子</div>
+        <div class="hk-grid">
+            <div class="hk-box"><div class="hk-t">权威 AUTHORITY</div><div class="hk-d">"泰皇亲赐·万佛之王"</div></div>
+            <div class="hk-box"><div class="hk-t">痛点 PAIN</div><div class="hk-d">"喧嚣尘世中的精神定力"</div></div>
+            <div class="hk-box"><div class="hk-t">诱饵 BAIT</div><div class="hk-d">"阿赞多横跨五朝的传奇"</div></div>
+        </div>
+    </div>
+
+    <div class="chart">
+        <svg class="svg" viewBox="0 0 1000 150" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#fbbf24" stop-opacity="0.3"/>
+                    <stop offset="0.5" stop-color="#fbbf24"/>
+                    <stop offset="1" stop-color="#fbbf24" stop-opacity="0.3"/>
+                </linearGradient>
+            </defs>
+            <text x="40" y="25" class="txt-axis" text-anchor="end">视觉冲击【放】</text>
+            <text x="40" y="85" class="txt-axis" text-anchor="end">情感沉淀【收】</text>
+            <line x1="50" y1="130" x2="980" y2="130" stroke="var(--border)" stroke-width="1" />
+            
+            <path d="M50,80 C150,80 200,20 300,80 S450,140 550,80 S700,10 850,80 S950,140 980,80" 
+                  fill="none" stroke="url(#goldGrad)" stroke-width="3" />
+            
+            <circle cx="150" cy="80" class="dot" fill="var(--l1)"/>
+            <text x="150" y="100" class="txt-label">钩子：万佛之王</text>
+
+            <circle cx="550" cy="80" class="dot" fill="#fff"/>
+            <text x="550" y="65" class="txt-label">转折：海上金光</text>
+
+            <circle cx="850" cy="80" class="dot" fill="var(--cyan)"/>
+            <text x="850" y="100" class="txt-label">升华：同频回响</text>
+        </svg>
+    </div>
+
+    <div class="mat">
+        <div></div>
+        <div class="th"><div class="th-t">PHASE 1</div><div class="th-s">源起：帝王之师</div></div>
+        <div class="th"><div class="th-t">PHASE 2</div><div class="th-s">定力：横跨五朝</div></div>
+        <div class="th"><div class="th-t">PHASE 3</div><div class="th-s">神迹：海上佛像</div></div>
+        <div class="th"><div class="th-t">PHASE 4</div><div class="th-s">回响：寻找同频</div></div>
+
+        <div class="row">画面</div>
+        <div class="td"><div class="td-b">【收】<br>佛牌金光特写</div><div class="td-f">▶ 聚焦神圣感</div></div>
+        <div class="td"><div class="td-b">【收】<br>僧人背影/古寺</div><div class="td-f">▶ 营造历史感</div></div>
+        <div class="td hl-g"><div class="td-b">【放】<br>海面金光/佛像升起</div><div class="td-f">▶ 视觉高潮点</div></div>
+        <div class="td"><div class="td-b">【收】<br>佛牌特写→黑屏</div><div class="td-f">▶ 余韵悠长</div></div>
+
+        <div class="row">文案</div>
+        <div class="td"><div class="td-b">泰皇亲赐<br>“万佛之王”</div><div class="td-f">✨ 权威背书</div></div>
+        <div class="td"><div class="td-b">从未破戒<br>始终如一</div><div class="td-f">✨ 人格力量</div></div>
+        <div class="td hl-g"><div class="td-b">万道霞光破晓<br>众生皆得佩戴</div><div class="td-f">✨ 宏大慈悲</div></div>
+        <div class="td"><div class="td-b">他在等一个<br>同频的人</div><div class="td-f">✨ 心理连接</div></div>
+
+        <div class="row" style="color:var(--l1)">节奏</div>
+        <div class="td"><div class="td-b">留悬念<br>语速适中</div><div class="td-f">⏸️ 吸引进入</div></div>
+        <div class="td"><div class="td-b">停顿1秒<br>让金句沉淀</div><div class="td-f">⏸️ 情感共鸣</div></div>
+        <div class="td hl-g"><div class="td-b">BGM扬起<br>语气激昂</div><div class="td-f">⚡ 爽感爆发</div></div>
+        <div class="td"><div class="td-b">轻声读白<br>不说教</div><div class="td-f">⏸️ 深度转化</div></div>
+
+        <div class="row">底层</div>
+        <div class="td"><div class="td-b">身份构建</div><div class="td-f">★ 它是谁？</div></div>
+        <div class="td"><div class="td-b">价值支撑</div><div class="td-f">★ 为何珍贵？</div></div>
+        <div class="td hl-g"><div class="td-b">信仰具象化</div><div class="td-f">★ 力量何来？</div></div>
+        <div class="td" style="background:rgba(6,182,212,0.1);border-color:var(--cyan)"><div class="td-b"><b>缘分锁死</b></div><div class="td-f" style="color:var(--cyan)">🏆 转化成交</div></div>
+    </div>
+
+    <div class="end">
+        <div class="ed-tag">ENDING<br>闭环</div>
+        <div class="hk-grid">
+            <div class="ed-box"><div class="ed-t">ACTION 意图</div><div class="ed-d">"拨动心弦，建立连接"</div></div>
+            <div class="ed-box"><div class="ed-t">TRUTH 认知</div><div class="ed-d">"清净如莲，始终如一"</div></div>
+            <div class="ed-box"><div class="ed-t">VISION 愿景</div><div class="ed-d">"跨越时空的回响"</div></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
