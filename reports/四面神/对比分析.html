@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四面神 - 原版 vs 抖音版对比分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 40px 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .version-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .version-badge {
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+        }
+
+        .version-badge.original {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .version-badge.new {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+            border: 1px solid rgba(67, 233, 123, 0.3);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #667eea;
+        }
+
+        /* 评分对比 */
+        .score-compare {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .score-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .score-item .label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .score-bar-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .score-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .score-row .version {
+            width: 50px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .score-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .score-bar .fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .score-bar .fill.original {
+            background: linear-gradient(90deg, #ff6b6b, #ffa07a);
+        }
+
+        .score-bar .fill.new {
+            background: linear-gradient(90deg, #43e97b, #38f9d7);
+        }
+
+        .score-row .value {
+            width: 40px;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .score-row .value.original { color: #ff6b6b; }
+        .score-row .value.new { color: #43e97b; }
+
+        .score-change {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .score-change.up { color: #43e97b; }
+        .score-change.same { color: #888; }
+
+        /* 结构对比 */
+        .structure-compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .structure-compare {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .structure-column {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .structure-column.original {
+            border-top: 3px solid #ff6b6b;
+        }
+
+        .structure-column.new {
+            border-top: 3px solid #43e97b;
+        }
+
+        .structure-column h4 {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .structure-column.original h4 { color: #ff6b6b; }
+        .structure-column.new h4 { color: #43e97b; }
+
+        .structure-list {
+            list-style: none;
+        }
+
+        .structure-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .structure-list li:last-child {
+            border-bottom: none;
+        }
+
+        .structure-list .num {
+            background: rgba(255, 255, 255, 0.1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        /* 文案逐段对比 */
+        .text-compare-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .text-compare-table th {
+            padding: 15px;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .text-compare-table th:first-child { border-radius: 8px 0 0 0; width: 12%; }
+        .text-compare-table th:nth-child(2) { width: 44%; color: #ff6b6b; }
+        .text-compare-table th:nth-child(3) { width: 44%; color: #43e97b; border-radius: 0 8px 0 0; }
+
+        .text-compare-table td {
+            padding: 15px;
+            vertical-align: top;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-compare-table td:first-child {
+            font-weight: 500;
+            color: #667eea;
+        }
+
+        .text-compare-table .original-text {
+            color: #bbb;
+        }
+
+        .text-compare-table .new-text {
+            color: #e0e0e0;
+        }
+
+        .text-compare-table .highlight {
+            background: rgba(67, 233, 123, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #43e97b;
+        }
+
+        .text-compare-table .removed {
+            text-decoration: line-through;
+            color: #666;
+        }
+
+        /* 改进亮点 */
+        .improvement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .improvement-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .improvement-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .improvement-card .before {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 6px;
+        }
+
+        .improvement-card .after {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            padding: 10px;
+            background: rgba(67, 233, 123, 0.1);
+            border-radius: 6px;
+        }
+
+        .improvement-card .analysis {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #a5b4fc;
+        }
+
+        /* 总结 */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .summary-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .summary-card.problems {
+            border-top: 3px solid #ff6b6b;
+        }
+
+        .summary-card.solutions {
+            border-top: 3px solid #43e97b;
+        }
+
+        .summary-card h4 {
+            margin-bottom: 20px;
+        }
+
+        .summary-card.problems h4 { color: #ff6b6b; }
+        .summary-card.solutions h4 { color: #43e97b; }
+
+        .summary-list {
+            list-style: none;
+        }
+
+        .summary-list li {
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .summary-list li:last-child {
+            border-bottom: none;
+        }
+
+        .summary-list li::before {
+            position: absolute;
+            left: 0;
+            font-size: 1rem;
+        }
+
+        .summary-card.problems .summary-list li::before {
+            content: "✗";
+            color: #ff6b6b;
+        }
+
+        .summary-card.solutions .summary-list li::before {
+            content: "✓";
+            color: #43e97b;
+        }
+
+        /* 雷达图 */
+        .radar-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .radar-chart {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .radar-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+        }
+
+        .radar-labels {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .radar-label {
+            position: absolute;
+            font-size: 0.85rem;
+            color: #888;
+            transform: translate(-50%, -50%);
+        }
+
+        .radar-label:nth-child(1) { top: 5%; left: 50%; }
+        .radar-label:nth-child(2) { top: 30%; left: 95%; }
+        .radar-label:nth-child(3) { top: 80%; left: 85%; }
+        .radar-label:nth-child(4) { top: 80%; left: 15%; }
+        .radar-label:nth-child(5) { top: 30%; left: 5%; }
+
+        .radar-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.original { background: #ff6b6b; }
+        .legend-dot.new { background: #43e97b; }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>四面神 · 对比分析</h1>
+            <p class="subtitle">原版 Facebook 视频 vs 抖音改写版</p>
+            <div class="version-badges">
+                <span class="version-badge original">原版 · 77秒 · 科普风</span>
+                <span class="version-badge new">改写版 · 70秒 · 故事风</span>
+            </div>
+        </header>
+
+        <!-- 评分对比 -->
+        <section class="section">
+            <h2 class="section-title"><span>📊</span> 评分对比</h2>
+            <div class="score-compare">
+                <div class="score-item">
+                    <div class="label">钩子吸引力</div>
+                    <div class="score-bar-container">
+                        <div class="score-row">
+                            <span class="version">原版</span>
+                            <div class="score-bar"><div class="fill original" style="width: 55%"></div></div>
+                            <span class="value original">5.5</span>
+                        </div>
+                        <div class="score-row">
+                            <span class="version">改写</span>
+                            <div class="score-bar"><div class="fill new" style="width: 85%"></div></div>
+                            <span class="value new">8.5</span>
+                        </div>
+                    </div>
+                    <div class="score-change up">↑ +3.0</div>
+                </div>
+
+                <div class="score-item">
+                    <div class="label">叙事节奏</div>
+                    <div class="score-bar-container">
+                        <div class="score-row">
+                            <span class="version">原版</span>
+                            <div class="score-bar"><div class="fill original" style="width: 50%"></div></div>
+                            <span class="value original">5.0</span>
+                        </div>
+                        <div class="score-row">
+                            <span class="version">改写</span>
+                            <div class="score-bar"><div class="fill new" style="width: 80%"></div></div>
+                            <span class="value new">8.0</span>
+                        </div>
+                    </div>
+                    <div class="score-change up">↑ +3.0</div>
+                </div>
+
+                <div class="score-item">
+                    <div class="label">情感共鸣</div>
+                    <div class="score-bar-container">
+                        <div class="score-row">
+                            <span class="version">原版</span>
+                            <div class="score-bar"><div class="fill original" style="width: 40%"></div></div>
+                            <span class="value original">4.0</span>
+                        </div>
+                        <div class="score-row">
+                            <span class="version">改写</span>
+                            <div class="score-bar"><div class="fill new" style="width: 85%"></div></div>
+                            <span class="value new">8.5</span>
+                        </div>
+                    </div>
+                    <div class="score-change up">↑ +4.5</div>
+                </div>
+
+                <div class="score-item">
+                    <div class="label">平台适配</div>
+                    <div class="score-bar-container">
+                        <div class="score-row">
+                            <span class="version">原版</span>
+                            <div class="score-bar"><div class="fill original" style="width: 50%"></div></div>
+                            <span class="value original">5.0</span>
+                        </div>
+                        <div class="score-row">
+                            <span class="version">改写</span>
+                            <div class="score-bar"><div class="fill new" style="width: 80%"></div></div>
+                            <span class="value new">8.0</span>
+                        </div>
+                    </div>
+                    <div class="score-change up">↑ +3.0</div>
+                </div>
+            </div>
+
+            <!-- 雷达图 -->
+            <div class="radar-container">
+                <div class="radar-chart">
+                    <svg class="radar-bg" viewBox="0 0 200 200">
+                        <!-- 背景网格 -->
+                        <polygon points="100,20 176,65 156,155 44,155 24,65" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                        <polygon points="100,40 152,72 138,140 62,140 48,72" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                        <polygon points="100,60 128,80 120,125 80,125 72,80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                        <polygon points="100,80 114,88 110,110 90,110 86,88" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+                        <!-- 原版数据 (5.5, 5.0, 4.0, 5.0, 5.0) -->
+                        <polygon points="100,56 131,76 125,122 75,122 69,76" fill="rgba(255,107,107,0.2)" stroke="#ff6b6b" stroke-width="2"/>
+
+                        <!-- 改写版数据 (8.5, 8.0, 8.5, 8.0, 8.0) -->
+                        <polygon points="100,28 164,68 152,148 48,148 36,68" fill="rgba(67,233,123,0.2)" stroke="#43e97b" stroke-width="2"/>
+                    </svg>
+                    <div class="radar-labels">
+                        <span class="radar-label">钩子</span>
+                        <span class="radar-label">叙事</span>
+                        <span class="radar-label">共鸣</span>
+                        <span class="radar-label">适配</span>
+                        <span class="radar-label">完整度</span>
+                    </div>
+                </div>
+            </div>
+            <div class="radar-legend">
+                <div class="legend-item">
+                    <span class="legend-dot original"></span>
+                    <span>原版 均分 4.9</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot new"></span>
+                    <span>改写版 均分 8.3</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结构对比 -->
+        <section class="section">
+            <h2 class="section-title"><span>🎬</span> 结构对比</h2>
+            <div class="structure-compare">
+                <div class="structure-column original">
+                    <h4>原版结构</h4>
+                    <ul class="structure-list">
+                        <li><span class="num">1</span> 身份介绍（印度教三大神）</li>
+                        <li><span class="num">2</span> 神力描述（法力无边）</li>
+                        <li><span class="num">3</span> 起源故事（凯悦酒店）</li>
+                        <li><span class="num">4</span> 八手法器逐一介绍</li>
+                        <li><span class="num">×</span> 无现代连接</li>
+                        <li><span class="num">×</span> 无CTA</li>
+                    </ul>
+                </div>
+                <div class="structure-column new">
+                    <h4>改写版结构</h4>
+                    <ul class="structure-list">
+                        <li><span class="num">1</span> 悬念钩子（最灵的神）</li>
+                        <li><span class="num">2</span> 身份揭晓（大梵天王）</li>
+                        <li><span class="num">3</span> 戏剧化故事（塔吊断裂）</li>
+                        <li><span class="num">4</span> 精简法器（四面+四手）</li>
+                        <li><span class="num">5</span> 现代痛点连接</li>
+                        <li><span class="num">6</span> 轻CTA互动</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 逐段对比 -->
+        <section class="section">
+            <h2 class="section-title"><span>📝</span> 文案逐段对比</h2>
+            <table class="text-compare-table">
+                <thead>
+                    <tr>
+                        <th>段落</th>
+                        <th>原版</th>
+                        <th>改写版</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>开场</td>
+                        <td class="original-text">四面神原名大梵天王，原为印度教、婆罗门教三大神之一，是创造天地之神，众生之父。</td>
+                        <td class="new-text"><span class="highlight">曼谷最灵的神，不是住在庙里的佛祖，而是在爱侣湾的十字路口的他。</span>他四面八臂，有求必应，香火鼎盛六十年。</td>
+                    </tr>
+                    <tr>
+                        <td>故事起因</td>
+                        <td class="original-text">据说当年刚开始建曼谷凯悦大酒店的时候，常常会发生很多不可思议的怪现象，工程屡遭挫折，甚至一度停工。</td>
+                        <td class="new-text">1956年，曼谷市中心。一座五星级酒店正在动工，工人却接连出事。<span class="highlight">塔吊断裂，钢筋刺穿，工程三度停摆。</span></td>
+                    </tr>
+                    <tr>
+                        <td>法师勘察</td>
+                        <td class="original-text">于是决定邀请一位闻名泰国的婆罗门法师勘察，当时经过一轮法师勘察之后，就说：此地以前是凶地，藏着许多法力高强的妖魔鬼怪。</td>
+                        <td class="new-text">老板急了，请来泰国最有名的婆罗门法师。法师绕着工地走了一圈，只说了一句话：<span class="highlight">「这里是凶地，需请大梵天王镇守」</span></td>
+                    </tr>
+                    <tr>
+                        <td>结果</td>
+                        <td class="original-text">大梵天王到此之后，工程就顺利进行，如期完工。于是一传十，十传百，四面佛俨然成了泰国的土地公。</td>
+                        <td class="new-text">之后四面神像落座。说也奇怪——从那天起，再无意外，酒店如期完工。<span class="highlight">只要你信，他就在，有求必应。</span></td>
+                    </tr>
+                    <tr>
+                        <td>法器介绍</td>
+                        <td class="original-text">每手所执之物均有其深长意义：一手持令旗，代表万能法力；一手持佛经，代表智慧；一手持法螺，代表赐福；一手持明轮，代表消灾...<span class="removed">（共8个）</span></td>
+                        <td class="new-text">四张脸，分管四件事：事业、感情、财富、健康。八只手，各有神通：<span class="highlight">令旗掌权，佛经赐慧，法螺送福，明轮消灾。</span></td>
+                    </tr>
+                    <tr>
+                        <td>现代连接</td>
+                        <td class="original-text"><span class="removed">（无）</span></td>
+                        <td class="new-text"><span class="highlight">你是否创业三年没起色？是否感情反复拉扯？是否体检报告小箭头越来越多？</span>不要怕，四面神就在那里，你有所求，他就有所应。</td>
+                    </tr>
+                    <tr>
+                        <td>收尾/CTA</td>
+                        <td class="original-text"><span class="removed">（无，直接结束）</span></td>
+                        <td class="new-text"><span class="highlight">是该为自己找个出口了？</span>去过曼谷四面神的，扣1。想去的，扣2。评论区见。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 改进亮点 -->
+        <section class="section">
+            <h2 class="section-title"><span>✨</span> 核心改进</h2>
+            <div class="improvement-grid">
+                <div class="improvement-card">
+                    <h4>1. 钩子重构</h4>
+                    <div class="before">❌ 四面神原名大梵天王，原为印度教...</div>
+                    <div class="after">✓ 曼谷最灵的神，不是住在庙里的佛祖，而是在爱侣湾的十字路口的他</div>
+                    <div class="analysis">从"百科式开场"改为"悬念式钩子"，3秒内抓住注意力</div>
+                </div>
+
+                <div class="improvement-card">
+                    <h4>2. 故事戏剧化</h4>
+                    <div class="before">❌ 常常会发生很多不可思议的怪现象</div>
+                    <div class="after">✓ 塔吊断裂，钢筋刺穿，工程三度停摆</div>
+                    <div class="analysis">用具体画面替代抽象描述，三连排比制造紧迫感</div>
+                </div>
+
+                <div class="improvement-card">
+                    <h4>3. 法器精简</h4>
+                    <div class="before">❌ 八手法器逐一介绍（信息过载）</div>
+                    <div class="after">✓ 令旗掌权，佛经赐慧，法螺送福，明轮消灾</div>
+                    <div class="analysis">8→4精简，两两对仗，节奏感强，易于记忆</div>
+                </div>
+
+                <div class="improvement-card">
+                    <h4>4. 现代共情</h4>
+                    <div class="before">❌ 无现代连接，与观众无关</div>
+                    <div class="after">✓ 创业三年没起色？感情反复拉扯？</div>
+                    <div class="analysis">三连痛点直击25-40岁受众，建立"与我有关"的连接</div>
+                </div>
+
+                <div class="improvement-card">
+                    <h4>5. 情感落点</h4>
+                    <div class="before">❌ 直接结束，无情感收尾</div>
+                    <div class="after">✓ 只要你信，他就在 / 你有所求，他就有所应</div>
+                    <div class="analysis">首尾呼应"有求必应"，温暖收尾留有余韵</div>
+                </div>
+
+                <div class="improvement-card">
+                    <h4>6. CTA引导</h4>
+                    <div class="before">❌ 无互动引导</div>
+                    <div class="after">✓ 去过的扣1，想去的扣2，评论区见</div>
+                    <div class="analysis">轻互动降低门槛，引导评论区活跃</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 总结 -->
+        <section class="section">
+            <h2 class="section-title"><span>📋</span> 总结</h2>
+            <div class="summary-grid">
+                <div class="summary-card problems">
+                    <h4>原版问题</h4>
+                    <ul class="summary-list">
+                        <li>开场平铺直叙，3秒内无法抓住注意力</li>
+                        <li>故事缺乏戏剧张力，"怪现象"过于抽象</li>
+                        <li>八手法器信息过载，观众难以记忆</li>
+                        <li>缺乏现代连接，与观众生活无关</li>
+                        <li>无情感落点，观看后无感触</li>
+                        <li>无CTA，错失互动机会</li>
+                    </ul>
+                </div>
+                <div class="summary-card solutions">
+                    <h4>改写优化</h4>
+                    <ul class="summary-list">
+                        <li>悬念式钩子"最灵的神不是佛祖"</li>
+                        <li>"塔吊断裂，钢筋刺穿"画面感强烈</li>
+                        <li>法器精简为4个，对仗工整</li>
+                        <li>三连痛点直击年轻受众</li>
+                        <li>"有所求，有所应"首尾呼应</li>
+                        <li>轻CTA"扣1扣2"引导互动</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>文案工作室 · 四面神对比分析报告</p>
+            <p style="margin-top: 10px; color: #555;">Generated by Claude Code</p>
+        </footer>
+    </div>
+</body>
+</html>
