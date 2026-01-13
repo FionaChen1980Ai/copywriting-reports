@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四面神文案 - 受众分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 40px 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #f6d365 0%, #fda085 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #f6d365;
+        }
+
+        .section-title .icon {
+            font-size: 1.6rem;
+        }
+
+        /* 核心画像卡片 */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .profile-card .label {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .profile-card .value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fda085;
+        }
+
+        /* 受众类型卡片 */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 20px;
+        }
+
+        .audience-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 4px solid;
+        }
+
+        .audience-card:nth-child(1) { border-left-color: #667eea; }
+        .audience-card:nth-child(2) { border-left-color: #f093fb; }
+        .audience-card:nth-child(3) { border-left-color: #4facfe; }
+        .audience-card:nth-child(4) { border-left-color: #43e97b; }
+
+        .audience-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .audience-card ul {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .audience-card li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #bbb;
+        }
+
+        .audience-card li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #666;
+        }
+
+        .pain-point {
+            background: rgba(253, 160, 133, 0.15);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .pain-point strong {
+            color: #fda085;
+        }
+
+        /* 匹配度表格 */
+        .match-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .match-table th,
+        .match-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .match-table th {
+            color: #888;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .match-table td:first-child {
+            font-weight: 500;
+        }
+
+        .match-table td:last-child {
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .status-good { color: #43e97b; }
+        .status-warn { color: #ffd93d; }
+        .status-bad { color: #ff6b6b; }
+
+        /* 优化建议 */
+        .suggest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 25px;
+        }
+
+        .suggest-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .suggest-card h4 {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .suggest-card .platform {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+        .suggest-card.douyin .platform {
+            background: rgba(102, 126, 234, 0.3);
+            color: #a5b4fc;
+        }
+
+        .suggest-card.shipinhao .platform {
+            background: rgba(67, 233, 123, 0.3);
+            color: #86efac;
+        }
+
+        .suggest-card ul {
+            list-style: none;
+        }
+
+        .suggest-card li {
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .suggest-card li:last-child {
+            border-bottom: none;
+        }
+
+        .suggest-card li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #fda085;
+        }
+
+        /* 饼图区域 */
+        .chart-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .pie-chart {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .gender-pie {
+            background: conic-gradient(
+                #f093fb 0deg 216deg,
+                #667eea 216deg 360deg
+            );
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: #1a1a2e;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pie-center .title {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .pie-center .value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.female { background: #f093fb; }
+        .legend-dot.male { background: #667eea; }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* 原文引用 */
+        .original-text {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            font-size: 0.95rem;
+            line-height: 2;
+            color: #aaa;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .original-text::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .original-text::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .original-text::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>四面神文案 · 受众分析</h1>
+            <p class="subtitle">Facebook Reel 视频文案分析报告</p>
+            <div class="meta-info">
+                <span class="meta-item">时长：77秒</span>
+                <span class="meta-item">主题：大梵天王介绍</span>
+                <span class="meta-item">来源：Facebook</span>
+            </div>
+        </header>
+
+        <!-- 核心受众画像 -->
+        <section class="section">
+            <h2 class="section-title"><span class="icon">👥</span> 核心受众画像</h2>
+            <div class="profile-grid">
+                <div class="profile-card">
+                    <div class="label">年龄段</div>
+                    <div class="value">30-55岁</div>
+                </div>
+                <div class="profile-card">
+                    <div class="label">性别倾向</div>
+                    <div class="value">女性偏多</div>
+                </div>
+                <div class="profile-card">
+                    <div class="label">地域分布</div>
+                    <div class="value">一二线城市</div>
+                </div>
+                <div class="profile-card">
+                    <div class="label">收入水平</div>
+                    <div class="value">中等偏上</div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <div class="pie-chart gender-pie">
+                    <div class="pie-center">
+                        <span class="title">性别比</span>
+                        <span class="value">6:4</span>
+                    </div>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <span class="legend-dot female"></span>
+                        <span>女性 60%</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot male"></span>
+                        <span>男性 40%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 受众类型 -->
+        <section class="section">
+            <h2 class="section-title"><span class="icon">🎯</span> 四类目标受众</h2>
+            <div class="audience-grid">
+                <div class="audience-card">
+                    <h4>✈️ 泰国旅游爱好者</h4>
+                    <ul>
+                        <li>去过或计划去曼谷</li>
+                        <li>听说过四面佛但不了解细节</li>
+                        <li>对东南亚文化感兴趣</li>
+                    </ul>
+                    <div class="pain-point">
+                        <strong>痛点：</strong>想知道"为什么这么灵"
+                    </div>
+                </div>
+
+                <div class="audience-card">
+                    <h4>📿 佛牌入门者</h4>
+                    <ul>
+                        <li>刚接触泰国佛牌文化</li>
+                        <li>想了解基础知识</li>
+                        <li>在社交媒体看到相关内容</li>
+                    </ul>
+                    <div class="pain-point">
+                        <strong>痛点：</strong>信息碎片化，缺乏系统科普
+                    </div>
+                </div>
+
+                <div class="audience-card">
+                    <h4>💼 求事业财运人群</h4>
+                    <ul>
+                        <li>中小企业主、销售、创业者</li>
+                        <li>相信"宁可信其有"</li>
+                        <li>愿意为信仰消费</li>
+                    </ul>
+                    <div class="pain-point">
+                        <strong>痛点：</strong>事业压力大，寻求心理寄托
+                    </div>
+                </div>
+
+                <div class="audience-card">
+                    <h4>🌏 泛信仰文化爱好者</h4>
+                    <ul>
+                        <li>对佛教、道教、印度教都感兴趣</li>
+                        <li>喜欢神话故事和文化内容</li>
+                        <li>追求精神层面的满足</li>
+                    </ul>
+                    <div class="pain-point">
+                        <strong>痛点：</strong>喜欢有故事性的科普内容
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 文案匹配度 -->
+        <section class="section">
+            <h2 class="section-title"><span class="icon">📊</span> 文案风格与受众匹配度</h2>
+            <table class="match-table">
+                <thead>
+                    <tr>
+                        <th>维度</th>
+                        <th>现状描述</th>
+                        <th>契合度</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>语言风格</td>
+                        <td>偏正式、书面化，中年受众OK，年轻人可能划走</td>
+                        <td class="status-warn">⚠️</td>
+                    </tr>
+                    <tr>
+                        <td>信息密度</td>
+                        <td>高（八手法器逐一介绍），科普党喜欢，但节奏偏慢</td>
+                        <td class="status-warn">⚠️</td>
+                    </tr>
+                    <tr>
+                        <td>故事性</td>
+                        <td>有凯悦酒店起源故事，有钩子，但展开不够戏剧化</td>
+                        <td class="status-good">✅</td>
+                    </tr>
+                    <tr>
+                        <td>情感共鸣</td>
+                        <td>弱，缺乏"与我有关"的现代连接</td>
+                        <td class="status-bad">❌</td>
+                    </tr>
+                    <tr>
+                        <td>CTA引导</td>
+                        <td>无明确行动引导</td>
+                        <td class="status-bad">❌</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 优化建议 -->
+        <section class="section">
+            <h2 class="section-title"><span class="icon">💡</span> 分平台优化建议</h2>
+            <div class="suggest-grid">
+                <div class="suggest-card douyin">
+                    <h4>抖音年轻受众 <span class="platform">25-40岁</span></h4>
+                    <ul>
+                        <li>开头需要更强的钩子<br><em style="color:#888">如："曼谷最灵的神，不是佛祖"</em></li>
+                        <li>凯悦酒店故事更戏剧化<br><em style="color:#888">"工人离奇死亡" → "法师一句话"</em></li>
+                        <li>八手法器精简为3-4个核心</li>
+                        <li>结尾加入现代人痛点连接<br><em style="color:#888">"创业受挫？感情不顺？"</em></li>
+                        <li>加入轻CTA<br><em style="color:#888">"去过的扣1，想去的扣2"</em></li>
+                    </ul>
+                </div>
+
+                <div class="suggest-card shipinhao">
+                    <h4>视频号中年受众 <span class="platform">40-55岁</span></h4>
+                    <ul>
+                        <li>当前风格基本合适，可保留</li>
+                        <li>加强"有求必应"的案例佐证<br><em style="color:#888">明星、企业家参拜故事</em></li>
+                        <li>结尾加入参拜指南<br><em style="color:#888">"顺时针拜四面，每面三炷香"</em></li>
+                        <li>可加入历史感的背书<br><em style="color:#888">"1956年建造至今..."</em></li>
+                        <li>语速可适当放慢，增加庄重感</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 原文案 -->
+        <section class="section">
+            <h2 class="section-title"><span class="icon">📄</span> 原文案内容</h2>
+            <div class="original-text">
+                四面神原名大梵天王，原为印度教、婆罗门教三大神之一，是创造天地之神，众生之父。<br><br>
+                天王在天界中法力无边，掌握人间荣华富贵，具备崇高之法力。<br><br>
+                据说当年刚开始建曼谷凯悦大酒店的时候，常常会发生很多不可思议的怪现象，工程屡遭挫折，甚至一度停工，后来开会商讨对策。<br><br>
+                于是决定邀请一位闻名泰国的婆罗门法师勘察，当时经过一轮法师勘察之后，就说：此地以前是凶地，藏着许多法力高强的妖魔鬼怪，唯一的解决方法，就是要奉请大梵天王来镇守此处。<br><br>
+                随后上层举办了大梵天王来此镇守的大法会，邀请多名高僧法师来诵经祈福。说也奇怪，大梵天王到此之后，工程就顺利进行，如期完工。<br><br>
+                于是一传十，十传百，四面佛俨然成了泰国的土地公，于是来参拜的人多了起来。<br><br>
+                大梵天王有四面八耳、八臂、八手，每手所执之物均有其深长意义：<br>
+                一手持令旗，代表万能法力；<br>
+                一手持佛经，代表智慧；<br>
+                一手持法螺，代表赐福；<br>
+                一手持明轮，代表消灾、降魔、摧毁烦恼；<br>
+                一手持权杖，代表至上成就；<br>
+                一手持水壶，代表解渴、有求必应；<br>
+                一手持念珠，代表轮回；<br>
+                一手持接引手印，代表庇佑。
+            </div>
+        </section>
+
+        <footer>
+            <p>文案工作室 · 受众分析报告</p>
+            <p style="margin-top: 10px; color: #555;">Generated by Claude Code</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四面神抖音版 - 文案分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 40px 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #f6d365 0%, #fda085 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .meta-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .badge.platform {
+            background: rgba(254, 44, 85, 0.3);
+            color: #ff6b9d;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #f6d365;
+        }
+
+        /* 评分卡片 */
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .score-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .score-card .label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .score-card .score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #f6d365, #fda085);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-card .max {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        /* 情绪曲线 */
+        .emotion-chart {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            margin: 20px 0;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* 结构分析 */
+        .structure-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .structure-timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #f6d365, #fda085, #667eea, #764ba2);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 25px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #f6d365;
+            border: 2px solid #0f0c29;
+        }
+
+        .timeline-item.hook::before { background: #ff6b6b; }
+        .timeline-item.story::before { background: #4ecdc4; }
+        .timeline-item.info::before { background: #45b7d1; }
+        .timeline-item.emotion::before { background: #f093fb; }
+        .timeline-item.cta::before { background: #43e97b; }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .timeline-time {
+            font-size: 0.85rem;
+            color: #888;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 15px;
+        }
+
+        .timeline-content {
+            color: #bbb;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .timeline-content .highlight {
+            color: #fda085;
+            font-weight: 500;
+        }
+
+        /* 技巧标签 */
+        .technique-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .technique-tag {
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 15px;
+            background: rgba(102, 126, 234, 0.2);
+            color: #a5b4fc;
+        }
+
+        /* 金句展示 */
+        .golden-quotes {
+            display: grid;
+            gap: 20px;
+        }
+
+        .quote-card {
+            background: rgba(246, 211, 101, 0.1);
+            border-left: 4px solid #f6d365;
+            padding: 20px 25px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .quote-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .quote-analysis {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* 修改对比 */
+        .diff-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .diff-table th,
+        .diff-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .diff-table th {
+            color: #888;
+            font-weight: 500;
+            font-size: 0.9rem;
+            width: 15%;
+        }
+
+        .diff-table .old {
+            color: #888;
+            text-decoration: line-through;
+        }
+
+        .diff-table .new {
+            color: #43e97b;
+        }
+
+        .diff-table .reason {
+            color: #a5b4fc;
+            font-size: 0.85rem;
+        }
+
+        /* 总评 */
+        .summary-box {
+            background: linear-gradient(135deg, rgba(246, 211, 101, 0.1), rgba(253, 160, 133, 0.1));
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .summary-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #f6d365;
+        }
+
+        .summary-content {
+            color: #ccc;
+            line-height: 2;
+        }
+
+        .summary-content li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>四面神 · 抖音版分析</h1>
+            <p class="subtitle">用户修订版文案结构与情绪分析</p>
+            <div class="meta-badges">
+                <span class="badge platform">抖音</span>
+                <span class="badge">时长：70秒</span>
+                <span class="badge">目标：25-40岁</span>
+            </div>
+        </header>
+
+        <!-- 综合评分 -->
+        <section class="section">
+            <h2 class="section-title"><span>📊</span> 综合评分</h2>
+            <div class="score-grid">
+                <div class="score-card">
+                    <div class="label">钩子吸引力</div>
+                    <div class="score">8.5<span class="max">/10</span></div>
+                </div>
+                <div class="score-card">
+                    <div class="label">叙事节奏</div>
+                    <div class="score">8.0<span class="max">/10</span></div>
+                </div>
+                <div class="score-card">
+                    <div class="label">情感共鸣</div>
+                    <div class="score">8.5<span class="max">/10</span></div>
+                </div>
+                <div class="score-card">
+                    <div class="label">平台适配</div>
+                    <div class="score">8.0<span class="max">/10</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 情绪曲线 -->
+        <section class="section">
+            <h2 class="section-title"><span>📈</span> 情绪曲线</h2>
+            <div class="emotion-chart">
+                <svg class="chart-svg" viewBox="0 0 800 200">
+                    <!-- 网格线 -->
+                    <defs>
+                        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#f6d365"/>
+                            <stop offset="50%" style="stop-color:#fda085"/>
+                            <stop offset="100%" style="stop-color:#667eea"/>
+                        </linearGradient>
+                        <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#f6d365;stop-opacity:0.3"/>
+                            <stop offset="100%" style="stop-color:#f6d365;stop-opacity:0"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- 背景网格 -->
+                    <line x1="0" y1="50" x2="800" y2="50" stroke="rgba(255,255,255,0.1)" stroke-dasharray="5,5"/>
+                    <line x1="0" y1="100" x2="800" y2="100" stroke="rgba(255,255,255,0.1)" stroke-dasharray="5,5"/>
+                    <line x1="0" y1="150" x2="800" y2="150" stroke="rgba(255,255,255,0.1)" stroke-dasharray="5,5"/>
+
+                    <!-- 情绪曲线填充 -->
+                    <path d="M0,140 Q50,120 80,100 T160,130 T240,50 T320,90 T400,110 T480,100 T560,60 T640,80 T720,50 T800,90 L800,200 L0,200 Z" fill="url(#areaGradient)"/>
+
+                    <!-- 情绪曲线 -->
+                    <path d="M0,140 Q50,120 80,100 T160,130 T240,50 T320,90 T400,110 T480,100 T560,60 T640,80 T720,50 T800,90" fill="none" stroke="url(#lineGradient)" stroke-width="3"/>
+
+                    <!-- 关键点标注 -->
+                    <circle cx="80" cy="100" r="6" fill="#f6d365"/>
+                    <text x="80" y="85" fill="#f6d365" font-size="11" text-anchor="middle">钩子</text>
+
+                    <circle cx="240" cy="50" r="6" fill="#ff6b6b"/>
+                    <text x="240" y="35" fill="#ff6b6b" font-size="11" text-anchor="middle">事故高潮</text>
+
+                    <circle cx="320" cy="90" r="6" fill="#4ecdc4"/>
+                    <text x="320" y="75" fill="#4ecdc4" font-size="11" text-anchor="middle">法师金句</text>
+
+                    <circle cx="560" cy="60" r="6" fill="#f093fb"/>
+                    <text x="560" y="45" fill="#f093fb" font-size="11" text-anchor="middle">痛点共鸣</text>
+
+                    <circle cx="720" cy="50" r="6" fill="#43e97b"/>
+                    <text x="720" y="35" fill="#43e97b" font-size="11" text-anchor="middle">情感高潮</text>
+                </svg>
+                <div class="chart-labels">
+                    <span>00:00 钩子</span>
+                    <span>00:13 故事</span>
+                    <span>00:24 金句</span>
+                    <span>00:40 法器</span>
+                    <span>00:52 共鸣</span>
+                    <span>01:06 CTA</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结构分析 -->
+        <section class="section">
+            <h2 class="section-title"><span>🎬</span> 结构分析</h2>
+            <div class="structure-timeline">
+                <div class="timeline-item hook">
+                    <div class="timeline-header">
+                        <span class="timeline-title">钩子：悬念式开场</span>
+                        <span class="timeline-time">00:00-00:10</span>
+                    </div>
+                    <div class="timeline-content">
+                        <span class="highlight">「曼谷最灵的神，不是住在庙里的佛祖，而是在爱侣湾的十字路口的他」</span><br>
+                        打破常规认知，用"不是...而是"制造反转。"爱侣湾十字路口"增加地理辨识度，让去过的人产生记忆触发。
+                    </div>
+                    <div class="technique-tags">
+                        <span class="technique-tag">反转钩子</span>
+                        <span class="technique-tag">地标植入</span>
+                        <span class="technique-tag">悬念制造</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item story">
+                    <div class="timeline-header">
+                        <span class="timeline-title">故事：凯悦酒店起源</span>
+                        <span class="timeline-time">00:10-00:40</span>
+                    </div>
+                    <div class="timeline-content">
+                        <span class="highlight">「塔吊断裂，钢筋刺穿，工程三度停摆」</span><br>
+                        三连排比制造紧迫感，画面感强烈。<br><br>
+                        <span class="highlight">「这里是凶地，需请大梵天王镇守」</span><br>
+                        法师一句话揭示答案，简洁有力。<br><br>
+                        <span class="highlight">「只要你信，他就在，有求必应」</span><br>
+                        故事收尾点题，呼应后文情感落点。
+                    </div>
+                    <div class="technique-tags">
+                        <span class="technique-tag">三连排比</span>
+                        <span class="technique-tag">画面感叙事</span>
+                        <span class="technique-tag">金句收尾</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item info">
+                    <div class="timeline-header">
+                        <span class="timeline-title">信息：四面八手</span>
+                        <span class="timeline-time">00:40-00:52</span>
+                    </div>
+                    <div class="timeline-content">
+                        <span class="highlight">「四张脸，分管四件事：事业、感情、财富、健康」</span><br>
+                        信息精简，四字对仗易于记忆。<br><br>
+                        <span class="highlight">「令旗掌权，佛经赐慧，法螺送福，明轮消灾」</span><br>
+                        八手精简为四，两两一组，节奏感强。
+                    </div>
+                    <div class="technique-tags">
+                        <span class="technique-tag">信息精简</span>
+                        <span class="technique-tag">对仗工整</span>
+                        <span class="technique-tag">易于记忆</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item emotion">
+                    <div class="timeline-header">
+                        <span class="timeline-title">共鸣：现代痛点</span>
+                        <span class="timeline-time">00:52-01:06</span>
+                    </div>
+                    <div class="timeline-content">
+                        <span class="highlight">「你是否创业三年没起色？是否感情反复拉扯？是否体检报告小箭头越来越多？」</span><br>
+                        三连问句直击痛点，"是否"句式拉近距离。<br><br>
+                        <span class="highlight">「不要怕，四面神就在那里，你有所求，他就有所应」</span><br>
+                        温暖抚慰，"有所求，有所应"呼应开头"有求必应"。<br><br>
+                        <span class="highlight">「是该为自己找个出口了？」</span><br>
+                        问句收尾，引发思考而非说教。
+                    </div>
+                    <div class="technique-tags">
+                        <span class="technique-tag">痛点三连</span>
+                        <span class="technique-tag">首尾呼应</span>
+                        <span class="technique-tag">问句引导</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item cta">
+                    <div class="timeline-header">
+                        <span class="timeline-title">CTA：轻互动</span>
+                        <span class="timeline-time">01:06-01:10</span>
+                    </div>
+                    <div class="timeline-content">
+                        <span class="highlight">「去过曼谷四面神的，扣1。想去的，扣2。评论区见。」</span><br>
+                        轻松互动，降低参与门槛，引导评论区活跃。
+                    </div>
+                    <div class="technique-tags">
+                        <span class="technique-tag">轻CTA</span>
+                        <span class="technique-tag">二选一</span>
+                        <span class="technique-tag">评论引导</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 金句提炼 -->
+        <section class="section">
+            <h2 class="section-title"><span>💎</span> 金句提炼</h2>
+            <div class="golden-quotes">
+                <div class="quote-card">
+                    <div class="quote-text">「曼谷最灵的神，不是住在庙里的佛祖，而是在爱侣湾的十字路口的他」</div>
+                    <div class="quote-analysis">反转式开场，打破认知，地标植入增加记忆点</div>
+                </div>
+                <div class="quote-card">
+                    <div class="quote-text">「只要你信，他就在，有求必应」</div>
+                    <div class="quote-analysis">核心价值主张，简洁有力，贯穿全文</div>
+                </div>
+                <div class="quote-card">
+                    <div class="quote-text">「你有所求，他就有所应」</div>
+                    <div class="quote-analysis">变体呼应，强化记忆，情感落点</div>
+                </div>
+                <div class="quote-card">
+                    <div class="quote-text">「是该为自己找个出口了？」</div>
+                    <div class="quote-analysis">问句收尾，引发共鸣而非说教，留有余韵</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户修改亮点 -->
+        <section class="section">
+            <h2 class="section-title"><span>✨</span> 修改亮点分析</h2>
+            <table class="diff-table">
+                <tr>
+                    <th>位置</th>
+                    <th>原版</th>
+                    <th>修改后</th>
+                    <th>分析</th>
+                </tr>
+                <tr>
+                    <td>钩子</td>
+                    <td class="old">曼谷最灵的神，不是佛祖</td>
+                    <td class="new">不是住在庙里的佛祖，而是在爱侣湾的十字路口的他</td>
+                    <td class="reason">增加地标辨识度，去过的人会心一击</td>
+                </tr>
+                <tr>
+                    <td>称呼</td>
+                    <td class="old">四面佛</td>
+                    <td class="new">四面神</td>
+                    <td class="reason">统一称呼，"神"比"佛"更符合大梵天王身份</td>
+                </tr>
+                <tr>
+                    <td>法师金句</td>
+                    <td class="old">「这里是凶地，镇不住」+ 设问</td>
+                    <td class="new">「这里是凶地，需请大梵天王镇守」</td>
+                    <td class="reason">一句话完成，更简洁有力</td>
+                </tr>
+                <tr>
+                    <td>故事收尾</td>
+                    <td class="old">四面佛，成了曼谷的土地公</td>
+                    <td class="new">+ 只要你信，他就在，有求必应</td>
+                    <td class="reason">增加情感落点，为后文铺垫</td>
+                </tr>
+                <tr>
+                    <td>痛点句式</td>
+                    <td class="old">创业三年没起色？感情反复拉扯？</td>
+                    <td class="new">你是否创业三年没起色？是否感情反复拉扯？</td>
+                    <td class="reason">"是否"句式更温和，拉近距离</td>
+                </tr>
+                <tr>
+                    <td>情感落点</td>
+                    <td class="old">四面佛不挑人。你信，他就在。</td>
+                    <td class="new">不要怕，四面神就在那里，你有所求，他就有所应</td>
+                    <td class="reason">更温暖，"有所求/有所应"呼应开头</td>
+                </tr>
+                <tr>
+                    <td>点题</td>
+                    <td class="old">（无）</td>
+                    <td class="new">是该为自己找个出口了？</td>
+                    <td class="reason">问句引导思考，不说教</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- 总评 -->
+        <section class="section">
+            <h2 class="section-title"><span>📝</span> 总评</h2>
+            <div class="summary-box">
+                <h3 class="summary-title">修改后的文案优势</h3>
+                <ul class="summary-content">
+                    <li><strong>首尾呼应更强：</strong>「有求必应」→「有所求，有所应」形成闭环</li>
+                    <li><strong>情感温度提升：</strong>「不要怕」「是该为自己找个出口了？」更具抚慰感</li>
+                    <li><strong>地标记忆点：</strong>「爱侣湾十字路口」让去过的观众产生共鸣</li>
+                    <li><strong>称呼统一：</strong>「四面神」贯穿全文，更专业</li>
+                    <li><strong>问句技巧：</strong>用「是否」「是该...了？」代替陈述，引发思考</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <p>文案工作室 · 四面神抖音版分析报告</p>
+            <p style="margin-top: 10px; color: #555;">Generated by Claude Code</p>
+        </footer>
+    </div>
+</body>
+</html>
