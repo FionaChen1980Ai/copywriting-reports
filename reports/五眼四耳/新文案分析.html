@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五眼四耳 - 新文案分析</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh; color: #e0e0e0; padding: 40px 20px; line-height: 1.8;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 50px; }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .subtitle { color: #888; font-size: 1.1rem; margin-top: 10px; }
+        .badge {
+            display: inline-block; background: linear-gradient(90deg, #43e97b, #38f9d7);
+            color: #000; padding: 5px 15px; border-radius: 20px; font-size: 0.85rem;
+            font-weight: 600; margin-top: 15px;
+        }
+        .section {
+            background: rgba(255,255,255,0.05); border-radius: 16px;
+            padding: 30px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section-title {
+            font-size: 1.4rem; margin-bottom: 25px; color: #667eea;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .script-content {
+            background: rgba(0,0,0,0.3); border-radius: 12px; padding: 25px;
+            font-size: 1rem; line-height: 2; color: #ddd;
+        }
+        .script-content p { margin-bottom: 15px; }
+        .highlight { background: rgba(102,126,234,0.3); padding: 2px 6px; border-radius: 4px; }
+        .hook { color: #f5576c; font-weight: 600; }
+        .cta { color: #43e97b; font-weight: 600; }
+
+        .structure-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
+        }
+        .structure-card {
+            background: rgba(255,255,255,0.03); border-radius: 12px;
+            padding: 20px; text-align: center; border-left: 4px solid;
+        }
+        .structure-card .number {
+            font-size: 2rem; font-weight: 700; margin-bottom: 10px;
+        }
+        .structure-card .label { font-size: 0.9rem; color: #888; margin-bottom: 5px; }
+        .structure-card .desc { font-size: 0.85rem; color: #aaa; }
+
+        .emotion-chart {
+            background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px;
+            margin-top: 20px;
+        }
+        .emotion-bar {
+            display: flex; align-items: center; margin-bottom: 15px;
+        }
+        .emotion-label { width: 100px; font-size: 0.9rem; }
+        .emotion-track {
+            flex: 1; height: 24px; background: rgba(255,255,255,0.1);
+            border-radius: 12px; overflow: hidden; position: relative;
+        }
+        .emotion-fill {
+            height: 100%; border-radius: 12px;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 10px; font-size: 0.8rem; font-weight: 600;
+        }
+
+        .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 700px) { .tech-grid { grid-template-columns: 1fr; } }
+        .tech-card { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; }
+        .tech-card h4 { color: #667eea; margin-bottom: 15px; font-size: 1.1rem; }
+        .tech-card ul { list-style: none; }
+        .tech-card li {
+            padding: 8px 0; padding-left: 25px; position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .tech-card li:last-child { border-bottom: none; }
+        .tech-card li::before {
+            content: "✓"; position: absolute; left: 0; color: #43e97b;
+        }
+
+        .score-section {
+            display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+        }
+        .score-item { text-align: center; }
+        .score-circle {
+            width: 120px; height: 120px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;
+            position: relative;
+        }
+        .score-circle::before {
+            content: ''; position: absolute; inset: 0;
+            border-radius: 50%; padding: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+        }
+        .score-label { color: #888; font-size: 0.95rem; }
+
+        footer { text-align: center; margin-top: 50px; color: #666; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>五眼四耳 · 新文案分析</h1>
+            <p class="subtitle">改写版 · 针对抖音年轻受众优化</p>
+            <span class="badge">改写版本</span>
+        </header>
+
+        <section class="section">
+            <h2 class="section-title"><span>📝</span> 完整文案</h2>
+            <div class="script-content">
+                <p><span class="hook">如果你最近觉得压力大、运气差，甚至感觉身边的机会总是抓不住，那接下来的这尊"神兽"，你一定要认识。</span>它不吃金银财宝，专门吃黑漆漆的木炭，却能排泄出成堆的黄金。</p>
+                <p>在泰国北部的传说中，它叫<span class="highlight">"五眼四耳"</span>。它的创始人，是清迈著名的圣僧古巴翁师傅。师傅曾在禅定中梦见了这个奇特的形象：五只眼睛代表佛家的"五戒"，提醒我们要守住心神；而四只耳朵，则是为了让你能够眼观六路、耳听八方，在职场和商海中比别人更早捕捉到关键消息。</p>
+                <p>五眼四耳最厉害的一点在于<span class="highlight">"转化"</span>。它能把你生活里的愤怒、阻碍和那些倒霉的"烂事儿"，像吞木炭一样全部吃掉，然后通过师傅的法脉加持，将这些负能量全部幻化成好事与财富。无论你是想增加正财、催旺偏财，还是在股市投资中寻求一线先机，它都是你身边最忠诚的"守护者"。</p>
+                <p><span class="cta">如果你也想告别霉运，像古巴翁师傅手上的这尊五眼四耳一样，把困难变成黄金，可以在评论区留下你的愿望。点个关注，带你领略更多泰北的神秘力量。</span></p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span>📊</span> 文案结构分析</h2>
+            <div class="structure-grid">
+                <div class="structure-card" style="border-left-color: #f5576c">
+                    <div class="label">第一段</div>
+                    <div class="number" style="color: #f5576c">Hook</div>
+                    <div class="desc">痛点共鸣 + 悬念引入</div>
+                </div>
+                <div class="structure-card" style="border-left-color: #667eea">
+                    <div class="label">第二段</div>
+                    <div class="number" style="color: #667eea">故事</div>
+                    <div class="desc">师傅背景 + 寓意解读</div>
+                </div>
+                <div class="structure-card" style="border-left-color: #4facfe">
+                    <div class="label">第三段</div>
+                    <div class="number" style="color: #4facfe">功效</div>
+                    <div class="desc">核心卖点 + 使用场景</div>
+                </div>
+                <div class="structure-card" style="border-left-color: #43e97b">
+                    <div class="label">第四段</div>
+                    <div class="number" style="color: #43e97b">CTA</div>
+                    <div class="desc">互动引导 + 关注转化</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span>📈</span> 情绪曲线</h2>
+            <div class="emotion-chart">
+                <div class="emotion-bar">
+                    <div class="emotion-label">开篇Hook</div>
+                    <div class="emotion-track">
+                        <div class="emotion-fill" style="width: 85%; background: linear-gradient(90deg, #f5576c, #f093fb);">85%</div>
+                    </div>
+                </div>
+                <div class="emotion-bar">
+                    <div class="emotion-label">神秘感</div>
+                    <div class="emotion-track">
+                        <div class="emotion-fill" style="width: 90%; background: linear-gradient(90deg, #667eea, #764ba2);">90%</div>
+                    </div>
+                </div>
+                <div class="emotion-bar">
+                    <div class="emotion-label">信任感</div>
+                    <div class="emotion-track">
+                        <div class="emotion-fill" style="width: 80%; background: linear-gradient(90deg, #4facfe, #00f2fe);">80%</div>
+                    </div>
+                </div>
+                <div class="emotion-bar">
+                    <div class="emotion-label">期待值</div>
+                    <div class="emotion-track">
+                        <div class="emotion-fill" style="width: 88%; background: linear-gradient(90deg, #43e97b, #38f9d7);">88%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span>🎯</span> 文案技巧拆解</h2>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h4>Hook设计</h4>
+                    <ul>
+                        <li>以"如果你最近..."引发共鸣</li>
+                        <li>三连痛点：压力大、运气差、抓不住机会</li>
+                        <li>"神兽"制造悬念</li>
+                        <li>反差描述：吃木炭→排黄金</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h4>故事叙述</h4>
+                    <ul>
+                        <li>地域背书：泰国北部传说</li>
+                        <li>人物背书：清迈圣僧古巴翁</li>
+                        <li>禅定梦境增加神秘感</li>
+                        <li>五眼四耳寓意清晰解读</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h4>功效呈现</h4>
+                    <ul>
+                        <li>核心词"转化"简洁有力</li>
+                        <li>具象化：吞木炭→幻化财富</li>
+                        <li>场景覆盖：正财、偏财、股市</li>
+                        <li>"守护者"情感链接</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h4>CTA转化</h4>
+                    <ul>
+                        <li>"告别霉运"呼应开篇痛点</li>
+                        <li>评论区留愿望降低门槛</li>
+                        <li>关注引导：更多泰北神秘力量</li>
+                        <li>无硬性推销，软性引导</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span>⭐</span> 综合评分</h2>
+            <div class="score-section">
+                <div class="score-item">
+                    <div class="score-circle">8.5</div>
+                    <div class="score-label">Hook吸引力</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-circle">9.0</div>
+                    <div class="score-label">故事完整性</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-circle">8.5</div>
+                    <div class="score-label">功效说服力</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-circle">8.0</div>
+                    <div class="score-label">CTA有效性</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>文案工作室 · 五眼四耳新文案分析</p>
+            <p style="margin-top:10px;color:#555;">Generated by Claude Code</p>
+        </footer>
+    </div>
+</body>
+</html>
