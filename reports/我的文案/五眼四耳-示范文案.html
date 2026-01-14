@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>示范文案 - 五眼四耳</title>
+<style>
+    :root {
+        --bg: #0b0d10;
+        --card: #15181e;
+        --line: rgba(255,255,255,0.1);
+        --gold: #fbbf24;
+        --green: #10b981;
+        --blue: #3b82f6;
+        --purple: #8b5cf6;
+        --red: #ef4444;
+        --cyan: #06b6d4;
+        --txt: #e5e7eb;
+        --dim: #9ca3af;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:0; background:var(--bg); font-family:'Microsoft YaHei', 'PingFang SC', sans-serif; color:var(--txt); }
+
+    .sheet {
+        max-width: 1100px;
+        padding: 30px;
+        margin: 0 auto;
+    }
+
+    .head {
+        text-align: center;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+    .head h1 {
+        margin: 0 0 10px 0;
+        font-size: 28pt;
+        font-weight: 300;
+        background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .head .subtitle {
+        font-size: 11pt;
+        color: var(--dim);
+    }
+    .head .tag {
+        display: inline-block;
+        margin-top: 10px;
+        font-family: monospace;
+        color: var(--green);
+        font-size: 9pt;
+        background: rgba(16, 185, 129, 0.1);
+        padding: 5px 15px;
+        border-radius: 20px;
+    }
+
+    .section { margin-bottom: 35px; }
+    .section h2 {
+        font-size: 14pt;
+        font-weight: 500;
+        margin: 0 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--line);
+        color: var(--purple);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* 原文展示 */
+    .original {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 25px 30px;
+        line-height: 2.4;
+        font-size: 11pt;
+    }
+    .original .hook { color: var(--red); font-weight: 500; }
+    .original .mystery { color: var(--purple); }
+    .original .highlight {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.3), transparent);
+        padding: 2px 8px;
+        border-radius: 4px;
+        color: var(--cyan);
+    }
+    .original .benefit { color: var(--green); }
+    .original .emotion { color: var(--gold); font-weight: 500; }
+    .original .cta { color: var(--blue); }
+    .original p { margin-bottom: 20px; }
+    .original p:last-child { margin-bottom: 0; }
+
+    /* 评分 */
+    .score-row {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin: 25px 0;
+        flex-wrap: wrap;
+    }
+    .score-item {
+        text-align: center;
+    }
+    .score-num {
+        font-size: 32pt;
+        font-weight: bold;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .score-label {
+        font-size: 9pt;
+        color: var(--dim);
+        margin-top: 5px;
+    }
+
+    /* 结构图 */
+    .structure-flow {
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+        margin: 20px 0;
+        overflow-x: auto;
+    }
+    .flow-item {
+        flex: 1;
+        min-width: 180px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        padding: 20px;
+        position: relative;
+    }
+    .flow-item:first-child { border-radius: 12px 0 0 12px; }
+    .flow-item:last-child { border-radius: 0 12px 12px 0; }
+    .flow-item::after {
+        content: '→';
+        position: absolute;
+        right: -12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--dim);
+        font-size: 14pt;
+        z-index: 1;
+    }
+    .flow-item:last-child::after { display: none; }
+    .flow-num {
+        font-size: 8pt;
+        color: var(--dim);
+        margin-bottom: 5px;
+    }
+    .flow-title {
+        font-size: 11pt;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+    .flow-desc {
+        font-size: 9pt;
+        color: var(--dim);
+        line-height: 1.5;
+    }
+    .flow-item:nth-child(1) .flow-title { color: var(--red); }
+    .flow-item:nth-child(2) .flow-title { color: var(--purple); }
+    .flow-item:nth-child(3) .flow-title { color: var(--green); }
+    .flow-item:nth-child(4) .flow-title { color: var(--blue); }
+
+    /* 技巧卡片 */
+    .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    .tech-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+        border-left: 4px solid;
+    }
+    .tech-card:nth-child(1) { border-left-color: var(--red); }
+    .tech-card:nth-child(2) { border-left-color: var(--purple); }
+    .tech-card:nth-child(3) { border-left-color: var(--green); }
+    .tech-card:nth-child(4) { border-left-color: var(--blue); }
+    .tech-card h4 {
+        margin: 0 0 12px 0;
+        font-size: 11pt;
+        font-weight: 500;
+    }
+    .tech-card:nth-child(1) h4 { color: var(--red); }
+    .tech-card:nth-child(2) h4 { color: var(--purple); }
+    .tech-card:nth-child(3) h4 { color: var(--green); }
+    .tech-card:nth-child(4) h4 { color: var(--blue); }
+    .tech-card ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 10pt;
+        color: var(--dim);
+        line-height: 1.8;
+    }
+    .tech-card li { margin-bottom: 5px; }
+
+    /* 情绪曲线 */
+    .curve-container {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 25px;
+        margin: 20px 0;
+    }
+    .curve-svg {
+        width: 100%;
+        height: 200px;
+    }
+    .curve-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding: 0 30px;
+    }
+    .curve-label {
+        text-align: center;
+        font-size: 9pt;
+        color: var(--dim);
+    }
+
+    /* 亮点总结 */
+    .highlight-box {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        border-radius: 12px;
+        padding: 25px;
+    }
+    .highlight-box h4 {
+        color: var(--purple);
+        margin: 0 0 15px 0;
+        font-size: 12pt;
+    }
+    .highlight-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 10px;
+    }
+    .highlight-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 10pt;
+        color: var(--txt);
+    }
+    .highlight-item::before {
+        content: '✓';
+        color: var(--green);
+        font-weight: bold;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        color: var(--dim);
+        font-size: 9pt;
+    }
+</style>
+</head>
+<body>
+<div class="sheet">
+    <div class="head">
+        <h1>五眼四耳 · 示范文案</h1>
+        <div class="subtitle">泰北神兽 · 转化负能量为财富</div>
+        <div class="tag">DEMO COPYWRITING | 抖音年轻受众</div>
+    </div>
+
+    <div class="section">
+        <h2>📝 完整文案</h2>
+        <div class="original">
+            <p><span class="hook">如果你最近觉得压力大、运气差，甚至感觉身边的机会总是抓不住，那接下来的这尊"神兽"，你一定要认识。</span><span class="mystery">它不吃金银财宝，专门吃黑漆漆的木炭，却能排泄出成堆的黄金。</span></p>
+
+            <p>在泰国北部的传说中，它叫<span class="highlight">"五眼四耳"</span>。它的创始人，是清迈著名的圣僧古巴翁师傅。师傅曾在禅定中梦见了这个奇特的形象：<span class="mystery">五只眼睛代表佛家的"五戒"，提醒我们要守住心神</span>；而四只耳朵，则是为了让你能够<span class="benefit">眼观六路、耳听八方</span>，在职场和商海中比别人更早捕捉到关键消息。</p>
+
+            <p>五眼四耳最厉害的一点在于<span class="highlight">"转化"</span>。它能把你生活里的愤怒、阻碍和那些倒霉的"烂事儿"，像吞木炭一样全部吃掉，然后通过师傅的法脉加持，将这些负能量全部幻化成好事与财富。无论你是想<span class="benefit">增加正财、催旺偏财</span>，还是在股市投资中寻求一线先机，它都是你身边<span class="emotion">最忠诚的"守护者"</span>。</p>
+
+            <p><span class="cta">如果你也想告别霉运，像古巴翁师傅手上的这尊五眼四耳一样，把困难变成黄金，可以在评论区留下你的愿望。点个关注，带你领略更多泰北的神秘力量。</span></p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>⭐ 综合评分</h2>
+        <div class="score-row">
+            <div class="score-item">
+                <div class="score-num">8.5</div>
+                <div class="score-label">Hook吸引力</div>
+            </div>
+            <div class="score-item">
+                <div class="score-num">9.0</div>
+                <div class="score-label">故事完整性</div>
+            </div>
+            <div class="score-item">
+                <div class="score-num">8.5</div>
+                <div class="score-label">功效说服力</div>
+            </div>
+            <div class="score-item">
+                <div class="score-num">8.0</div>
+                <div class="score-label">CTA有效性</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📊 文案结构</h2>
+        <div class="structure-flow">
+            <div class="flow-item">
+                <div class="flow-num">PART 1</div>
+                <div class="flow-title">Hook 痛点共鸣</div>
+                <div class="flow-desc">压力大、运气差、机会抓不住 → "神兽"悬念</div>
+            </div>
+            <div class="flow-item">
+                <div class="flow-num">PART 2</div>
+                <div class="flow-title">故事 背景铺垫</div>
+                <div class="flow-desc">泰北传说 + 古巴翁师傅 + 五眼四耳寓意</div>
+            </div>
+            <div class="flow-item">
+                <div class="flow-num">PART 3</div>
+                <div class="flow-title">功效 核心卖点</div>
+                <div class="flow-desc">"转化"概念 + 正财偏财 + 守护者情感</div>
+            </div>
+            <div class="flow-item">
+                <div class="flow-num">PART 4</div>
+                <div class="flow-title">CTA 软性引导</div>
+                <div class="flow-desc">评论区留愿望 + 关注获取更多</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📈 情绪曲线</h2>
+        <div class="curve-container">
+            <svg class="curve-svg" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <linearGradient id="curveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#ef4444"/>
+                        <stop offset="25%" style="stop-color:#8b5cf6"/>
+                        <stop offset="50%" style="stop-color:#667eea"/>
+                        <stop offset="75%" style="stop-color:#10b981"/>
+                        <stop offset="100%" style="stop-color:#3b82f6"/>
+                    </linearGradient>
+                    <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:0.3"/>
+                        <stop offset="100%" style="stop-color:#667eea;stop-opacity:0"/>
+                    </linearGradient>
+                    <filter id="glow2">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                </defs>
+
+                <!-- 网格线 -->
+                <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
+                    <line x1="50" y1="30" x2="750" y2="30"/>
+                    <line x1="50" y1="70" x2="750" y2="70"/>
+                    <line x1="50" y1="110" x2="750" y2="110"/>
+                    <line x1="50" y1="150" x2="750" y2="150"/>
+                </g>
+
+                <!-- Y轴标签 -->
+                <text x="35" y="35" fill="#666" font-size="10" text-anchor="end">100</text>
+                <text x="35" y="75" fill="#666" font-size="10" text-anchor="end">75</text>
+                <text x="35" y="115" fill="#666" font-size="10" text-anchor="end">50</text>
+                <text x="35" y="155" fill="#666" font-size="10" text-anchor="end">25</text>
+
+                <!-- 填充区域 -->
+                <path d="M70,120 C120,100 170,55 240,45 C310,35 360,50 430,55 C500,60 530,25 600,20 C670,25 700,35 750,40 L750,170 L70,170 Z" fill="url(#areaGrad)"/>
+
+                <!-- 曲线 -->
+                <path d="M70,120 C120,100 170,55 240,45 C310,35 360,50 430,55 C500,60 530,25 600,20 C670,25 700,35 750,40"
+                      fill="none" stroke="url(#curveGrad)" stroke-width="3" stroke-linecap="round" filter="url(#glow2)"/>
+
+                <!-- 节点 -->
+                <circle cx="70" cy="120" r="6" fill="#ef4444" filter="url(#glow2)"/>
+                <circle cx="240" cy="45" r="6" fill="#8b5cf6" filter="url(#glow2)"/>
+                <circle cx="430" cy="55" r="6" fill="#667eea" filter="url(#glow2)"/>
+                <circle cx="600" cy="20" r="6" fill="#10b981" filter="url(#glow2)"/>
+                <circle cx="750" cy="40" r="6" fill="#3b82f6" filter="url(#glow2)"/>
+
+                <!-- 数值标签 -->
+                <text x="70" y="105" fill="#ef4444" font-size="10" font-weight="600" text-anchor="middle">50%</text>
+                <text x="240" y="30" fill="#8b5cf6" font-size="10" font-weight="600" text-anchor="middle">78%</text>
+                <text x="430" y="40" fill="#667eea" font-size="10" font-weight="600" text-anchor="middle">75%</text>
+                <text x="600" y="8" fill="#10b981" font-size="10" font-weight="600" text-anchor="middle">92%</text>
+                <text x="750" y="25" fill="#3b82f6" font-size="10" font-weight="600" text-anchor="middle">85%</text>
+            </svg>
+            <div class="curve-labels">
+                <div class="curve-label">痛点共鸣</div>
+                <div class="curve-label">悬念揭晓</div>
+                <div class="curve-label">故事铺垫</div>
+                <div class="curve-label">功效高潮</div>
+                <div class="curve-label">CTA收尾</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🎯 技巧拆解</h2>
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h4>Hook设计</h4>
+                <ul>
+                    <li>以"如果你最近..."引发共鸣</li>
+                    <li>三连痛点：压力大、运气差、抓不住机会</li>
+                    <li>"神兽"制造悬念</li>
+                    <li>反差描述：吃木炭→排黄金</li>
+                </ul>
+            </div>
+            <div class="tech-card">
+                <h4>故事叙述</h4>
+                <ul>
+                    <li>地域背书：泰国北部传说</li>
+                    <li>人物背书：清迈圣僧古巴翁</li>
+                    <li>禅定梦境增加神秘感</li>
+                    <li>五眼四耳寓意清晰解读</li>
+                </ul>
+            </div>
+            <div class="tech-card">
+                <h4>功效呈现</h4>
+                <ul>
+                    <li>核心词"转化"简洁有力</li>
+                    <li>具象化：吞木炭→幻化财富</li>
+                    <li>场景覆盖：正财、偏财、股市</li>
+                    <li>"守护者"情感链接</li>
+                </ul>
+            </div>
+            <div class="tech-card">
+                <h4>CTA转化</h4>
+                <ul>
+                    <li>"告别霉运"呼应开篇痛点</li>
+                    <li>评论区留愿望降低门槛</li>
+                    <li>关注引导：更多泰北神秘力量</li>
+                    <li>无硬性推销，软性引导</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>✨ 文案亮点</h2>
+        <div class="highlight-box">
+            <h4>可复用的写作技巧</h4>
+            <div class="highlight-list">
+                <div class="highlight-item">痛点共鸣开场，3秒抓住注意力</div>
+                <div class="highlight-item">提炼核心概念词"转化"，功效聚焦</div>
+                <div class="highlight-item">禅定梦境叙事，增强神秘感</div>
+                <div class="highlight-item">五眼四耳寓意解读，深度不枯燥</div>
+                <div class="highlight-item">"守护者"情感定位，建立陪伴感</div>
+                <div class="highlight-item">软性CTA引导，符合抖音调性</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>文案工作室 · 示范文案系列</p>
+        <p style="margin-top:8px;">Generated by Claude Code</p>
+    </footer>
+</div>
+</body>
+</html>
