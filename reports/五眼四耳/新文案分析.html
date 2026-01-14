@@ -54,22 +54,48 @@
         .structure-card .label { font-size: 0.9rem; color: #888; margin-bottom: 5px; }
         .structure-card .desc { font-size: 0.85rem; color: #aaa; }
 
-        .emotion-chart {
-            background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px;
+        /* 情绪曲线样式 */
+        .emotion-curve-container {
+            background: rgba(0,0,0,0.3); border-radius: 12px; padding: 30px 20px;
             margin-top: 20px;
         }
-        .emotion-bar {
-            display: flex; align-items: center; margin-bottom: 15px;
+        .curve-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: visible;
         }
-        .emotion-label { width: 100px; font-size: 0.9rem; }
-        .emotion-track {
-            flex: 1; height: 24px; background: rgba(255,255,255,0.1);
-            border-radius: 12px; overflow: hidden; position: relative;
+        .curve-svg {
+            width: 100%;
+            height: 280px;
+            overflow: visible;
         }
-        .emotion-fill {
-            height: 100%; border-radius: 12px;
-            display: flex; align-items: center; justify-content: flex-end;
-            padding-right: 10px; font-size: 0.8rem; font-weight: 600;
+        .curve-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 0 20px;
+        }
+        .curve-label {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            max-width: 80px;
+        }
+        .curve-label .phase {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .y-axis-labels {
+            position: absolute;
+            left: 0;
+            top: 20px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #666;
         }
 
         .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -154,29 +180,95 @@
 
         <section class="section">
             <h2 class="section-title"><span>📈</span> 情绪曲线</h2>
-            <div class="emotion-chart">
-                <div class="emotion-bar">
-                    <div class="emotion-label">开篇Hook</div>
-                    <div class="emotion-track">
-                        <div class="emotion-fill" style="width: 85%; background: linear-gradient(90deg, #f5576c, #f093fb);">85%</div>
-                    </div>
+            <div class="emotion-curve-container">
+                <div class="curve-wrapper">
+                    <svg class="curve-svg" viewBox="0 0 800 280" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <linearGradient id="curveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#f5576c"/>
+                                <stop offset="25%" style="stop-color:#667eea"/>
+                                <stop offset="50%" style="stop-color:#764ba2"/>
+                                <stop offset="75%" style="stop-color:#4facfe"/>
+                                <stop offset="100%" style="stop-color:#43e97b"/>
+                            </linearGradient>
+                            <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#667eea;stop-opacity:0.3"/>
+                                <stop offset="100%" style="stop-color:#667eea;stop-opacity:0"/>
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- 背景网格 -->
+                        <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
+                            <line x1="60" y1="40" x2="760" y2="40"/>
+                            <line x1="60" y1="90" x2="760" y2="90"/>
+                            <line x1="60" y1="140" x2="760" y2="140"/>
+                            <line x1="60" y1="190" x2="760" y2="190"/>
+                            <line x1="60" y1="240" x2="760" y2="240"/>
+                        </g>
+
+                        <!-- Y轴标签 -->
+                        <text x="45" y="45" fill="#666" font-size="12" text-anchor="end">100</text>
+                        <text x="45" y="95" fill="#666" font-size="12" text-anchor="end">80</text>
+                        <text x="45" y="145" fill="#666" font-size="12" text-anchor="end">60</text>
+                        <text x="45" y="195" fill="#666" font-size="12" text-anchor="end">40</text>
+                        <text x="45" y="245" fill="#666" font-size="12" text-anchor="end">20</text>
+
+                        <!-- 情绪曲线填充区域 -->
+                        <path d="M80,180 C120,160 160,100 200,85 C240,70 300,75 340,80 C380,85 420,60 480,45 C540,30 600,35 660,50 C700,60 740,55 760,60 L760,240 L80,240 Z"
+                              fill="url(#areaGradient)"/>
+
+                        <!-- 情绪曲线主线 -->
+                        <path d="M80,180 C120,160 160,100 200,85 C240,70 300,75 340,80 C380,85 420,60 480,45 C540,30 600,35 660,50 C700,60 740,55 760,60"
+                              fill="none" stroke="url(#curveGradient)" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
+
+                        <!-- 关键节点 -->
+                        <circle cx="80" cy="180" r="8" fill="#f5576c" filter="url(#glow)"/>
+                        <circle cx="200" cy="85" r="8" fill="#f093fb" filter="url(#glow)"/>
+                        <circle cx="340" cy="80" r="8" fill="#667eea" filter="url(#glow)"/>
+                        <circle cx="480" cy="45" r="8" fill="#4facfe" filter="url(#glow)"/>
+                        <circle cx="660" cy="50" r="8" fill="#43e97b" filter="url(#glow)"/>
+                        <circle cx="760" cy="60" r="8" fill="#38f9d7" filter="url(#glow)"/>
+
+                        <!-- 节点数值标签 -->
+                        <text x="80" y="165" fill="#f5576c" font-size="12" font-weight="600" text-anchor="middle">50%</text>
+                        <text x="200" y="70" fill="#f093fb" font-size="12" font-weight="600" text-anchor="middle">78%</text>
+                        <text x="340" y="65" fill="#667eea" font-size="12" font-weight="600" text-anchor="middle">75%</text>
+                        <text x="480" y="30" fill="#4facfe" font-size="12" font-weight="600" text-anchor="middle">92%</text>
+                        <text x="660" y="35" fill="#43e97b" font-size="12" font-weight="600" text-anchor="middle">88%</text>
+                        <text x="760" y="45" fill="#38f9d7" font-size="12" font-weight="600" text-anchor="middle">85%</text>
+                    </svg>
                 </div>
-                <div class="emotion-bar">
-                    <div class="emotion-label">神秘感</div>
-                    <div class="emotion-track">
-                        <div class="emotion-fill" style="width: 90%; background: linear-gradient(90deg, #667eea, #764ba2);">90%</div>
+                <div class="curve-labels">
+                    <div class="curve-label">
+                        <div class="phase" style="color:#f5576c">痛点共鸣</div>
+                        <div>引发焦虑</div>
                     </div>
-                </div>
-                <div class="emotion-bar">
-                    <div class="emotion-label">信任感</div>
-                    <div class="emotion-track">
-                        <div class="emotion-fill" style="width: 80%; background: linear-gradient(90deg, #4facfe, #00f2fe);">80%</div>
+                    <div class="curve-label">
+                        <div class="phase" style="color:#f093fb">悬念引入</div>
+                        <div>好奇心起</div>
                     </div>
-                </div>
-                <div class="emotion-bar">
-                    <div class="emotion-label">期待值</div>
-                    <div class="emotion-track">
-                        <div class="emotion-fill" style="width: 88%; background: linear-gradient(90deg, #43e97b, #38f9d7);">88%</div>
+                    <div class="curve-label">
+                        <div class="phase" style="color:#667eea">故事铺垫</div>
+                        <div>信任建立</div>
+                    </div>
+                    <div class="curve-label">
+                        <div class="phase" style="color:#4facfe">功效高潮</div>
+                        <div>情绪峰值</div>
+                    </div>
+                    <div class="curve-label">
+                        <div class="phase" style="color:#43e97b">情感链接</div>
+                        <div>守护者</div>
+                    </div>
+                    <div class="curve-label">
+                        <div class="phase" style="color:#38f9d7">CTA收尾</div>
+                        <div>期待行动</div>
                     </div>
                 </div>
             </div>
