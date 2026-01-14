@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿赞南法事 - 受众分析</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh; color: #e0e0e0; padding: 40px 20px; line-height: 1.8;
+        }
+        .container { max-width: 950px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 50px; }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .subtitle { color: #888; font-size: 1.1rem; margin-top: 10px; }
+        .section {
+            background: rgba(255,255,255,0.05); border-radius: 16px;
+            padding: 30px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section-title {
+            font-size: 1.4rem; margin-bottom: 25px; color: #f093fb;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .profile-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px;
+        }
+        .profile-card {
+            background: rgba(255,255,255,0.03); border-radius: 12px;
+            padding: 20px; text-align: center;
+        }
+        .profile-card .label { font-size: 0.85rem; color: #888; margin-bottom: 8px; }
+        .profile-card .value { font-size: 1.2rem; font-weight: 600; color: #f5576c; }
+        .audience-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px;
+        }
+        @media (max-width: 860px) { .audience-grid { grid-template-columns: 1fr; } }
+        .audience-card {
+            background: rgba(255,255,255,0.03); border-radius: 12px;
+            padding: 25px; border-left: 4px solid;
+        }
+        .audience-card h4 { font-size: 1.1rem; margin-bottom: 15px; }
+        .audience-card ul { list-style: none; margin-bottom: 15px; }
+        .audience-card li { padding: 5px 0; padding-left: 20px; position: relative; color: #bbb; }
+        .audience-card li::before { content: "•"; position: absolute; left: 0; color: #666; }
+        .pain-point {
+            background: rgba(245,87,108,0.15); padding: 10px 15px; border-radius: 8px; font-size: 0.9rem;
+        }
+        .pain-point strong { color: #f5576c; }
+        .trigger-words { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .trigger-word {
+            background: rgba(102,126,234,0.2); padding: 4px 12px;
+            border-radius: 15px; font-size: 0.8rem; color: #a5b4fc;
+        }
+        .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 600px) { .style-grid { grid-template-columns: 1fr; } }
+        .style-card { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; }
+        .style-card.good { border-top: 3px solid #43e97b; }
+        .style-card.warn { border-top: 3px solid #ffd93d; }
+        .style-card h4 { margin-bottom: 15px; }
+        .style-card.good h4 { color: #43e97b; }
+        .style-card.warn h4 { color: #ffd93d; }
+        .style-card ul { list-style: none; }
+        .style-card li { padding: 8px 0; padding-left: 25px; position: relative; }
+        .style-card.good li::before { content: "✓"; position: absolute; left: 0; color: #43e97b; }
+        .style-card.warn li::before { content: "⚠"; position: absolute; left: 0; color: #ffd93d; }
+        .original-text {
+            background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px;
+            font-size: 0.95rem; color: #aaa; font-style: italic;
+        }
+        footer { text-align: center; margin-top: 50px; color: #666; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>阿赞南法事 · 受众分析</h1>
+            <p class="subtitle">多功能法事 · 风水改善</p>
+        </header>
+
+        <section class="section">
+            <h2 class="section-title"><span>👥</span> 核心受众画像</h2>
+            <div class="profile-grid">
+                <div class="profile-card"><div class="label">年龄段</div><div class="value">30-55岁</div></div>
+                <div class="profile-card"><div class="label">性别倾向</div><div class="value">男性偏多</div></div>
+                <div class="profile-card"><div class="label">性别比</div><div class="value">6:4</div></div>
+                <div class="profile-card"><div class="label">职业特征</div><div class="value">生意人/竞争行业</div></div>
+                <div class="profile-card"><div class="label">收入水平</div><div class="value">中等偏上</div></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span>🎯</span> 目标受众类型</h2>
+            <div class="audience-grid">
+                <div class="audience-card" style="border-left-color: #667eea">
+                    <h4>🏆 竞争行业从业者</h4>
+                    <ul><li>行业竞争激烈</li><li>需要压制对手</li><li>想要脱颖而出</li></ul>
+                    <div class="pain-point"><strong>痛点：</strong>竞争对手太强</div>
+                    <div class="trigger-words"><span class="trigger-word">竞争对手</span><span class="trigger-word">打服口服</span></div>
+                </div>
+                <div class="audience-card" style="border-left-color: #f093fb">
+                    <h4>🏠 风水改善需求</h4>
+                    <ul><li>相信风水</li><li>想改善运势</li><li>家居/办公环境</li></ul>
+                    <div class="pain-point"><strong>痛点：</strong>风水不好影响运势</div>
+                    <div class="trigger-words"><span class="trigger-word">风水改善</span><span class="trigger-word">非常棒</span></div>
+                </div>
+                <div class="audience-card" style="border-left-color: #4facfe">
+                    <h4>💪 全能庇护需求</h4>
+                    <ul><li>想要全方位保护</li><li>多种功能</li><li>不想分开请</li></ul>
+                    <div class="pain-point"><strong>痛点：</strong>需求多样</div>
+                    <div class="trigger-words"><span class="trigger-word">全部做资格服务</span><span class="trigger-word">多功能</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span>📊</span> 文案风格评估</h2>
+            <div class="style-grid">
+                <div class="style-card good">
+                    <h4>优势</h4>
+                    <ul><li>功能全面</li><li>师傅资质</li></ul>
+                </div>
+                <div class="style-card warn">
+                    <h4>可优化</h4>
+                    <ul><li>转录杂乱</li><li>内容较短</li></ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span>📄</span> 原文摘要</h2>
+            <div class="original-text">无压、死血、老鹰...全部做资格服务...竞争对手就要对你打服口服...</div>
+        </section>
+
+        <footer>
+            <p>文案工作室 · 阿赞南法事受众分析</p>
+            <p style="margin-top:10px;color:#555;">Generated by Claude Code</p>
+        </footer>
+    </div>
+</body>
+</html>
