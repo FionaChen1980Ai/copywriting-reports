@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神鸮 · 人生大赌局 - 文案分析报告</title>
+    <style>
+        :root {
+            --bg: #0b0d10;
+            --card: #15181e;
+            --line: rgba(255,255,255,0.1);
+            --gold: #f5af19;
+            --orange: #f12711;
+            --green: #10b981;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --red: #ef4444;
+            --cyan: #06b6d4;
+            --txt: #e5e7eb;
+            --dim: #9ca3af;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            color: var(--txt);
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 300;
+            background: linear-gradient(135deg, var(--gold), var(--orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: var(--dim);
+            font-size: 1em;
+        }
+
+        .header .tag {
+            display: inline-block;
+            margin-top: 12px;
+            font-family: monospace;
+            color: var(--green);
+            font-size: 0.8em;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section h2 {
+            font-size: 1.2em;
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--line);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 评分卡片 */
+        .score-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
+            text-align: center;
+            background: var(--card);
+            padding: 20px 30px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+        }
+
+        .score-num {
+            font-size: 2.2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--gold), var(--orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-label {
+            font-size: 0.85em;
+            color: var(--dim);
+            margin-top: 5px;
+        }
+
+        /* 完整文案 */
+        .script-box {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 25px 30px;
+            line-height: 2.4;
+            font-size: 1em;
+        }
+
+        .script-box p {
+            margin-bottom: 18px;
+        }
+
+        .script-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .script-box .hook { color: var(--red); font-weight: 500; }
+        .script-box .pain { color: var(--purple); }
+        .script-box .solution { color: var(--cyan); }
+        .script-box .trait { color: var(--gold); font-weight: 500; }
+        .script-box .story { color: var(--blue); }
+        .script-box .benefit { color: var(--green); }
+        .script-box .contrast { color: var(--orange); font-weight: 500; }
+        .script-box .cta { color: var(--gold); }
+
+        /* 结构流程图 */
+        .structure-flow {
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+
+        .flow-item {
+            flex: 1;
+            min-width: 140px;
+            background: var(--card);
+            border: 1px solid var(--line);
+            padding: 18px;
+            position: relative;
+        }
+
+        .flow-item:first-child { border-radius: 12px 0 0 12px; }
+        .flow-item:last-child { border-radius: 0 12px 12px 0; }
+
+        .flow-item::after {
+            content: '→';
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dim);
+            font-size: 1.2em;
+            z-index: 1;
+        }
+
+        .flow-item:last-child::after { display: none; }
+
+        .flow-num {
+            font-size: 0.7em;
+            color: var(--dim);
+            margin-bottom: 5px;
+        }
+
+        .flow-title {
+            font-size: 0.95em;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .flow-desc {
+            font-size: 0.8em;
+            color: var(--dim);
+            line-height: 1.4;
+        }
+
+        .flow-item:nth-child(1) .flow-title { color: var(--red); }
+        .flow-item:nth-child(2) .flow-title { color: var(--purple); }
+        .flow-item:nth-child(3) .flow-title { color: var(--cyan); }
+        .flow-item:nth-child(4) .flow-title { color: var(--blue); }
+        .flow-item:nth-child(5) .flow-title { color: var(--green); }
+        .flow-item:nth-child(6) .flow-title { color: var(--gold); }
+
+        /* 情绪曲线 */
+        .curve-container {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .curve-svg {
+            width: 100%;
+            height: auto;
+        }
+
+        .curve-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 0 30px;
+        }
+
+        .curve-label {
+            text-align: center;
+            font-size: 0.75em;
+            color: var(--dim);
+            max-width: 80px;
+        }
+
+        /* 技巧卡片 */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .tech-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid;
+        }
+
+        .tech-card:nth-child(1) { border-left-color: var(--red); }
+        .tech-card:nth-child(2) { border-left-color: var(--purple); }
+        .tech-card:nth-child(3) { border-left-color: var(--green); }
+        .tech-card:nth-child(4) { border-left-color: var(--gold); }
+
+        .tech-card h4 {
+            margin-bottom: 12px;
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+        .tech-card:nth-child(1) h4 { color: var(--red); }
+        .tech-card:nth-child(2) h4 { color: var(--purple); }
+        .tech-card:nth-child(3) h4 { color: var(--green); }
+        .tech-card:nth-child(4) h4 { color: var(--gold); }
+
+        .tech-card ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.9em;
+            color: var(--dim);
+            line-height: 1.8;
+        }
+
+        .tech-card li { margin-bottom: 5px; }
+
+        .tech-card .example {
+            background: rgba(0,0,0,0.3);
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: var(--txt);
+            font-style: italic;
+        }
+
+        /* 亮点总结 */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(245, 175, 25, 0.1), rgba(241, 39, 17, 0.05));
+            border: 1px solid rgba(245, 175, 25, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .highlight-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 10px;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9em;
+            color: var(--txt);
+        }
+
+        .highlight-item::before {
+            content: '✓';
+            color: var(--green);
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
+            color: var(--dim);
+            font-size: 0.8em;
+        }
+
+        @media (max-width: 700px) {
+            .structure-flow { flex-direction: column; }
+            .flow-item { border-radius: 12px !important; margin-bottom: 10px; }
+            .flow-item::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>神鸮 · 人生大赌局</h1>
+            <div class="subtitle">暗场博弈 · 洞若观火 | 龙婆肃法门</div>
+            <div class="tag">原创文案分析 | 决策者受众</div>
+        </div>
+
+        <!-- 综合评分 -->
+        <div class="section">
+            <h2>⭐ 综合评分</h2>
+            <div class="score-row">
+                <div class="score-item">
+                    <div class="score-num">9.5</div>
+                    <div class="score-label">Hook吸引力</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-num">9.0</div>
+                    <div class="score-label">概念创意</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-num">8.5</div>
+                    <div class="score-label">故事完整性</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-num">9.0</div>
+                    <div class="score-label">情绪张力</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-num">8.5</div>
+                    <div class="score-label">CTA有效性</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 完整文案 -->
+        <div class="section">
+            <h2>📝 完整文案</h2>
+            <div class="script-box">
+                <p><span class="hook">你是否也认为人生就是一场大赌局</span><br>
+                我们不断地为自己的选择下注<br>
+                筹码就是你的时间、精力和野心。</p>
+
+                <p><span class="pain">但最残酷的是，这场赌局很多时候是在<strong>"暗场"</strong>进行的。</span><br>
+                你看不到对手的牌，甚至看不清未来的路。<br>
+                很多人盲目梭哈，最后只能听天由命。</p>
+
+                <p><span class="solution">如果你也处在这种暗场之中<br>
+                不妨试试佩戴这只神鸮</span><br>
+                <span class="trait">因为它夜行不惧，静守不躁，出手必中。</span></p>
+
+                <p><span class="story">传说泰国高僧龙婆肃，当年禅定深山。<br>
+                某夜，丛林寂静，唯有一声「Thue...Thue...」划破长空。<br>
+                大师睁眼，看见枝头那双金色的眼睛——就此悟出这一神鸮法门。</span></p>
+
+                <p><span class="benefit">神鸮真正厉害的，就是那双眼睛。<br>
+                别人看不见的，它看得见；别人踩过的坑，它绕得过。</span><br>
+                人生总有几段暗路要走。<br>
+                <span class="contrast">有人在黑暗里惊慌失措，有人在黑暗里——洞若观火。</span></p>
+
+                <p><span class="cta">神鸮一鸣，静候天明。<br>
+                你，准备好开始你的精准狩猎了吗？</span></p>
+            </div>
+        </div>
+
+        <!-- 文案结构 -->
+        <div class="section">
+            <h2>📊 文案结构（六段式）</h2>
+            <div class="structure-flow">
+                <div class="flow-item">
+                    <div class="flow-num">PART 1</div>
+                    <div class="flow-title">比喻钩子</div>
+                    <div class="flow-desc">人生=大赌局<br>筹码=时间精力野心</div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">PART 2</div>
+                    <div class="flow-title">痛点深挖</div>
+                    <div class="flow-desc">"暗场"概念<br>看不清、盲目梭哈</div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">PART 3</div>
+                    <div class="flow-title">方案引入</div>
+                    <div class="flow-desc">神鸮 + 三连特质<br>夜行·静守·必中</div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">PART 4</div>
+                    <div class="flow-title">故事背书</div>
+                    <div class="flow-desc">龙婆肃禅定<br>Thue声悟道</div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">PART 5</div>
+                    <div class="flow-title">功效+对比</div>
+                    <div class="flow-desc">暗夜之眼<br>惊慌vs洞若观火</div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">PART 6</div>
+                    <div class="flow-title">CTA收尾</div>
+                    <div class="flow-desc">精准狩猎<br>古风余韵</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 情绪曲线 -->
+        <div class="section">
+            <h2>📈 情绪曲线</h2>
+            <div class="curve-container">
+                <svg class="curve-svg" viewBox="0 0 800 220" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <linearGradient id="curveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#ef4444"/>
+                            <stop offset="20%" style="stop-color:#8b5cf6"/>
+                            <stop offset="40%" style="stop-color:#06b6d4"/>
+                            <stop offset="60%" style="stop-color:#3b82f6"/>
+                            <stop offset="80%" style="stop-color:#10b981"/>
+                            <stop offset="100%" style="stop-color:#f5af19"/>
+                        </linearGradient>
+                        <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#f5af19;stop-opacity:0.3"/>
+                            <stop offset="100%" style="stop-color:#f5af19;stop-opacity:0"/>
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- 网格线 -->
+                    <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
+                        <line x1="60" y1="30" x2="760" y2="30"/>
+                        <line x1="60" y1="70" x2="760" y2="70"/>
+                        <line x1="60" y1="110" x2="760" y2="110"/>
+                        <line x1="60" y1="150" x2="760" y2="150"/>
+                    </g>
+
+                    <!-- Y轴标签 -->
+                    <text x="45" y="35" fill="#666" font-size="10" text-anchor="end">100</text>
+                    <text x="45" y="75" fill="#666" font-size="10" text-anchor="end">75</text>
+                    <text x="45" y="115" fill="#666" font-size="10" text-anchor="end">50</text>
+                    <text x="45" y="155" fill="#666" font-size="10" text-anchor="end">25</text>
+
+                    <!-- 填充区域 -->
+                    <path d="M80,90 C120,70 160,110 220,120 C280,130 320,80 380,70 C440,60 480,55 540,50 C600,45 640,25 700,20 C740,30 760,45 760,50 L760,180 L80,180 Z" fill="url(#areaGrad)"/>
+
+                    <!-- 曲线 -->
+                    <path d="M80,90 C120,70 160,110 220,120 C280,130 320,80 380,70 C440,60 480,55 540,50 C600,45 640,25 700,20 C740,30 760,45 760,50"
+                          fill="none" stroke="url(#curveGrad)" stroke-width="3" stroke-linecap="round" filter="url(#glow)"/>
+
+                    <!-- 节点 -->
+                    <circle cx="80" cy="90" r="7" fill="#ef4444" filter="url(#glow)"/>
+                    <circle cx="220" cy="120" r="7" fill="#8b5cf6" filter="url(#glow)"/>
+                    <circle cx="380" cy="70" r="7" fill="#06b6d4" filter="url(#glow)"/>
+                    <circle cx="540" cy="50" r="7" fill="#3b82f6" filter="url(#glow)"/>
+                    <circle cx="700" cy="20" r="7" fill="#10b981" filter="url(#glow)"/>
+                    <circle cx="760" cy="50" r="7" fill="#f5af19" filter="url(#glow)"/>
+
+                    <!-- 数值标签 -->
+                    <text x="80" y="75" fill="#ef4444" font-size="11" font-weight="600" text-anchor="middle">68%</text>
+                    <text x="220" y="140" fill="#8b5cf6" font-size="11" font-weight="600" text-anchor="middle">52%</text>
+                    <text x="380" y="55" fill="#06b6d4" font-size="11" font-weight="600" text-anchor="middle">78%</text>
+                    <text x="540" y="35" fill="#3b82f6" font-size="11" font-weight="600" text-anchor="middle">85%</text>
+                    <text x="700" y="8" fill="#10b981" font-size="11" font-weight="600" text-anchor="middle">95%</text>
+                    <text x="760" y="35" fill="#f5af19" font-size="11" font-weight="600" text-anchor="middle">88%</text>
+                </svg>
+                <div class="curve-labels">
+                    <div class="curve-label">大赌局<br>比喻</div>
+                    <div class="curve-label">暗场<br>痛点低谷</div>
+                    <div class="curve-label">神鸮<br>希望转折</div>
+                    <div class="curve-label">禅定<br>故事</div>
+                    <div class="curve-label">洞若观火<br>情绪高潮</div>
+                    <div class="curve-label">精准狩猎<br>CTA</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技巧拆解 -->
+        <div class="section">
+            <h2>🎯 技巧拆解</h2>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h4>概念创新：大赌局比喻</h4>
+                    <ul>
+                        <li>人生=赌局，筹码=时间精力野心</li>
+                        <li>"暗场"概念与神鸮暗夜之眼完美呼应</li>
+                        <li>"盲目梭哈"vs"精准狩猎"形成对比</li>
+                    </ul>
+                    <div class="example">「这场赌局很多时候是在"暗场"进行的。你看不到对手的牌，甚至看不清未来的路。」</div>
+                </div>
+                <div class="tech-card">
+                    <h4>情绪设计：V型曲线</h4>
+                    <ul>
+                        <li>开场引发共鸣（68%）</li>
+                        <li>痛点深挖制造焦虑低谷（52%）</li>
+                        <li>神鸮出现带来希望（78%→95%）</li>
+                        <li>CTA时情绪仍在高位（88%）</li>
+                    </ul>
+                    <div class="example">「有人在黑暗里惊慌失措，有人在黑暗里——洞若观火。」</div>
+                </div>
+                <div class="tech-card">
+                    <h4>三连特质：节奏感</h4>
+                    <ul>
+                        <li>「夜行不惧，静守不躁，出手必中」</li>
+                        <li>四字+四字+四字，对仗工整</li>
+                        <li>与"暗场赌局"主题完美契合</li>
+                    </ul>
+                    <div class="example">「因为它夜行不惧，静守不躁，出手必中。」</div>
+                </div>
+                <div class="tech-card">
+                    <h4>对比升华：两种人生</h4>
+                    <ul>
+                        <li>惊慌失措 vs 洞若观火</li>
+                        <li>盲目梭哈 vs 精准狩猎</li>
+                        <li>让观众自行选择站队</li>
+                    </ul>
+                    <div class="example">「人生总有几段暗路要走。有人在黑暗里惊慌失措，有人在黑暗里——洞若观火。」</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 亮点总结 -->
+        <div class="section">
+            <h2>✨ 文案亮点</h2>
+            <div class="highlight-box">
+                <h4>核心创意突破</h4>
+                <div class="highlight-list">
+                    <div class="highlight-item">"人生大赌局"比喻新颖，容易引发决策者共鸣</div>
+                    <div class="highlight-item">"暗场"概念与神鸮暗夜之眼形成完美呼应</div>
+                    <div class="highlight-item">V型情绪曲线：痛点低谷→希望高潮，张力十足</div>
+                    <div class="highlight-item">三连特质「夜行·静守·必中」节奏感强</div>
+                    <div class="highlight-item">双对比升华：惊慌vs洞察、梭哈vs狩猎</div>
+                    <div class="highlight-item">古风收尾「神鸮一鸣，静候天明」留有余韵</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>文案工作室 · 神鸮项目</p>
+            <p style="margin-top:8px;">Generated by Claude Code</p>
+        </footer>
+    </div>
+</body>
+</html>

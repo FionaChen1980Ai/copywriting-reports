@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神鸮 · 人生大赌局 - 受众分析</title>
+    <style>
+        :root {
+            --bg: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --card: rgba(255, 255, 255, 0.05);
+            --line: rgba(255,255,255,0.1);
+            --purple: #667eea;
+            --violet: #764ba2;
+            --gold: #f5af19;
+            --green: #10b981;
+            --blue: #3b82f6;
+            --red: #ef4444;
+            --cyan: #06b6d4;
+            --txt: #e5e7eb;
+            --dim: #9ca3af;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            min-height: 100vh;
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            color: var(--txt);
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 300;
+            background: linear-gradient(135deg, var(--purple), var(--violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: var(--dim);
+            font-size: 1em;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section h2 {
+            font-size: 1.2em;
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--line);
+            color: var(--purple);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 核心画像卡片 */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .profile-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-card .icon {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .profile-card .label {
+            font-size: 0.8em;
+            color: var(--dim);
+            margin-bottom: 5px;
+        }
+
+        .profile-card .value {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--purple);
+        }
+
+        /* 受众类型卡片 */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .audience-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--purple);
+        }
+
+        .audience-card:nth-child(1) { border-left-color: var(--red); }
+        .audience-card:nth-child(2) { border-left-color: var(--gold); }
+        .audience-card:nth-child(3) { border-left-color: var(--blue); }
+        .audience-card:nth-child(4) { border-left-color: var(--green); }
+
+        .audience-card h4 {
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .audience-card:nth-child(1) h4 { color: var(--red); }
+        .audience-card:nth-child(2) h4 { color: var(--gold); }
+        .audience-card:nth-child(3) h4 { color: var(--blue); }
+        .audience-card:nth-child(4) h4 { color: var(--green); }
+
+        .audience-card .features {
+            margin-bottom: 15px;
+        }
+
+        .audience-card .features li {
+            font-size: 0.9em;
+            color: var(--dim);
+            margin-bottom: 5px;
+            list-style: none;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .audience-card .features li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--purple);
+        }
+
+        .audience-card .pain-point {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .audience-card .pain-point::before {
+            content: '痛点';
+            display: block;
+            font-size: 0.75em;
+            color: var(--red);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .audience-card .pain-point p {
+            font-size: 0.9em;
+            color: var(--txt);
+        }
+
+        .trigger-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .trigger-tag {
+            background: rgba(102, 126, 234, 0.2);
+            color: #a5b4fc;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
+        /* 心理特征 */
+        .psychology-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .psychology-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .psychology-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .psychology-card h4 {
+            color: var(--purple);
+            font-size: 1em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .psychology-card p {
+            font-size: 0.9em;
+            color: var(--dim);
+        }
+
+        .psychology-card .highlight {
+            color: var(--txt);
+            font-weight: 500;
+        }
+
+        /* 文案风格评估 */
+        .style-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .style-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .style-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .style-card.strength {
+            border-top: 3px solid var(--green);
+        }
+
+        .style-card.improve {
+            border-top: 3px solid var(--gold);
+        }
+
+        .style-card h4 {
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+
+        .style-card.strength h4 { color: var(--green); }
+        .style-card.improve h4 { color: var(--gold); }
+
+        .style-card ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .style-card li {
+            font-size: 0.9em;
+            color: var(--dim);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .style-card.strength li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+        }
+
+        .style-card.improve li::before {
+            content: '○';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
+            color: var(--dim);
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>神鸮 · 人生大赌局</h1>
+            <div class="subtitle">受众分析报告 | 决策者 · 博弈者 · 暗场求胜者</div>
+        </div>
+
+        <!-- 核心受众画像 -->
+        <div class="section">
+            <h2>👤 核心受众画像</h2>
+            <div class="profile-grid">
+                <div class="profile-card">
+                    <div class="icon">🎂</div>
+                    <div class="label">年龄段</div>
+                    <div class="value">28-45岁</div>
+                </div>
+                <div class="profile-card">
+                    <div class="icon">⚖️</div>
+                    <div class="label">性别倾向</div>
+                    <div class="value">男性为主</div>
+                </div>
+                <div class="profile-card">
+                    <div class="icon">📊</div>
+                    <div class="label">性别比</div>
+                    <div class="value">7:3</div>
+                </div>
+                <div class="profile-card">
+                    <div class="icon">💼</div>
+                    <div class="label">职业特征</div>
+                    <div class="value">决策者</div>
+                </div>
+                <div class="profile-card">
+                    <div class="icon">💰</div>
+                    <div class="label">消费能力</div>
+                    <div class="value">中高</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 目标受众类型 -->
+        <div class="section">
+            <h2>🎯 目标受众类型</h2>
+            <div class="audience-grid">
+                <div class="audience-card">
+                    <h4>🎲 创业者/投资人</h4>
+                    <ul class="features">
+                        <li>每天面临重大决策</li>
+                        <li>资金压力大，容错率低</li>
+                        <li>需要判断项目/合伙人</li>
+                    </ul>
+                    <div class="pain-point">
+                        <p>怕押错宝，一步走错满盘皆输。信息不对称让每次决策都像赌博。</p>
+                    </div>
+                    <div class="trigger-tags">
+                        <span class="trigger-tag">大赌局</span>
+                        <span class="trigger-tag">暗场</span>
+                        <span class="trigger-tag">盲目梭哈</span>
+                    </div>
+                </div>
+
+                <div class="audience-card">
+                    <h4>📈 股票/期货投资者</h4>
+                    <ul class="features">
+                        <li>市场波动带来焦虑</li>
+                        <li>信息不透明，庄家操控</li>
+                        <li>需要"看穿"市场走势</li>
+                    </ul>
+                    <div class="pain-point">
+                        <p>总在高点接盘、低点割肉。感觉市场有"暗场规则"自己看不懂。</p>
+                    </div>
+                    <div class="trigger-tags">
+                        <span class="trigger-tag">看不清未来</span>
+                        <span class="trigger-tag">洞若观火</span>
+                        <span class="trigger-tag">精准狩猎</span>
+                    </div>
+                </div>
+
+                <div class="audience-card">
+                    <h4>👔 职场决策者</h4>
+                    <ul class="features">
+                        <li>管理层，需要做团队决策</li>
+                        <li>跳槽/转型的关键时刻</li>
+                        <li>职场政治复杂，需要洞察</li>
+                    </ul>
+                    <div class="pain-point">
+                        <p>不知道该站队谁，不知道哪个机会是真的。职场如战场，看不清就出局。</p>
+                    </div>
+                    <div class="trigger-tags">
+                        <span class="trigger-tag">看不到对手的牌</span>
+                        <span class="trigger-tag">暗夜之眼</span>
+                    </div>
+                </div>
+
+                <div class="audience-card">
+                    <h4>🏠 重大人生抉择者</h4>
+                    <ul class="features">
+                        <li>面临买房、结婚、移民等决定</li>
+                        <li>选择太多，信息过载</li>
+                        <li>害怕选错后悔一生</li>
+                    </ul>
+                    <div class="pain-point">
+                        <p>人生没有后悔药，每个重大选择都像在赌。怕自己的"筹码"押错了地方。</p>
+                    </div>
+                    <div class="trigger-tags">
+                        <span class="trigger-tag">筹码</span>
+                        <span class="trigger-tag">时间精力野心</span>
+                        <span class="trigger-tag">听天由命</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 心理特征 -->
+        <div class="section">
+            <h2>🧠 心理特征</h2>
+            <div class="psychology-grid">
+                <div class="psychology-card">
+                    <h4>😰 核心痛点</h4>
+                    <p><span class="highlight">不确定性焦虑</span><br>
+                    看不清局势、不知道对手在想什么、怕做错选择。感觉人生像在"暗场"赌博。</p>
+                </div>
+                <div class="psychology-card">
+                    <h4>💫 深层需求</h4>
+                    <p><span class="highlight">掌控感与确定感</span><br>
+                    想要"看清"再行动。不求百战百胜，但求不踩坑、不被骗、不错过。</p>
+                </div>
+                <div class="psychology-card">
+                    <h4>🎯 价值认同</h4>
+                    <p><span class="highlight">聪明人的游戏</span><br>
+                    认同"精准狩猎"胜过"盲目梭哈"。欣赏沉稳、有洞察力、能等待时机的人。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文案风格评估 -->
+        <div class="section">
+            <h2>📝 文案风格评估</h2>
+            <div class="style-grid">
+                <div class="style-card strength">
+                    <h4>✅ 优势</h4>
+                    <ul>
+                        <li>"人生大赌局"比喻精准击中决策者心理</li>
+                        <li>"暗场"概念新颖，与神鸮暗夜之眼完美呼应</li>
+                        <li>"筹码=时间精力野心"具象化人生成本</li>
+                        <li>V型情绪曲线，痛点低谷后迎来希望高潮</li>
+                        <li>"惊慌失措vs洞若观火"对比让人自行站队</li>
+                        <li>古风收尾有余韵，不硬推销</li>
+                    </ul>
+                </div>
+                <div class="style-card improve">
+                    <h4>🔄 可优化</h4>
+                    <ul>
+                        <li>可增加具体场景（股市、谈判、合伙）</li>
+                        <li>"精准狩猎"概念可进一步展开</li>
+                        <li>CTA可加入评论互动引导</li>
+                        <li>可考虑加入成功案例/故事</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 投放建议 -->
+        <div class="section">
+            <h2>📱 投放建议</h2>
+            <div class="profile-grid">
+                <div class="profile-card">
+                    <div class="icon">📺</div>
+                    <div class="label">推荐平台</div>
+                    <div class="value">抖音/视频号</div>
+                </div>
+                <div class="profile-card">
+                    <div class="icon">🎬</div>
+                    <div class="label">视频时长</div>
+                    <div class="value">45-60秒</div>
+                </div>
+                <div class="profile-card">
+                    <div class="icon">🎵</div>
+                    <div class="label">BGM风格</div>
+                    <div class="value">悬疑/紧张</div>
+                </div>
+                <div class="profile-card">
+                    <div class="icon">⏰</div>
+                    <div class="label">发布时间</div>
+                    <div class="value">20:00-22:00</div>
+                </div>
+                <div class="profile-card">
+                    <div class="icon">🏷️</div>
+                    <div class="label">话题标签</div>
+                    <div class="value">#人生选择</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>文案工作室 · 神鸮项目 · 受众分析</p>
+            <p style="margin-top:8px;">Generated by Claude Code</p>
+        </footer>
+    </div>
+</body>
+</html>
